@@ -12,6 +12,12 @@ from nltk.tokenize import word_tokenize
 import os
 java_path = "C:/Program Files/Java/jdk1.8.0_301/bin/java.exe"
 os.environ['JAVAHOME'] = java_path
+
+import matplotlib
+import matplotlib.pyplot as plt
+import skimage.io
+from skimage.color import rgb2gray
+
 nltk.download('punkt')
 nltk.download('averaged_perceptron_tagger')
 nltk.download('conll2002')
@@ -50,7 +56,16 @@ f = open(outfile, "a", encoding="utf-8")
   
 for i in range(1, filelimit + 1):
     filename = "pagina_"+str(i)+".jpg"
-    text = str(((pytesseract.image_to_string(Image.open(filename)))))
+    binary_global = image > threshold_otsu(image)
+    blurred = skimage.filters.gaussian(image)
+
+    window_size = 25
+    thresh_niblack = threshold_niblack(image, window_size=window_size, k=0.8)
+    thresh_sauvola = threshold_sauvola(image, window_size=window_size)
+    thresh_otsu = threshold_otsu(image)#, window_size=window_size)
+    thresh_otsu_blur = threshold_otsu(blurred)
+    # ret2,th2 = cv2.threshold(img,0,255,cv2.THRESH_BINARY+cv2.THRESH_OTSU)
+    text = str(((pytesseract.image_to_string(Image.open(filename),lang='spa'))))
     text = text.replace('-\n', '')    
     f.write(text)
 
