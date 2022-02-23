@@ -14,6 +14,8 @@ import matplotlib
 import matplotlib.pyplot as plt
 import skimage.io
 from skimage.color import rgb2gray
+from skimage.filters import (threshold_otsu, threshold_niblack, threshold_sauvola)
+
 
 nltk.download('punkt')
 nltk.download('averaged_perceptron_tagger')
@@ -21,8 +23,9 @@ nltk.download('conll2002')
 
 # Path of the pdf
 PDF_file = "articulo.pdf"
-  
-paginas = convert_from_path(PDF_file, 500)
+
+dpi = 900
+paginas = convert_from_path(PDF_file, dpi)
   
 numpag = 1
 
@@ -39,22 +42,34 @@ f = open(outfile, "a", encoding="utf-8")
   
 for i in range(1, filelimit + 1):
     filename = "pagina_"+str(i)+".jpg"
-    binary_global = image > threshold_otsu(image)
-    blurred = skimage.filters.gaussian(image)
+    original = skimage.io.imread(fname=filename)
 
-    window_size = 25
-    thresh_niblack = threshold_niblack(image, window_size=window_size, k=0.8)
-    thresh_sauvola = threshold_sauvola(image, window_size=window_size)
-    thresh_otsu = threshold_otsu(image)#, window_size=window_size)
-    thresh_otsu_blur = threshold_otsu(blurred)
-    # ret2,th2 = cv2.threshold(img,0,255,cv2.THRESH_BINARY+cv2.THRESH_OTSU)
-    text = str(((pytesseract.image_to_string(Image.open(filename),lang='spa'))))
+    image = rgb2gray(original)
+
+    pilimage = Image.open(filename)
+    width, height = pilimage.size
+    pilimage.close()
+
+    image.shape
+
+    matplotlib.rcParams['font.size'] = 12
+
+    thresh_otsu = threshold_otsu(image)
+    binary_otsu = image > thresh_otsu
+
+    plt.figure(figsize=((int)(width/dpi)*3, (int)(height/dpi)*3))
+    plt.imshow(binary_otsu, cmap=plt.cm.gray)
+    plt.axis('off')
+    plt.savefig('plt-'+filename)
+
+    text = str(((pytesseract.image_to_string(Image.open('plt-'+filename),lang='spa'))))
     text = text.replace('-\n', '')    
     f.write(text)
 
 for i in range(1, filelimit + 1):
     filename = "pagina_"+str(i)+".jpg"
     os.remove(filename)
+    #os.remove('plt-'+filename)
   
 f.close()
 
