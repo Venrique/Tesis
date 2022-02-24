@@ -1,5 +1,6 @@
 import shutil
 import os
+import re
 import pdftotext
 import nltk
 
@@ -33,6 +34,7 @@ for pagina in paginas:
     filename = "pagina_"+str(numpag)+".jpg"
     pagina.save(filename, 'JPEG')
     numpag = numpag + 1
+    #break
   
 filelimit = numpag-1
   
@@ -57,13 +59,16 @@ for i in range(1, filelimit + 1):
     thresh_otsu = threshold_otsu(image)
     binary_otsu = image > thresh_otsu
 
-    plt.figure(figsize=((int)(width/dpi)*3, (int)(height/dpi)*3))
+    mult=5
+    plt.figure(figsize=((int)(width/dpi)*mult, (int)(height/dpi)*mult))
     plt.imshow(binary_otsu, cmap=plt.cm.gray)
     plt.axis('off')
-    plt.savefig('plt-'+filename)
+    plt.savefig('plt-'+filename, bbox_inches='tight')
 
     text = str(((pytesseract.image_to_string(Image.open('plt-'+filename),lang='spa'))))
-    text = text.replace('-\n', '')    
+    text = text.replace('-\n', '')
+    #text = re.sub(r'[0-9]+', '', text)
+    #text = re.sub(r'\n\n*', '\n', text)
     f.write(text)
 
 for i in range(1, filelimit + 1):
