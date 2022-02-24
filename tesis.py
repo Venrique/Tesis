@@ -7,9 +7,12 @@ import nltk
 from PIL import Image
 import pytesseract
 import sys
-
+from nltk.tag import StanfordPOSTagger
 from pdf2image import convert_from_path
 from nltk.tokenize import word_tokenize
+import os
+java_path = "C:/Program Files/Java/jdk1.8.0_301/bin/java.exe"
+os.environ['JAVAHOME'] = java_path
 
 import matplotlib
 import matplotlib.pyplot as plt
@@ -21,6 +24,20 @@ from skimage.filters import (threshold_otsu, threshold_niblack, threshold_sauvol
 nltk.download('punkt')
 nltk.download('averaged_perceptron_tagger')
 nltk.download('conll2002')
+
+#with open("Bethesda-00046517.pdf", "rb") as f:
+#    pdf = pdftotext.PDF(f)
+#
+#contador = 1
+#for pagina in pdf:
+#    print("pagina" + " "+str(contador))
+#    print(pagina)
+#    contador+=1
+
+tagger="C:\\Users\\ragq1\\Desktop\\Tesis\\Tesis\\stanford-postagger-full-2020-11-17\\models\\spanish-ud.tagger"
+jar="C:\\Users\\ragq1\\Desktop\\Tesis\\Tesis\\stanford-postagger-full-2020-11-17\\stanford-postagger.jar"
+
+
 
 # Path of the pdf
 PDF_file = "articulo.pdf"
@@ -82,10 +99,17 @@ training_set = [[(w.lower(),t) for w,t in s] for s in nltk.corpus.conll2002.tagg
 unigram_tagger = nltk.UnigramTagger(training_set)
 bigram_tagger = nltk.BigramTagger(training_set, backoff=unigram_tagger)
 
-sentence = """Mañana voy ir a comer pizza bien rápido. Pero luego ire a comer """
-espaniol= word_tokenize(sentence,"spanish")
-print(espaniol)
-tokens = nltk.word_tokenize(sentence, 'spanish')
-print(tokens)
+sentence = """Mario es mañoso, pero kike es delgado"""
+#espaniol= word_tokenize(sentence,language='spanish')
+#print(espaniol)
+
+tokens = nltk.word_tokenize(sentence, language='spanish')
+#tagged = nltk.pos_tag(tokens)
+#print(tagged)
+
+etiquetador=StanfordPOSTagger(tagger,jar)
+etiquetas=etiquetador.tag(tokens)
+for etiqueta in etiquetas:
+    print(etiqueta)
 
 print(bigram_tagger)
