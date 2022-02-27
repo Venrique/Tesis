@@ -41,7 +41,7 @@ for pagina in paginas:
     filename = "pagina_"+str(numpag)+".jpg"
     pagina.save(docs_route+filename, 'JPEG')
     numpag = numpag + 1
-    #break
+    break
   
 filelimit = numpag-1
   
@@ -74,8 +74,9 @@ for i in range(1, filelimit + 1):
 
     text = str(((pytesseract.image_to_string(Image.open(docs_route+'plt-'+filename),lang='spa'))))
     text = text.replace('-\n', '')
-    #text = re.sub(r'[0-9]+', '', text)
-    #text = re.sub(r'\n\n*', '\n', text)
+    text = re.sub(r'[0-9]+', '', text)
+    text = re.sub(r'(  +)', ' ', text)
+    text = re.sub(r'( +)\n\n+', '\n\n', text)
     f.write(text)
 
 for i in range(1, filelimit + 1):

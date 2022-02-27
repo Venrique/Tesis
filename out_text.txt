@@ -1,0 +1,69 @@
+Ley de Coulomb
+
+MIÉRCOLES  DE SEPTIEMBRE DE
+
+Ley de Coulomb
+
+Ricardo Alberto Gómez Quijano, Mario Isaac López Guevara, Carlos Raúl Ledezma Arévalo, Víctor
+Enrique Mendoza Yanes, Carlos Mario Peña Ramírez, Rodrigo Salvador Martínez Ortiz
+
+Universidad Centroamericana “José Simeón Cañas”
+Electricidad y Magnetismo, Laboratorio  — B, Mesa
+
+(Quca.edu.sv, (QMuca.edu.sv,  (Wuca.edu.sv,  (QDuca.edu.sv,
+ (Wuca.edu.sv, (Wuca.edu.sv
+
+COORDINADOR
+Humberto Molina
+Hmolina(Quca.edu.sv
+
+INSTRUCTORES
+Carlos Josué Aguilar Escobar, Nicole Anaya Avalos, Edwin Torres Recinos
+(Quca.edu.sv,  (Wuca.edu.sv,  (Wuca.edu.sv
+
+Resumen— La Ley de Coulomb es uno de los principios físicos más importantes de la física en los últimos siglos ya que define la fuerza de
+atracción o repulsión que dos cargas ejercen entre ellas dependiendo de la distancia y la magnitud de ambas cargas. La idea planteada por
+Charles-Augustin de Coulomb puede resultar ambigua a simple vista, por lo que en el presente documento se analiza detenidamente la Ley
+propuesta por Coulomb y como se relacionan sus diferentes partes a partir de una serie de pequeños experimentos con un simulador. Se realizaron
+cálculos con los datos obtenidos y en base a los resultados se definieron las conclusiones basadas en la teoría y en la práctica. Cabe resaltar que
+el sistema internacional (SI) es el estándar utilizado para las medidas en esta práctica.
+
+Palabras clave— Fuerza, Atracción, Repulsión, Carga, Distancia, Magnitud, Relación.
+
+I. INTRODUCCIÓN TEÓRICA
+
+| concepto de carga surge de una observación de la
+Enaturaleza: observamos fuerzas entre objetos. La carga
+
+eléctrica es la propiedad que tienen los objetos que da
+lugar a esta fuerza. !
+
+Como la gravedad, la fuerza eléctrica "actúa a la
+distancia". La idea de que una fuerza pueda "actuar a la
+distancia" es bastante sorprendente, pero es lo que la
+naturaleza hace en realidad. Las fuerzas eléctricas son muy
+grandes, mucho más que la fuerza de gravedad. La fuerza
+eléctrica de Coulomb puede ser tanto de atracción como de
+repulsión. Por su parte, la fuerza gravitacional solo puede ser
+de atracción.
+
+“En general, los materiales son neutros; es decir, el
+
+material contiene el mismo número de cargas negativas
+
+(electrones) y positivas (protones)”.
+
+Las cargas opuestas se atraen:
+
+r
+
+
+
+FF
++ —
+
+llustración  Representación gráfica de la atracción de cargas
+opuestas.
+
+UCA-CEF-Laboratorio Electricidad y Magnetismo -
+
