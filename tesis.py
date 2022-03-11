@@ -4,6 +4,7 @@ import re
 import pdftotext
 import nltk
 import spacy
+from syltippy import syllabize
 
 from PIL import Image
 import pytesseract
@@ -26,7 +27,7 @@ from skimage.filters import (threshold_otsu, threshold_niblack, threshold_sauvol
 #nltk.download('punkt')
 #nltk.download('averaged_perceptron_tagger')
 #nltk.download('conll2002')
-nlp = spacy.load("es_core_news_lg")
+
 
 
 tagger="tokenizer\\postagger\\models\\spanish-ud.tagger"
@@ -101,22 +102,33 @@ f_clean.close()
 '''
 res = [[],[],[]]
 ### TOKENIZADOR ###
-sentence = "Apple está buscando comprar una startup del Reino Unido por mil millones de dólares."
+nlp = spacy.load("es_core_news_sm")
+sentence = "Apple está buscando comprar una startup del reino unido por mil millones de dólares. La servilleta se cayó de la mesa"
 tokenizar = nlp(sentence)
-for word in tokenizar:
-    res[0].append(word.text+' '+word.pos_)
+print(nlp.pipe_names)
 
+
+
+for word in tokenizar:
+    print(word.text)
+
+
+print("--------- Frases ---------")
+for sent in tokenizar.sents:
+    print(sent.text)
+
+print("--------- Silabas 2---------")
+for token in tokenizar:
+    syllables, stress = syllabize(u'{}'.format(token.text))
+    print(u'-'.join(s if stress != i else s.upper() for (i, s) in enumerate(syllables)))
+
+
+
+"""
 tokens = nltk.word_tokenize(sentence, language='spanish')
 
 etiquetador=StanfordPOSTagger(tagger,jar)
 etiquetas=etiquetador.tag(tokens)
 for etiqueta in etiquetas:
     res[1].append(etiqueta)
-
-print('spacy\t\t\tstanford\t\t\tstanford2')
-i = 0
-while True:
-    print(res[0][i]+'\t\t\t'+str(res[1][i]))
-    i = i+1
-    if len(res[0])==i:
-        break
+"""
