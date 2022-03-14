@@ -95,7 +95,7 @@ for line in Lines:
     text_raw += line
 text_raw = re.sub(r'[0-9]+', '', text_raw)
 text_raw = re.sub(r'(  +)', ' ', text_raw)
-text_raw = re.sub(r'[\r\n][\r\n]+', '\n\n', text_raw)
+text_raw = re.sub(r'[\r\n][\r\n]+', ' {\{---PARRAFO---}\} ', text_raw)
 
 f_clean = open('clean_'+outfile, "w", encoding="utf-8")
 f_clean.write(text_raw)

@@ -1,3 +1,4 @@
+from posixpath import split
 import shutil
 import os
 import re
@@ -34,8 +35,8 @@ tagger="tokenizer\\postagger\\models\\spanish-ud.tagger"
 jar="tokenizer\\postagger\\stanford-postagger.jar"
 
 # Path of the pdf
-'''docs_route = "docs/"
-PDF_file = docs_route+"articulo.pdf"
+docs_route = "docs/"
+PDF_file = docs_route+"Cuento.pdf"
 
 dpi = 900
 paginas = convert_from_path(PDF_file, dpi)
@@ -86,41 +87,59 @@ for i in range(1, filelimit + 1):
     os.remove(docs_route+filename)
     os.remove(docs_route+'plt-'+filename)
 
-text_raw = ''
-with open(outfile) as file:
-    lines = file.readlines()
-    lines = re.sub(r'[0-9]+', '', lines)
-    lines = re.sub(r'(  +)', ' ', lines)
-    lines = re.sub(r'( +)\n\n+', '\n\n', lines)
-    text_raw = lines
-
-f.close()
-
-f_clean = open('clean_'+outfile, "w", encoding="utf-8")
-f_clean.write(text_raw)
-f_clean.close()
-'''
-res = [[],[],[]]
-### TOKENIZADOR ###
+### PROCESAMIENTO ###
 nlp = spacy.load("es_core_news_sm")
-sentence = "Apple está buscando comprar una startup del reino unido por mil millones de dólares. La servilleta se cayó de la mesa"
-tokenizar = nlp(sentence)
-print(nlp.pipe_names)
+with open("Output.txt", "a") as text_file:
+    raw_file = open(outfile, 'r', encoding="utf-8")
+    Lines = raw_file.readlines()
+    text_raw = ''
+    for line in Lines:
+        text_raw += line
+    text_raw = re.sub(r'[0-9]+', '', text_raw)
+    text_raw = re.sub(r'@', '', text_raw)
+    text_raw = re.sub(r'(  +)', ' ', text_raw)
+    text_clean = re.sub(r'[\r\n][\r\n]+', '@', text_raw)
 
+    #f_clean = open('clean_'+outfile, "w", encoding="utf-8")
+    #f_clean.write(text_raw)
+    #f_clean.close()
 
+    parrafos = text_clean.split('@')
 
-for word in tokenizar:
-    print(word.text)
+    results = []
 
+    for parrafo in parrafos:
+        
+        contadorP = 0
+        contadorF = 0
+        contadorS = 0
+        
+        #results.append([parrafo, {"palabrasParrafo":contadorP, "frasesParrafo":contadorF, "silabasParrafo":contadorS}])
 
-print("--------- Frases ---------")
-for sent in tokenizar.sents:
-    print(sent.text)
+        tokenizar = nlp(parrafo)
+        #print(nlp.pipe_names)
 
-print("--------- Silabas 2---------")
-for token in tokenizar:
-    syllables, stress = syllabize(u'{}'.format(token.text))
-    print(u'-'.join(s if stress != i else s.upper() for (i, s) in enumerate(syllables)))
+        for word in tokenizar:
+            contadorP += 1
+            #print(word.text, file=text_file)
+
+        for sent in tokenizar.sents:
+            contadorF += 1
+            #print(sent.text, file=text_file)
+
+        for token in tokenizar:
+
+            syllables, stress = syllabize(u'{}'.format(token.text))
+            contadorS += len(syllables)
+            #print(u'-'.join(s if stress != i else s.upper() for (i, s) in enumerate(syllables)), file=text_file)
+        print([parrafo, {"palabrasParrafo":contadorP, "frasesParrafo":contadorF, "silabasParrafo":contadorS}])
+        if contadorF != 0 and contadorP !=0:
+            perspicuidad = 207-((62.3*contadorS)/(contadorP*1.0)) - ((contadorP*1.0)/(contadorF*1.0))
+            
+            results.append([parrafo, {"palabrasParrafo":contadorP, "frasesParrafo":contadorF, "silabasParrafo":contadorS, "pespicuidad":perspicuidad}])
+    
+    for result in results:
+        print(result, file=text_file)
 
 
 
