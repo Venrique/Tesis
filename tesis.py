@@ -1,143 +1,173 @@
-from posixpath import split
-import shutil
 import os
 import re
-import pdftotext
-import nltk
 import spacy
-from syltippy import syllabize
-
-from PIL import Image
-import pytesseract
-import sys
-from nltk.tag import StanfordPOSTagger
-from pdf2image import convert_from_path
-from nltk.tokenize import word_tokenize
-
-import os
-java_path = "tokenizer/jdk/bin/java.exe"
-os.environ['JAVAHOME'] = java_path
-
 import matplotlib
 import matplotlib.pyplot as plt
+import pytesseract
 import skimage.io
+
+from constants import *
 from skimage.color import rgb2gray
 from skimage.filters import (threshold_otsu, threshold_niblack, threshold_sauvola)
+from syltippy import syllabize
+from PIL import Image
+from pdf2image import convert_from_path
+from perspicuity.perspicuity import *
+from posixpath import split
 
 
 #nltk.download('punkt')
 #nltk.download('averaged_perceptron_tagger')
 #nltk.download('conll2002')
 
-
-
 tagger="tokenizer\\postagger\\models\\spanish-ud.tagger"
 jar="tokenizer\\postagger\\stanford-postagger.jar"
+number_pages = 0
 
-# Path of the pdf
-docs_route = "docs/"
-PDF_file = docs_route+"Cuento.pdf"
+def create_images_from_file(values):
+        file_pil_images = convert_from_path(values['file_path'], values['dpi'])
+        create_images(file_pil_images)
+       
+def create_images(pil_images):
+    page_number = 1
+    for image in pil_images:
+        file_name = define_file_name(page_number)
+        file_path = define_file_path(file_name)
+        image.save(file_path, 'JPEG')
+        page_number += 1
+        break
+    global number_pages
+    number_pages = page_number
 
-dpi = 900
-paginas = convert_from_path(PDF_file, dpi)
-  
-numpag = 1
+def refine_image(values): #Falta extraer de esta función
+        for i in range(1, values['last_page_number'] + 1):
+            file_name = define_file_name(i)
+            file_path = define_file_path(file_name)
 
-for pagina in paginas:
-    filename = "pagina_"+str(numpag)+".jpg"
-    pagina.save(docs_route+filename, 'JPEG')
-    numpag = numpag + 1
-    break
-  
-filelimit = numpag-1
-  
-outfile = "out_text.txt"
-  
-f = open(outfile, "a", encoding="utf-8")
-  
-for i in range(1, filelimit + 1):
-    filename = "pagina_"+str(i)+".jpg"
-    original = skimage.io.imread(fname=docs_route+filename)
+            original_image = skimage.io.imread(file_path)
+            image = rgb2gray(original_image)
+            pilimage = Image.open(file_path)
+            width, height = pilimage.size
+            pilimage.close()
 
-    image = rgb2gray(original)
+            image.shape
+            thresh_otsu = threshold_otsu(image)
+            binary_otsu = image > thresh_otsu
 
-    pilimage = Image.open(docs_route+filename)
-    width, height = pilimage.size
-    pilimage.close()
+            plot_configs = {'width': width, 'height': height, 'dpi': 900, 'file_path': DOCS_ROUTE+'plt-'+file_name}
+            plot_image(plot_configs, binary_otsu)
 
-    image.shape
+            text = str(((pytesseract.image_to_string(Image.open(DOCS_ROUTE+'plt-'+file_name),lang='spa'))))
+            text = text.replace('-\n', '')
+            values['file_to_read'].write(text)
+        values['file_to_read'].close()
 
+def plot_image(plot_configs, binary_otsu):
     matplotlib.rcParams['font.size'] = 12
-
-    thresh_otsu = threshold_otsu(image)
-    binary_otsu = image > thresh_otsu
-
     mult=5
-    plt.figure(figsize=((int)(width/dpi)*mult, (int)(height/dpi)*mult))
+    plt.figure(figsize=((int)(plot_configs['width']/plot_configs['dpi'])*mult, (int)(plot_configs['height']/plot_configs['dpi'])*mult))
     plt.imshow(binary_otsu, cmap=plt.cm.gray)
     plt.axis('off')
-    plt.savefig(docs_route+'plt-'+filename, bbox_inches='tight')
+    plt.savefig(plot_configs['file_path'], bbox_inches='tight')
 
-    text = str(((pytesseract.image_to_string(Image.open(docs_route+'plt-'+filename),lang='spa'))))
-    text = text.replace('-\n', '')
-    f.write(text)
+def define_file_name(number): 
+    file_name = 'pagina_'+ str(number) + '.jpg'
+    return file_name
 
-for i in range(1, filelimit + 1):
-    filename = "pagina_"+str(i)+".jpg"
-    os.remove(docs_route+filename)
-    os.remove(docs_route+'plt-'+filename)
+def define_file_path(file_name):
+    file_path = DOCS_ROUTE+file_name
+    return file_path
 
-### PROCESAMIENTO ###
-nlp = spacy.load("es_core_news_sm")
-with open("Output.txt", "a") as text_file:
-    raw_file = open(outfile, 'r', encoding="utf-8")
-    Lines = raw_file.readlines()
+def delete_files(number_pages): 
+    for i in range(1, number_pages):
+        file_name = define_file_name(i)
+        file_path = define_file_path(file_name)
+        os.remove(file_path)
+        os.remove(DOCS_ROUTE+'plt-'+file_name) #Reutilizado 3 veces
+
+def refine_text(Lines):
+    raw_text = extract_file_text(Lines)
+    refined_text = substract_from_text(raw_text)
+    return refined_text
+
+def extract_file_text(Lines):
     text_raw = ''
     for line in Lines:
         text_raw += line
-    text_raw = re.sub(r'[0-9]+', '', text_raw)
-    text_raw = re.sub(r'@', '', text_raw)
-    text_raw = re.sub(r'(  +)', ' ', text_raw)
-    text_clean = re.sub(r'[\r\n][\r\n]+', '@', text_raw)
+    return text_raw
 
-    #f_clean = open('clean_'+outfile, "w", encoding="utf-8")
-    #f_clean.write(text_raw)
-    #f_clean.close()
+def substract_from_text(raw_text):
+    raw_text = re.sub(r'[0-9]+', '', raw_text)
+    raw_text = re.sub(r'@', '', raw_text)
+    raw_text = re.sub(r'(  +)', ' ', raw_text)
+    raw_text = re.sub(r'(\.|\!|\?|\:)[\r\n][\r\n]+', '.@', raw_text)
+    refined_text = re.sub(r'[\r\n][\r\n]+', '', raw_text)
+    return refined_text
+    
+def calculate_amount(values): #renombrar
+    counter = 0
+    for value in values:
+        counter += 1
+    return counter
 
-    parrafos = text_clean.split('@')
+def calculate_syllables(words):
+    syllables_counter = 0
+    for word in words:
+        syllables_counter += get_word_syllables(word)
+    return syllables_counter
+
+def get_word_syllables(word):
+    syllables, stress = syllabize(u'{}'.format(word.text))
+    return len(syllables)
+
+def calculate_perspicuity(perspicuity_values):
+    perspicuity_formula = SzigrisztPazosLong(perspicuity_values)
+    if is_short_text(perspicuity_values['words']):         
+        perspicuity_formula = SzigrisztPazosShort(perspicuity_values)
+    return perspicuity_formula.calculate()
+
+def is_short_text(word_counter):
+    return (word_counter <= 100)
+
+def define_environment(): #Rename later
+    java_path = "tokenizer/jdk/bin/java.exe"
+    os.environ['JAVAHOME'] = java_path
+
+
+define_environment()
+
+pdf_configs = {'dpi':900, 'file_path': define_file_path(PDF_FILE)}
+create_images_from_file(pdf_configs)
+
+file_to_read = open(OUTPUT_TEXT, "a", encoding="utf-8")
+image_cleaner_configs = {'last_page_number': number_pages-1, 'file_to_read': file_to_read}
+refine_image(image_cleaner_configs)
+
+delete_files(number_pages)
+
+nlp = spacy.load(OCR_MODEL)
+
+with open(OUTPUT_FILE, "a", encoding="utf-8") as text_file:
+    raw_file = open(OUTPUT_TEXT, "r")
+    Lines = raw_file.readlines()
+    refined_text = refine_text(Lines)
+    pharagraphs = refined_text.split('@')
 
     results = []
 
-    for parrafo in parrafos:
-        
-        contadorP = 0
-        contadorF = 0
-        contadorS = 0
-        
-        #results.append([parrafo, {"palabrasParrafo":contadorP, "frasesParrafo":contadorF, "silabasParrafo":contadorS}])
-
-        tokenizar = nlp(parrafo)
-        #print(nlp.pipe_names)
-
-        for word in tokenizar:
-            contadorP += 1
-            #print(word.text, file=text_file)
-
-        for sent in tokenizar.sents:
-            contadorF += 1
-            #print(sent.text, file=text_file)
-
-        for token in tokenizar:
-
-            syllables, stress = syllabize(u'{}'.format(token.text))
-            contadorS += len(syllables)
-            #print(u'-'.join(s if stress != i else s.upper() for (i, s) in enumerate(syllables)), file=text_file)
-        print([parrafo, {"palabrasParrafo":contadorP, "frasesParrafo":contadorF, "silabasParrafo":contadorS}])
-        if contadorF != 0 and contadorP !=0:
-            perspicuidad = 207-((62.3*contadorS)/(contadorP*1.0)) - ((contadorP*1.0)/(contadorF*1.0))
+    for pharagraph in pharagraphs:
+        tokenized_pharagraph = nlp(pharagraph)
             
-            results.append([parrafo, {"palabrasParrafo":contadorP, "frasesParrafo":contadorF, "silabasParrafo":contadorS, "pespicuidad":perspicuidad}])
-    
+        word_counter = calculate_amount(tokenized_pharagraph)
+        phrases_counter = calculate_amount(tokenized_pharagraph.sents)
+        syllables_counter = calculate_syllables(tokenized_pharagraph)
+           
+        perspicuity_values = {'words': word_counter, 'phrases': phrases_counter, 'syllables':syllables_counter }
+        result = calculate_perspicuity(perspicuity_values)
+
+        print([pharagraph, {"palabrasParrafo":word_counter, "frasesParrafo":phrases_counter, "silabasParrafo":syllables_counter, 'perspicuidad':result}]) 
+        results.append([pharagraph, {"palabrasParrafo":word_counter, "frasesParrafo":phrases_counter, "silabasParrafo":syllables_counter, 'perspicuidad':result}])  
+        
     for result in results:
         print(result, file=text_file)
 
@@ -151,3 +181,4 @@ etiquetas=etiquetador.tag(tokens)
 for etiqueta in etiquetas:
     res[1].append(etiqueta)
 """
+
