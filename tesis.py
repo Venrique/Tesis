@@ -71,14 +71,14 @@ def plot_image(plot_configs, binary_otsu):
     plt.savefig(plot_configs['file_path'], bbox_inches='tight')
 
 def define_file_name(number): 
-    file_name = 'pagina_'+ str(number) + '.jpg'
-    return file_name
+    return 'pagina_'+ str(number) + '.jpg'
 
 def define_file_path(file_name):
-    file_path = DOCS_ROUTE+file_name
-    return file_path
+    return DOCS_ROUTE+file_name
 
-def delete_files(number_pages): 
+def delete_files():
+    global number_pages
+    number_pages = number_pages
     for i in range(1, number_pages):
         file_name = define_file_name(i)
         file_path = define_file_path(file_name)
@@ -87,8 +87,7 @@ def delete_files(number_pages):
 
 def refine_text(Lines):
     raw_text = extract_file_text(Lines)
-    refined_text = substract_from_text(raw_text)
-    return refined_text
+    return substract_from_text(raw_text)
 
 def extract_file_text(Lines):
     text_raw = ''
@@ -121,12 +120,13 @@ def get_word_syllables(word):
     return len(syllables)
 
 def calculate_perspicuity(perspicuity_values):
+    word_count = perspicuity_values['words']
     perspicuity_formula = SzigrisztPazosLong(perspicuity_values)
-    if is_short_text(perspicuity_values['words']):         
+    if is_short_pharagraph(word_count):         
         perspicuity_formula = SzigrisztPazosShort(perspicuity_values)
     return perspicuity_formula.calculate()
 
-def is_short_text(word_counter):
+def is_short_pharagraph(word_counter):
     return (word_counter <= 100)
 
 def define_environment(): #Rename later
@@ -143,7 +143,7 @@ file_to_read = open(OUTPUT_TEXT, "a", encoding="utf-8")
 image_cleaner_configs = {'last_page_number': number_pages-1, 'file_to_read': file_to_read}
 refine_image(image_cleaner_configs)
 
-delete_files(number_pages)
+delete_files()
 
 nlp = spacy.load(OCR_MODEL)
 
