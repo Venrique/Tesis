@@ -16,10 +16,6 @@ from perspicuity.perspicuity import *
 from posixpath import split
 
 
-#nltk.download('punkt')
-#nltk.download('averaged_perceptron_tagger')
-#nltk.download('conll2002')
-
 tagger="tokenizer\\postagger\\models\\spanish-ud.tagger"
 jar="tokenizer\\postagger\\stanford-postagger.jar"
 number_pages = 0
@@ -120,21 +116,10 @@ def get_word_syllables(word):
     return len(syllables)
 
 def calculate_perspicuity(perspicuity_values):
-    word_count = perspicuity_values['words']
-    perspicuity_formula = SzigrisztPazosLong(perspicuity_values)
-    if is_short_pharagraph(word_count):         
-        perspicuity_formula = SzigrisztPazosShort(perspicuity_values)
-    return perspicuity_formula.calculate()
-
-def is_short_pharagraph(word_counter):
-    return (word_counter <= 100)
-
-def define_environment(): #Rename later
-    java_path = "tokenizer/jdk/bin/java.exe"
-    os.environ['JAVAHOME'] = java_path
-
-
-define_environment()
+    return {
+        "SzigrisztPazosLong": SzigrisztPazosLong(perspicuity_values).calculate(),    
+        "SzigrisztPazosShort": SzigrisztPazosShort(perspicuity_values).calculate()
+    }
 
 pdf_configs = {'dpi':900, 'file_path': define_file_path(PDF_FILE)}
 create_images_from_file(pdf_configs)
@@ -170,15 +155,3 @@ with open(OUTPUT_FILE, "a", encoding="utf-8") as text_file:
         
     for result in results:
         print(result, file=text_file)
-
-
-
-"""
-tokens = nltk.word_tokenize(sentence, language='spanish')
-
-etiquetador=StanfordPOSTagger(tagger,jar)
-etiquetas=etiquetador.tag(tokens)
-for etiqueta in etiquetas:
-    res[1].append(etiqueta)
-"""
-

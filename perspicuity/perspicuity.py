@@ -6,19 +6,21 @@ class Perspicuity:
         self.syllables = values['syllables']
 
     def calculate(self):
-        pass
+        return None
 
 class SzigrisztPazosLong(Perspicuity):
     def calculate(self):
-        result = (207 - ( (62.3*self.syllables)/(self.words*1.0) ) - ( (self.words*1.0)/(self.phrases*1.0) ))
         has_words = self.words > 0
         has_phrases = self.phrases > 0
-        return  result if (has_words and has_phrases ) else None
+        is_short_text = self.words <= 100
+        if(has_words and has_phrases and not(is_short_text)):
+            return (206.835 - ( (62.3*self.syllables)/(self.words*1.0) ) - ( (self.words*1.0)/(self.phrases*1.0) ))
+        else:
+            return None
 
 class SzigrisztPazosShort(Perspicuity):
     def calculate(self):
-        result = (207 - (0.623*self.syllables) - self.words)
         is_short_text = self.words <= 100
-        return  result if (is_short_text) else None
+        return  (206.835 - (0.623*self.syllables) - self.words) if (is_short_text) else None
 
 
