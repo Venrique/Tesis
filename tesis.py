@@ -5,7 +5,9 @@ import matplotlib
 import matplotlib.pyplot as plt
 import pytesseract
 import skimage.io
+from spacy.lang.es.stop_words import STOP_WORDS
 
+from unidecode import unidecode
 from constants import *
 from skimage.color import rgb2gray
 from skimage.filters import (threshold_otsu, threshold_niblack, threshold_sauvola)
@@ -96,29 +98,50 @@ def substract_from_text(raw_text):
     raw_text = re.sub(r'@', '', raw_text)
     raw_text = re.sub(r'(  +)', ' ', raw_text)
     raw_text = re.sub(r'(\.|\!|\?|\:)[\r\n][\r\n]+', '.@', raw_text)
-    refined_text = re.sub(r'[\r\n][\r\n]+', '', raw_text)
+    refined_text = re.sub(r'[\r\n]+', ' ', raw_text)
     return refined_text
     
-def calculate_amount(values): #renombrar
+def calculate_phrases(phrases): 
     counter = 0
-    for value in values:
+    
+    for phrase in phrases:
         counter += 1
+    return counter
+
+def calculate_words(words):
+    counter = 0
+    
+    for word in words:
+        if word.pos_ != "PUNCT" and word.pos_ != "SYM":
+            counter += 1
     return counter
 
 def calculate_syllables(words):
     syllables_counter = 0
     for word in words:
-        syllables_counter += get_word_syllables(word)
+        if word.pos_ != "PUNCT" and word.pos_ != "SYM":
+            syllables_counter += get_word_syllables(word)
     return syllables_counter
 
 def get_word_syllables(word):
     syllables, stress = syllabize(u'{}'.format(word.text))
     return len(syllables)
 
+
+def get_letters_per_word(words):
+    letters_counter = []
+    for word in words:
+        if word.pos_ != "PUNCT" and word.pos_ != "SYM":
+            letters_counter.append(len(word))
+    
+    return letters_counter
+
 def calculate_perspicuity(perspicuity_values):
     return {
         "SzigrisztPazosLong": SzigrisztPazosLong(perspicuity_values).calculate(),    
-        "SzigrisztPazosShort": SzigrisztPazosShort(perspicuity_values).calculate()
+        "SzigrisztPazosShort": SzigrisztPazosShort(perspicuity_values).calculate(),
+        "FernandezHuerta": FernandezHuerta(perspicuity_values).calculate(),
+        "MuLegibility": MuLegibility(perspicuity_values).calculate(),
     }
 
 pdf_configs = {'dpi':900, 'file_path': define_file_path(PDF_FILE)}
@@ -133,21 +156,22 @@ delete_files()
 nlp = spacy.load(OCR_MODEL)
 
 with open(OUTPUT_FILE, "a", encoding="utf-8") as text_file:
-    raw_file = open(OUTPUT_TEXT, "r")
+    raw_file = open(OUTPUT_TEXT, "r", encoding="utf-8")
     Lines = raw_file.readlines()
     refined_text = refine_text(Lines)
     pharagraphs = refined_text.split('@')
-
     results = []
-
+    
     for pharagraph in pharagraphs:
         tokenized_pharagraph = nlp(pharagraph)
-            
-        word_counter = calculate_amount(tokenized_pharagraph)
-        phrases_counter = calculate_amount(tokenized_pharagraph.sents)
+
+        letters_counter = get_letters_per_word(tokenized_pharagraph)
+
+        word_counter = calculate_words(tokenized_pharagraph)
+        phrases_counter = calculate_phrases(tokenized_pharagraph.sents)
         syllables_counter = calculate_syllables(tokenized_pharagraph)
            
-        perspicuity_values = {'words': word_counter, 'phrases': phrases_counter, 'syllables':syllables_counter }
+        perspicuity_values = {'words': word_counter, 'phrases': phrases_counter, 'syllables':syllables_counter, 'letters': letters_counter }
         result = calculate_perspicuity(perspicuity_values)
 
         print([pharagraph, {"palabrasParrafo":word_counter, "frasesParrafo":phrases_counter, "silabasParrafo":syllables_counter, 'perspicuidad':result}]) 
