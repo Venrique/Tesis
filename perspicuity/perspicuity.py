@@ -14,23 +14,21 @@ class SzigrisztPazosLong(Perspicuity):
     def calculate(self):
         has_words = self.words > 0
         has_phrases = self.phrases > 0
-        is_short_text = self.words <= 100
+        is_hundred_words = self.words == 100
         
         print(self.syllables, self.phrases)
 
-        if(not(has_words) or not(has_phrases) or is_short_text):
+        if(not(has_words) or not(has_phrases) or is_hundred_words):
             return None
 
         return (207 - (62.3*((self.syllables*1.0)/(self.words*1.0))) - ((self.words*1.0)/(self.phrases*1.0)))
         
 class SzigrisztPazosShort(Perspicuity):
     def calculate(self):
-        is_short_text = self.words <= 100
-        return  (206.835 - (0.623*self.syllables) - self.words) if (is_short_text) else None
+        is_hundred_words = self.words == 100
+        return  (206.835 - (0.623*self.syllables) - self.words) if (is_hundred_words) else None
 
 class FernandezHuerta(Perspicuity):
-
-    
         
     def calculate(self):
         P, F = self.__calculateFernandezHuertaValues()

@@ -15,50 +15,60 @@ from syltippy import syllabize
 from PIL import Image
 from pdf2image import convert_from_path
 from perspicuity.perspicuity import *
+from pdf import *
 from posixpath import split
+import sys
+from PyQt6.QtWidgets import (QApplication)
+from gui import MainWindow
 
-
-tagger="tokenizer\\postagger\\models\\spanish-ud.tagger"
-jar="tokenizer\\postagger\\stanford-postagger.jar"
 number_pages = 0
+first_page = 1
+last_page = 1
 
-def create_images_from_file(values):
+def create_images_from_file(values, updateProgress, end_page):
         file_pil_images = convert_from_path(values['file_path'], values['dpi'])
-        create_images(file_pil_images)
+        create_images(file_pil_images, values['first_page'], values['last_page'], end_page, updateProgress)
        
-def create_images(pil_images):
+def create_images(pil_images, first_page, last_page, end_page, updateProgress):
     page_number = 1
+    
     for image in pil_images:
-        file_name = define_file_name(page_number)
-        file_path = define_file_path(file_name)
-        image.save(file_path, 'JPEG')
-        page_number += 1
-        break
+        if page_number>=first_page and page_number <=last_page:
+            file_name = define_file_name(page_number)
+            file_path = define_file_path(file_name)
+            image.save(file_path, 'JPEG')
+            updateProgress.emit()
+        page_number += 1 if page_number<end_page else 0
+        
     global number_pages
     number_pages = page_number
 
-def refine_image(values): #Falta extraer de esta función
-        for i in range(1, values['last_page_number'] + 1):
-            file_name = define_file_name(i)
-            file_path = define_file_path(file_name)
+def refine_image(values, updateProgress): #Falta extraer de esta función
+    first_page= values['first_page']
+    last_page=values['last_page']
+    for i in range(first_page, last_page+1):
+        
+        file_name = define_file_name(i)
+        file_path = define_file_path(file_name)
 
-            original_image = skimage.io.imread(file_path)
-            image = rgb2gray(original_image)
-            pilimage = Image.open(file_path)
-            width, height = pilimage.size
-            pilimage.close()
+        original_image = skimage.io.imread(file_path)
+        image = rgb2gray(original_image)
+        pilimage = Image.open(file_path)
+        width, height = pilimage.size
+        pilimage.close()
 
-            image.shape
-            thresh_otsu = threshold_otsu(image)
-            binary_otsu = image > thresh_otsu
+        image.shape
+        thresh_otsu = threshold_otsu(image)
+        binary_otsu = image > thresh_otsu
 
-            plot_configs = {'width': width, 'height': height, 'dpi': 900, 'file_path': DOCS_ROUTE+'plt-'+file_name}
-            plot_image(plot_configs, binary_otsu)
+        plot_configs = {'width': width, 'height': height, 'dpi': 900, 'file_path': DOCS_ROUTE+'plt-'+file_name}
+        plot_image(plot_configs, binary_otsu)
 
-            text = str(((pytesseract.image_to_string(Image.open(DOCS_ROUTE+'plt-'+file_name),lang='spa'))))
-            text = text.replace('-\n', '')
-            values['file_to_read'].write(text)
-        values['file_to_read'].close()
+        text = str(((pytesseract.image_to_string(Image.open(DOCS_ROUTE+'plt-'+file_name),lang='spa'))))
+        text = text.replace('-\n', '')
+        values['file_to_read'].write(text)
+        updateProgress.emit()
+    values['file_to_read'].close()
 
 def plot_image(plot_configs, binary_otsu):
     matplotlib.rcParams['font.size'] = 12
@@ -74,14 +84,15 @@ def define_file_name(number):
 def define_file_path(file_name):
     return DOCS_ROUTE+file_name
 
-def delete_files():
+def delete_files(first_page, last_page, updateProgress):
     global number_pages
     number_pages = number_pages
-    for i in range(1, number_pages):
+    for i in range(first_page, last_page+1):
         file_name = define_file_name(i)
         file_path = define_file_path(file_name)
         os.remove(file_path)
         os.remove(DOCS_ROUTE+'plt-'+file_name) #Reutilizado 3 veces
+    updateProgress.emit()
 
 def refine_text(Lines):
     raw_text = extract_file_text(Lines)
@@ -98,6 +109,7 @@ def substract_from_text(raw_text):
     raw_text = re.sub(r'@', '', raw_text)
     raw_text = re.sub(r'(  +)', ' ', raw_text)
     raw_text = re.sub(r'(\.|\!|\?|\:)[\r\n][\r\n]+', '.@', raw_text)
+    raw_text = raw_text.encode("latin-1","ignore").decode("latin-1")
     refined_text = re.sub(r'[\r\n]+', ' ', raw_text)
     return refined_text
     
@@ -144,38 +156,86 @@ def calculate_perspicuity(perspicuity_values):
         "MuLegibility": MuLegibility(perspicuity_values).calculate(),
     }
 
-pdf_configs = {'dpi':900, 'file_path': define_file_path(PDF_FILE)}
-create_images_from_file(pdf_configs)
+def plot_perspicuity_values(perspicuity_values):
+    fig = plt.figure()
 
-file_to_read = open(OUTPUT_TEXT, "a", encoding="utf-8")
-image_cleaner_configs = {'last_page_number': number_pages-1, 'file_to_read': file_to_read}
-refine_image(image_cleaner_configs)
-
-delete_files()
-
-nlp = spacy.load(OCR_MODEL)
-
-with open(OUTPUT_FILE, "a", encoding="utf-8") as text_file:
-    raw_file = open(OUTPUT_TEXT, "r", encoding="utf-8")
-    Lines = raw_file.readlines()
-    refined_text = refine_text(Lines)
-    pharagraphs = refined_text.split('@')
-    results = []
+    pers_formulas = []
+    pers_values = []
+    for key, value in perspicuity_values.items():
+        if value != None:
+            pers_formulas.append(key)
+            pers_values.append(value)
+    print(pers_formulas)
+    print(pers_values)
     
-    for pharagraph in pharagraphs:
-        tokenized_pharagraph = nlp(pharagraph)
+    ax = fig.add_subplot(111)
+    bars = ax.bar(pers_formulas,pers_values, color=['black', 'red', 'green', 'blue', 'cyan'])
+    ax.bar_label(bars)
 
-        letters_counter = get_letters_per_word(tokenized_pharagraph)
+    plt.xlabel("Formulas")
+    plt.ylabel("Escala de perspicuidad")
+    plt.title("Valores de perspicuidad para el parrafo")
+    #plt.show()
+def generatePDF(updateProgress):
+    pdf = PDF()#pdf object
+    pdf.add_page()
+    pdf.titles("ANÁLISIS DE LEGIBILIDAD")
+    pdf.resumen()
+    pdf.output('test.pdf','F')
+    updateProgress.emit()
 
-        word_counter = calculate_words(tokenized_pharagraph)
-        phrases_counter = calculate_phrases(tokenized_pharagraph.sents)
-        syllables_counter = calculate_syllables(tokenized_pharagraph)
-           
-        perspicuity_values = {'words': word_counter, 'phrases': phrases_counter, 'syllables':syllables_counter, 'letters': letters_counter }
-        result = calculate_perspicuity(perspicuity_values)
+def clean_output_file():
+    cfile = open(OUTPUT_FILE, "w", encoding="utf-8")
+    cfile.write("")
+    cfile.close()
 
-        print([pharagraph, {"palabrasParrafo":word_counter, "frasesParrafo":phrases_counter, "silabasParrafo":syllables_counter, 'perspicuidad':result}]) 
-        results.append([pharagraph, {"palabrasParrafo":word_counter, "frasesParrafo":phrases_counter, "silabasParrafo":syllables_counter, 'perspicuidad':result}])  
+def process_file(process_configs, updateProgress):
+    pdf_configs = {'dpi':900, 'file_path': process_configs['file'], 'first_page': process_configs['first_page'], 'last_page': process_configs['last_page']}
+    updateProgress.emit()
+    create_images_from_file(pdf_configs, updateProgress, process_configs['page_total'])
+
+    file_to_read = open(OUTPUT_TEXT, "a", encoding="utf-8")
+    last_page = process_configs['last_page'] if process_configs['last_page']<number_pages else number_pages
+    image_cleaner_configs = {'file_to_read': file_to_read, 'first_page': process_configs['first_page'], 'last_page': last_page}
+    refine_image(image_cleaner_configs, updateProgress)
+
+    delete_files(process_configs['first_page'], last_page, updateProgress)
+
+    nlp = spacy.load(OCR_MODEL)
+
+    clean_output_file()
+
+    with open(OUTPUT_FILE, "a", encoding="utf-8") as text_file:
+        raw_file = open(OUTPUT_TEXT, "r", encoding="utf-8")
+        Lines = raw_file.readlines()
+        refined_text = refine_text(Lines)
+        pharagraphs = refined_text.split('@')
+        results = []
         
-    for result in results:
-        print(result, file=text_file)
+        for pharagraph in pharagraphs:
+            tokenized_pharagraph = nlp(pharagraph)
+
+            letters_counter = get_letters_per_word(tokenized_pharagraph)
+
+            word_counter = calculate_words(tokenized_pharagraph)
+            phrases_counter = calculate_phrases(tokenized_pharagraph.sents)
+            syllables_counter = calculate_syllables(tokenized_pharagraph)
+            
+            perspicuity_values = {'words': word_counter, 'phrases': phrases_counter, 'syllables':syllables_counter, 'letters': letters_counter }
+            result = calculate_perspicuity(perspicuity_values)
+
+            plot_perspicuity_values(result)
+            print([pharagraph, {"palabrasParrafo":word_counter, "frasesParrafo":phrases_counter, "silabasParrafo":syllables_counter, 'perspicuidad':result}]) 
+            results.append([pharagraph, {"palabrasParrafo":word_counter, "frasesParrafo":phrases_counter, "silabasParrafo":syllables_counter, 'perspicuidad':result}])  
+        updateProgress.emit()
+        for result in results:
+            print(result, file=text_file)
+        updateProgress.emit()        
+        generatePDF(updateProgress)
+
+app = QApplication(sys.argv)
+
+window = MainWindow(process_file)
+
+window.show()
+sys.exit(app.exec())
