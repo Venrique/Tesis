@@ -33,7 +33,7 @@ class MainWindow(QMainWindow):
 
     def initUI(self):
         self.currentProgress = 0
-        self.programSettings = {"file": "", "full_report": True, "first_page": 1, "last_page": 999, "page_total": 999}
+        self.programSettings = {"file": "", "full_report": True, "gen_csv": False, "csvCommas": False, "first_page": 1, "last_page": 999, "page_total": 999}
         mainLayout = QVBoxLayout()
         fileSelectLayout = QHBoxLayout()
         reportOptionsLayout = QHBoxLayout()
@@ -77,6 +77,18 @@ class MainWindow(QMainWindow):
         rbPartialReport.toggled.connect(self.radioHandler)
         reportOptionsLayout.addWidget(rbPartialReport)
         mainLayout.addLayout(reportOptionsLayout)
+
+        ckbCsv = QCheckBox("Generar archivo .csv con los resultados")
+        ckbCsv.setFont(QFont('Calibri', 12))
+        ckbCsv.toggled.connect(self.csvHandler)
+        mainLayout.addWidget(ckbCsv)
+
+        self.ckbUseCommas = QCheckBox("Separar con coma (,) en lugar de punto y coma (;)")
+        self.ckbUseCommas.setFont(QFont('Calibri', 12))
+        self.ckbUseCommas.toggled.connect(self.checkBoxUseCommas)
+        self.ckbUseCommas.setDisabled(True)
+        self.ckbUseCommas.setStyleSheet("margin-left: 1em")
+        mainLayout.addWidget(self.ckbUseCommas)
 
         self.ckbUseLimits = QCheckBox("Analizar solo una parte del documento")
         self.ckbUseLimits.setFont(QFont('Calibri', 12))
@@ -156,8 +168,12 @@ class MainWindow(QMainWindow):
     def runProgram(self):
         self.programSettings['first_page'] = self.txtPaginaInicio.value() if self.ckbUseLimits.isChecked() else 1
         self.programSettings['last_page'] = self.txtPaginaFin.value() if self.ckbUseLimits.isChecked() else self.programSettings['page_total']
-        number_of_steps = (self.programSettings['last_page'] - self.programSettings['first_page'] + 1)*2 + 5
+        
+        number_of_steps = (self.programSettings['last_page'] - self.programSettings['first_page'] + 1)*2 + 9
+        if self.programSettings['gen_csv']:
+            number_of_steps += 1
         self.progressIncrease = 100/number_of_steps
+
         self.btnRunProgram.setDisabled(True)
         worker = Worker(self.process, self.programSettings)
         worker.signals.progress.connect(self.updateProgressBar)
@@ -176,6 +192,15 @@ class MainWindow(QMainWindow):
         else:
             self.txtPaginaInicio.setDisabled(True)
             self.txtPaginaFin.setDisabled(True)
+
+    def csvHandler(self):
+        checkBox = self.sender()
+        self.programSettings['gen_csv'] = checkBox.isChecked()
+        self.ckbUseCommas.setDisabled(not(checkBox.isChecked()))
+
+    def checkBoxUseCommas(self):
+        checkBox = self.sender()
+        self.programSettings['csvCommas'] = checkBox.isChecked()
 
     def minimumHandler(self):
         self.txtPaginaFin.setMinimum(self.txtPaginaInicio.value())

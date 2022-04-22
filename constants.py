@@ -2,4 +2,7 @@ DOCS_ROUTE = "docs/"
 OUTPUT_TEXT = "out_text.txt"
 OUTPUT_FILE = "Output.txt"
 OCR_MODEL = "es_core_news_sm"
-
+JSON_FILE = "perspicuity.json"
+CSV_FILE = "Resultados.csv"
+PDF_FILE = "Resultados de análisis.pdf"
+SORT_FIELD = "indice_perspicuidad"

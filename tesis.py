@@ -5,9 +5,9 @@ import matplotlib
 import matplotlib.pyplot as plt
 import pytesseract
 import skimage.io
-from spacy.lang.es.stop_words import STOP_WORDS
+import pandas as pd
+import json
 
-from unidecode import unidecode
 from constants import *
 from skimage.color import rgb2gray
 from skimage.filters import (threshold_otsu, threshold_niblack, threshold_sauvola)
@@ -24,6 +24,9 @@ from gui import MainWindow
 number_pages = 0
 first_page = 1
 last_page = 1
+
+class ObjectTemplate( object ):
+    pass
 
 def create_images_from_file(values, updateProgress, end_page):
         file_pil_images = convert_from_path(values['file_path'], values['dpi'])
@@ -77,6 +80,7 @@ def plot_image(plot_configs, binary_otsu):
     plt.imshow(binary_otsu, cmap=plt.cm.gray)
     plt.axis('off')
     plt.savefig(plot_configs['file_path'], bbox_inches='tight')
+    plt.clf()
 
 def define_file_name(number): 
     return 'pagina_'+ str(number) + '.jpg'
@@ -150,13 +154,12 @@ def get_letters_per_word(words):
 
 def calculate_perspicuity(perspicuity_values):
     return {
-        "SzigrisztPazosLong": SzigrisztPazosLong(perspicuity_values).calculate(),    
-        "SzigrisztPazosShort": SzigrisztPazosShort(perspicuity_values).calculate(),
-        "FernandezHuerta": FernandezHuerta(perspicuity_values).calculate(),
-        "MuLegibility": MuLegibility(perspicuity_values).calculate(),
+        "SzigrisztPazos": round(SzigrisztPazos(perspicuity_values).calculate(),2),    
+        "FernandezHuerta": round(FernandezHuerta(perspicuity_values).calculate(),2),
+        "MuLegibility": round(MuLegibility(perspicuity_values).calculate(),2),
     }
 
-def plot_perspicuity_values(perspicuity_values):
+def plot_perspicuity_values(perspicuity_values, paragraph):
     fig = plt.figure()
 
     pers_formulas = []
@@ -165,8 +168,6 @@ def plot_perspicuity_values(perspicuity_values):
         if value != None:
             pers_formulas.append(key)
             pers_values.append(value)
-    print(pers_formulas)
-    print(pers_values)
     
     ax = fig.add_subplot(111)
     bars = ax.bar(pers_formulas,pers_values, color=['black', 'red', 'green', 'blue', 'cyan'])
@@ -175,23 +176,70 @@ def plot_perspicuity_values(perspicuity_values):
     plt.xlabel("Formulas")
     plt.ylabel("Escala de perspicuidad")
     plt.title("Valores de perspicuidad para el parrafo")
-    #plt.show()
-def generatePDF(updateProgress):
+    plt.savefig(DOCS_ROUTE+'plotted-result'+str(paragraph)+'.png')
+    plt.clf()
+
+def generatePDF(updateProgress, values_to_print):
     pdf = PDF()#pdf object
     pdf.add_page()
     pdf.titles("ANÁLISIS DE LEGIBILIDAD")
-    pdf.resumen()
+    pdf.print_resumen(values_to_print)
+    pdf.add_page("L")
     pdf.output('test.pdf','F')
     updateProgress.emit()
 
-def clean_output_file():
-    cfile = open(OUTPUT_FILE, "w", encoding="utf-8")
-    cfile.write("")
-    cfile.close()
+def clean_file(file):
+    open(file, "w", encoding="utf-8").close()
+
+def plot_aggregate_results(paragraphsNumbers, plotData, updateProgress):
+    plt.clf()
+    bins = [0,10,20,30,40,50,60,70,80,90,100]
+
+    plt.hist(plotData['SzigrisztPazos'], bins)
+    plt.ylabel('Cantidad de parrafos')
+    plt.xlabel('Valor de perspicuidad');
+    plt.title('Resultados de Szigriszt-Pazos');
+    plt.savefig(DOCS_ROUTE+'plot-SzigrisztPazos-hist.png')
+    updateProgress.emit()
+
+    plt.clf()
+    plt.hist(plotData['FernandezHuerta'], bins)
+    plt.ylabel('Cantidad de parrafos')
+    plt.xlabel('Valor de perspicuidad');
+    plt.title('Resultados de Fernandez-Huerta');
+    plt.savefig(DOCS_ROUTE+'plot-FernandezHuerta-hist.png')
+    updateProgress.emit()
+
+    plt.clf()
+    plt.hist(plotData['MuLegibility'], bins)
+    plt.ylabel('Cantidad de parrafos')
+    plt.xlabel('Valor de perspicuidad');
+    plt.title('Resultados de Legibilidad μ');
+    plt.savefig(DOCS_ROUTE+'plot-MuLegibility-hist.png')
+    updateProgress.emit()
+
+    plt.clf()
+    plt.figure(figsize=[10,4], dpi=500)
+    plt.xlabel('# de parrafo')
+    plt.ylabel('Valor de perspicuidad')
+    plt.title('');
+    plt.grid(True)
+    plt.plot(paragraphsNumbers, plotData['SzigrisztPazos'], color='red', marker='.', label="Szigriszt-Pazos")
+    plt.plot(paragraphsNumbers, plotData['FernandezHuerta'], color='blue', marker='.', label="Fernandez-Huerta")
+    plt.plot(paragraphsNumbers, plotData['MuLegibility'], color='green', marker='.', label="Legibilidad μ")
+    plt.legend(bbox_to_anchor=(0,1.02,1,0.2), loc="lower left",mode="expand", borderaxespad=0, ncol=3)
+    plt.savefig(DOCS_ROUTE+'plot-resByParagraph.png')
+    updateProgress.emit()
+    plt.clf()
 
 def process_file(process_configs, updateProgress):
+
+    clean_file(OUTPUT_TEXT)
+    clean_file(OUTPUT_FILE)
+
     pdf_configs = {'dpi':900, 'file_path': process_configs['file'], 'first_page': process_configs['first_page'], 'last_page': process_configs['last_page']}
     updateProgress.emit()
+
     create_images_from_file(pdf_configs, updateProgress, process_configs['page_total'])
 
     file_to_read = open(OUTPUT_TEXT, "a", encoding="utf-8")
@@ -203,7 +251,10 @@ def process_file(process_configs, updateProgress):
 
     nlp = spacy.load(OCR_MODEL)
 
-    clean_output_file()
+    szigriszt_values = []
+    fernandez_huerta_values = []
+    mu_legibility_values = []
+    inflesz_values = []
 
     with open(OUTPUT_FILE, "a", encoding="utf-8") as text_file:
         raw_file = open(OUTPUT_TEXT, "r", encoding="utf-8")
@@ -211,8 +262,25 @@ def process_file(process_configs, updateProgress):
         refined_text = refine_text(Lines)
         pharagraphs = refined_text.split('@')
         results = []
-        
-        for pharagraph in pharagraphs:
+
+        csv = None
+        csvSeparator = ";"
+        if process_configs['gen_csv']:
+            open(CSV_FILE, "w").close()
+            csv = open(CSV_FILE, "a")
+            if process_configs['csvCommas']:
+                csvSeparator = ","
+            csv.write('Parrafo'+csvSeparator+'Szigriszt-Pazos'+csvSeparator+'Fernandez-Huerta'+csvSeparator+'Legibilidad Mu'+csvSeparator+'INFLESZ\n')
+            updateProgress.emit()
+
+        plotData = {
+            'SzigrisztPazos': [],
+            'FernandezHuerta': [],
+            'MuLegibility': []
+        }
+        paragraphsNumbers = []
+        indexParagraphs=1
+        for index, pharagraph in enumerate(pharagraphs):
             tokenized_pharagraph = nlp(pharagraph)
 
             letters_counter = get_letters_per_word(tokenized_pharagraph)
@@ -224,14 +292,84 @@ def process_file(process_configs, updateProgress):
             perspicuity_values = {'words': word_counter, 'phrases': phrases_counter, 'syllables':syllables_counter, 'letters': letters_counter }
             result = calculate_perspicuity(perspicuity_values)
 
-            plot_perspicuity_values(result)
-            print([pharagraph, {"palabrasParrafo":word_counter, "frasesParrafo":phrases_counter, "silabasParrafo":syllables_counter, 'perspicuidad':result}]) 
-            results.append([pharagraph, {"palabrasParrafo":word_counter, "frasesParrafo":phrases_counter, "silabasParrafo":syllables_counter, 'perspicuidad':result}])  
+            paragraphsNumbers.append(index)
+            plotData['SzigrisztPazos'].append(result['SzigrisztPazos'])
+            plotData['FernandezHuerta'].append(result['FernandezHuerta'])
+            plotData['MuLegibility'].append(result['MuLegibility'])
+            index+=1
+
+            #Armando objetos para obtener las tablas de mejores y peores
+            sigrizt_result = {"parrafo": str(index), "indice_perspicuidad": str(result["SzigrisztPazos"])}
+            fernandez_result = {"parrafo": str(index), "indice_perspicuidad": str(result["FernandezHuerta"])} 
+            mu_result = {"parrafo": str(index), "indice_perspicuidad": str(result["MuLegibility"])} 
+            inflesz_result = {"parrafo": str(index), "indice_perspicuidad": str(result["MuLegibility"])}
+            #Agregando cada objeto en arreglo de cada tipo
+            szigriszt_values.append(sigrizt_result)
+            fernandez_huerta_values.append(fernandez_result)
+            mu_legibility_values.append(mu_result)
+            inflesz_values.append(inflesz_result)
+
+            #Validar si la propiedad gen_csv viene true para generar en el archivo csv los indices que necesitamos
+            if process_configs['gen_csv']:
+                csv.write(str(index+1) + csvSeparator + str(result["SzigrisztPazos"])  + csvSeparator + str(result["FernandezHuerta"])+ csvSeparator + str(result["MuLegibility"])+ csvSeparator + str(result["MuLegibility"])+"\n")
+
+
+            #plot_perspicuity_values(result, index+1)
+            final_analysis = {"palabrasParrafo":word_counter, "frasesParrafo":phrases_counter, "silabasParrafo":syllables_counter, 'perspicuidad':result}
+
+            #print([pharagraph, final_analysis]) 
+            
+            results.append([pharagraph, final_analysis])  
+        
+        plot_aggregate_results(paragraphsNumbers, plotData, updateProgress)
+
+        if process_configs['gen_csv']:
+            csv.close()
+        
+        #Reordenando objetos
+        formulas_results_tables = [szigriszt_values, fernandez_huerta_values, mu_legibility_values, inflesz_values]
+        sort_formulas_results(formulas_results_tables)
+
+        szigriszt_average = calculate_average_formulas(szigriszt_values)
+        fernandez_huerta_average = calculate_average_formulas(fernandez_huerta_values)
+        mu_average = calculate_average_formulas(mu_legibility_values)
+        inflesz_average = calculate_average_formulas(inflesz_values)
+        
+        
+        print("szigriszt average",szigriszt_average)
+        print("fernandez_average", fernandez_huerta_average)
+        print("mu_average", mu_average)
+        print("inflesz_average", inflesz_average)        
+        #Imprimiento valores de tabla mejores y peores 
+        print(szigriszt_values )   
+        print(fernandez_huerta_values)
+        print(mu_legibility_values)
+        print(inflesz_values)
         updateProgress.emit()
-        for result in results:
-            print(result, file=text_file)
-        updateProgress.emit()        
-        generatePDF(updateProgress)
+        
+        #for result in results:
+        #    print(result, file=text_file)
+
+        updateProgress.emit()
+        values_to_print = {"SzigrisztPazos" : szigriszt_average, "FernandezHuerta": fernandez_huerta_average, "Legibilidad Mu": mu_average} #falta agregar inflesz al pdf y a este objeto
+        generatePDF(updateProgress, values_to_print)
+
+def sort_formulas_results(formulas):
+    for formula in formulas:
+        sorted(formula, key=lambda x: x[SORT_FIELD], reverse=True)
+
+def calculate_average_formulas(formula):
+    counter = 0
+    total_sum = 0
+
+    for table_object in formula:
+        counter += 1
+        total_sum += float(table_object[SORT_FIELD])
+    
+    if counter == 0:
+        return 0
+    average = total_sum/counter
+    return round(average, 2)
 
 app = QApplication(sys.argv)
 
