@@ -4,7 +4,6 @@ from PyQt6.QtWidgets import (
     QApplication,
     QCheckBox,
     QLabel,
-    QLineEdit,
     QProgressBar,
     QPushButton,
     QRadioButton,
@@ -64,12 +63,12 @@ class MainWindow(QMainWindow):
         lblReportType.setFont(QFont('Calibri', 12))
         reportOptionsLayout.addWidget(lblReportType)
 
-        rbCompleteReport = QRadioButton("Reporte completo")
-        rbCompleteReport.setFont(QFont('Calibri', 12))
-        rbCompleteReport.setChecked(True)
-        rbCompleteReport.fullReport = True
-        rbCompleteReport.toggled.connect(self.radioHandler)
-        reportOptionsLayout.addWidget(rbCompleteReport)
+        self.rbCompleteReport = QRadioButton("Reporte completo")
+        self.rbCompleteReport.setFont(QFont('Calibri', 12))
+        self.rbCompleteReport.setChecked(True)
+        self.rbCompleteReport.fullReport = True
+        self.rbCompleteReport.toggled.connect(self.radioHandler)
+        reportOptionsLayout.addWidget(self.rbCompleteReport)
 
         rbPartialReport = QRadioButton("Reporte resumido")
         rbPartialReport.setFont(QFont('Calibri', 12))
@@ -78,10 +77,10 @@ class MainWindow(QMainWindow):
         reportOptionsLayout.addWidget(rbPartialReport)
         mainLayout.addLayout(reportOptionsLayout)
 
-        ckbCsv = QCheckBox("Generar archivo .csv con los resultados")
-        ckbCsv.setFont(QFont('Calibri', 12))
-        ckbCsv.toggled.connect(self.csvHandler)
-        mainLayout.addWidget(ckbCsv)
+        self.ckbCsv = QCheckBox("Generar archivo .csv con los resultados")
+        self.ckbCsv.setFont(QFont('Calibri', 12))
+        self.ckbCsv.toggled.connect(self.csvHandler)
+        mainLayout.addWidget(self.ckbCsv)
 
         self.ckbUseCommas = QCheckBox("Separar con coma (,) en lugar de punto y coma (;)")
         self.ckbUseCommas.setFont(QFont('Calibri', 12))
@@ -166,6 +165,7 @@ class MainWindow(QMainWindow):
             self.ckbUseLimits.setDisabled(False)
 
     def runProgram(self):
+        self.currentProgress = 0
         self.programSettings['first_page'] = self.txtPaginaInicio.value() if self.ckbUseLimits.isChecked() else 1
         self.programSettings['last_page'] = self.txtPaginaFin.value() if self.ckbUseLimits.isChecked() else self.programSettings['page_total']
         
@@ -204,17 +204,29 @@ class MainWindow(QMainWindow):
 
     def minimumHandler(self):
         self.txtPaginaFin.setMinimum(self.txtPaginaInicio.value())
+
+    def resetForm(self):
+        self.programSettings = {"file": "", "full_report": True, "gen_csv": False, "csvCommas": False, "first_page": 1, "last_page": 999, "page_total": 999}
+        self.lblFileName.setText("Ningún archivo seleccionado.")
+        self.txtPaginaFin.setValue(1)
+        self.txtPaginaInicio.setValue(1)
+        self.progressBar.setValue(0)
+        self.ckbUseLimits.setDisabled(True)
+        self.ckbUseLimits.setChecked(False)
+        self.ckbUseCommas.setDisabled(True)
+        self.ckbUseCommas.setChecked(False)
+        self.ckbCsv.setChecked(False)
+        self.rbCompleteReport.setChecked(True)
     
     def updateProgressBar(self):
         self.currentProgress += self.progressIncrease
         self.progressBar.setValue(self.currentProgress)
         if round(self.currentProgress,1) == 100.0:
+            self.resetForm()
             msgBox = QMessageBox()
             msgBox.setWindowTitle("Hecho")
             msgBox.setText("El proceso se ha completado")
             msgBox.exec()
-            self.btnRunProgram.setDisabled(False)
-            self.progressBar.setValue(0)
 
 ### Thread Classes
 

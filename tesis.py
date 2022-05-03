@@ -179,31 +179,32 @@ def plot_perspicuity_values(perspicuity_values, paragraph):
     plt.savefig(DOCS_ROUTE+'plotted-result'+str(paragraph)+'.png')
     plt.clf()
 
-def generatePDF(updateProgress, values_to_print):
+def generatePDF(updateProgress, values_to_print, file_route):
     pdf = PDF()#pdf object
     pdf.add_page()
     pdf.titles("ANÁLISIS DE LEGIBILIDAD")
-    pdf.print_resumen(values_to_print)
-    pdf.add_page("L")
-    pdf.output('test.pdf','F')
+    pdf.print_resumen(values_to_print, file_route.split('/')[-1])
+    pdf.output(PDF_FILE,'F')
     updateProgress.emit()
 
 def clean_file(file):
     open(file, "w", encoding="utf-8").close()
 
 def plot_aggregate_results(paragraphsNumbers, plotData, updateProgress):
-    plt.clf()
     bins = [0,10,20,30,40,50,60,70,80,90,100]
 
-    plt.hist(plotData['SzigrisztPazos'], bins)
+    plt.clf()
+    plt.figure(figsize=[5,5], dpi=100)
+    plt.hist(plotData['SzigrisztPazos'], bins, color = "blue", ec = "black")
     plt.ylabel('Cantidad de parrafos')
     plt.xlabel('Valor de perspicuidad');
-    plt.title('Resultados de Szigriszt-Pazos');
+    plt.title('Resultados de Szigriszt-Pazos/INFLESZ');
     plt.savefig(DOCS_ROUTE+'plot-SzigrisztPazos-hist.png')
     updateProgress.emit()
 
     plt.clf()
-    plt.hist(plotData['FernandezHuerta'], bins)
+    plt.figure(figsize=[5,5], dpi=100)
+    plt.hist(plotData['FernandezHuerta'], bins, color = "red", ec = "black")
     plt.ylabel('Cantidad de parrafos')
     plt.xlabel('Valor de perspicuidad');
     plt.title('Resultados de Fernandez-Huerta');
@@ -211,7 +212,8 @@ def plot_aggregate_results(paragraphsNumbers, plotData, updateProgress):
     updateProgress.emit()
 
     plt.clf()
-    plt.hist(plotData['MuLegibility'], bins)
+    plt.figure(figsize=[5,5], dpi=100)
+    plt.hist(plotData['MuLegibility'], bins, color = "green", ec = "black")
     plt.ylabel('Cantidad de parrafos')
     plt.xlabel('Valor de perspicuidad');
     plt.title('Resultados de Legibilidad μ');
@@ -219,15 +221,16 @@ def plot_aggregate_results(paragraphsNumbers, plotData, updateProgress):
     updateProgress.emit()
 
     plt.clf()
-    plt.figure(figsize=[10,4], dpi=500)
+    plt.figure(figsize=[10,6], dpi=250)
     plt.xlabel('# de parrafo')
     plt.ylabel('Valor de perspicuidad')
     plt.title('');
     plt.grid(True)
-    plt.plot(paragraphsNumbers, plotData['SzigrisztPazos'], color='red', marker='.', label="Szigriszt-Pazos")
-    plt.plot(paragraphsNumbers, plotData['FernandezHuerta'], color='blue', marker='.', label="Fernandez-Huerta")
+    plt.plot(paragraphsNumbers, plotData['SzigrisztPazos'], color='blue', marker='.', label="Szigriszt-Pazos/INFLESZ")
+    plt.plot(paragraphsNumbers, plotData['FernandezHuerta'], color='red', marker='.', label="Fernandez-Huerta")
     plt.plot(paragraphsNumbers, plotData['MuLegibility'], color='green', marker='.', label="Legibilidad μ")
     plt.legend(bbox_to_anchor=(0,1.02,1,0.2), loc="lower left",mode="expand", borderaxespad=0, ncol=3)
+    plt.ylim(ymin=0)
     plt.savefig(DOCS_ROUTE+'plot-resByParagraph.png')
     updateProgress.emit()
     plt.clf()
@@ -254,7 +257,7 @@ def process_file(process_configs, updateProgress):
     szigriszt_values = []
     fernandez_huerta_values = []
     mu_legibility_values = []
-    inflesz_values = []
+    
 
     with open(OUTPUT_FILE, "a", encoding="utf-8") as text_file:
         raw_file = open(OUTPUT_TEXT, "r", encoding="utf-8")
@@ -270,7 +273,7 @@ def process_file(process_configs, updateProgress):
             csv = open(CSV_FILE, "a")
             if process_configs['csvCommas']:
                 csvSeparator = ","
-            csv.write('Parrafo'+csvSeparator+'Szigriszt-Pazos'+csvSeparator+'Fernandez-Huerta'+csvSeparator+'Legibilidad Mu'+csvSeparator+'INFLESZ\n')
+            csv.write('Parrafo'+csvSeparator+'Szigriszt-Pazos/INFLESZ'+csvSeparator+'Fernandez-Huerta'+csvSeparator+'Legibilidad Mu\n')
             updateProgress.emit()
 
         plotData = {
@@ -279,7 +282,6 @@ def process_file(process_configs, updateProgress):
             'MuLegibility': []
         }
         paragraphsNumbers = []
-        indexParagraphs=1
         for index, pharagraph in enumerate(pharagraphs):
             tokenized_pharagraph = nlp(pharagraph)
 
@@ -292,26 +294,23 @@ def process_file(process_configs, updateProgress):
             perspicuity_values = {'words': word_counter, 'phrases': phrases_counter, 'syllables':syllables_counter, 'letters': letters_counter }
             result = calculate_perspicuity(perspicuity_values)
 
-            paragraphsNumbers.append(index)
+            paragraphsNumbers.append(index+1)
             plotData['SzigrisztPazos'].append(result['SzigrisztPazos'])
             plotData['FernandezHuerta'].append(result['FernandezHuerta'])
             plotData['MuLegibility'].append(result['MuLegibility'])
-            index+=1
 
             #Armando objetos para obtener las tablas de mejores y peores
             sigrizt_result = {"parrafo": str(index), "indice_perspicuidad": str(result["SzigrisztPazos"])}
             fernandez_result = {"parrafo": str(index), "indice_perspicuidad": str(result["FernandezHuerta"])} 
             mu_result = {"parrafo": str(index), "indice_perspicuidad": str(result["MuLegibility"])} 
-            inflesz_result = {"parrafo": str(index), "indice_perspicuidad": str(result["MuLegibility"])}
             #Agregando cada objeto en arreglo de cada tipo
             szigriszt_values.append(sigrizt_result)
             fernandez_huerta_values.append(fernandez_result)
             mu_legibility_values.append(mu_result)
-            inflesz_values.append(inflesz_result)
 
             #Validar si la propiedad gen_csv viene true para generar en el archivo csv los indices que necesitamos
             if process_configs['gen_csv']:
-                csv.write(str(index+1) + csvSeparator + str(result["SzigrisztPazos"])  + csvSeparator + str(result["FernandezHuerta"])+ csvSeparator + str(result["MuLegibility"])+ csvSeparator + str(result["MuLegibility"])+"\n")
+                csv.write(str(index) + csvSeparator + str(result["SzigrisztPazos"])  + csvSeparator + str(result["FernandezHuerta"])+ csvSeparator + str(result["MuLegibility"])+"\n")
 
 
             #plot_perspicuity_values(result, index+1)
@@ -327,36 +326,30 @@ def process_file(process_configs, updateProgress):
             csv.close()
         
         #Reordenando objetos
-        formulas_results_tables = [szigriszt_values, fernandez_huerta_values, mu_legibility_values, inflesz_values]
-        sort_formulas_results(formulas_results_tables)
-
+        formulas_results_tables = [szigriszt_values, fernandez_huerta_values, mu_legibility_values, szigriszt_values]
+        sorted_formulas = sort_formulas_results(formulas_results_tables)
+        
         szigriszt_average = calculate_average_formulas(szigriszt_values)
         fernandez_huerta_average = calculate_average_formulas(fernandez_huerta_values)
         mu_average = calculate_average_formulas(mu_legibility_values)
-        inflesz_average = calculate_average_formulas(inflesz_values)
         
-        
-        print("szigriszt average",szigriszt_average)
-        print("fernandez_average", fernandez_huerta_average)
-        print("mu_average", mu_average)
-        print("inflesz_average", inflesz_average)        
+              
         #Imprimiento valores de tabla mejores y peores 
-        print(szigriszt_values )   
-        print(fernandez_huerta_values)
-        print(mu_legibility_values)
-        print(inflesz_values)
+        
         updateProgress.emit()
         
-        #for result in results:
-        #    print(result, file=text_file)
+        for result in results:
+            print(result, file=text_file)
 
         updateProgress.emit()
-        values_to_print = {"SzigrisztPazos" : szigriszt_average, "FernandezHuerta": fernandez_huerta_average, "Legibilidad Mu": mu_average} #falta agregar inflesz al pdf y a este objeto
-        generatePDF(updateProgress, values_to_print)
+        values_to_print = {"SzigrisztPazos": {"value": szigriszt_average, "name": "Szigriszt-Pazos"}, "FernandezHuerta": {"value": fernandez_huerta_average, "name": "Fernandez-Huerta"}, "LegibilidadMu": {"value": mu_average,"name": "Legibilidad Mu"}, "Inflesz": {"value": szigriszt_average, "name": "INFLESZ"}} #falta agregar inflesz al pdf y a este objeto
+        generatePDF(updateProgress, values_to_print, process_configs['file'])
 
 def sort_formulas_results(formulas):
+    sorted_formulas = []
     for formula in formulas:
-        sorted(formula, key=lambda x: x[SORT_FIELD], reverse=True)
+        sorted_formulas.append(sorted(formula, key=lambda x: x["indice_perspicuidad"], reverse=True))
+    return sorted_formulas
 
 def calculate_average_formulas(formula):
     counter = 0
