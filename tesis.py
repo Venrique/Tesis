@@ -154,37 +154,37 @@ def get_letters_per_word(words):
 
 def calculate_perspicuity(perspicuity_values):
     return {
-        "SzigrisztPazos": round(SzigrisztPazos(perspicuity_values).calculate(),2),    
-        "FernandezHuerta": round(FernandezHuerta(perspicuity_values).calculate(),2),
-        "MuLegibility": round(MuLegibility(perspicuity_values).calculate(),2),
+        SIGRISZPAZOS: round(SzigrisztPazos(perspicuity_values).calculate(),2),    
+        FERNANDEZHUERTA: round(FernandezHuerta(perspicuity_values).calculate(),2),
+        MULEGIBILITY: round(MuLegibility(perspicuity_values).calculate(),2),
     }
 
-def plot_perspicuity_values(perspicuity_values, paragraph):
-    fig = plt.figure()
+#def plot_perspicuity_values(perspicuity_values, paragraph):
+#    fig = plt.figure()
+#
+#    pers_formulas = []
+#    pers_values = []
+#    for key, value in perspicuity_values.items():
+#        if value != None:
+#            pers_formulas.append(key)
+#            pers_values.append(value)
+#    
+#    ax = fig.add_subplot(111)
+#    bars = ax.bar(pers_formulas,pers_values, color=['black', 'red', 'green', 'blue', 'cyan'])
+#    ax.bar_label(bars)
+#
+#    plt.xlabel("Formulas")
+#    plt.ylabel("Escala de perspicuidad")
+#    plt.title("Valores de perspicuidad para el parrafo")
+#    plt.savefig(DOCS_ROUTE+'plotted-result'+str(paragraph)+'.png')
+#    plt.clf()
 
-    pers_formulas = []
-    pers_values = []
-    for key, value in perspicuity_values.items():
-        if value != None:
-            pers_formulas.append(key)
-            pers_values.append(value)
-    
-    ax = fig.add_subplot(111)
-    bars = ax.bar(pers_formulas,pers_values, color=['black', 'red', 'green', 'blue', 'cyan'])
-    ax.bar_label(bars)
-
-    plt.xlabel("Formulas")
-    plt.ylabel("Escala de perspicuidad")
-    plt.title("Valores de perspicuidad para el parrafo")
-    plt.savefig(DOCS_ROUTE+'plotted-result'+str(paragraph)+'.png')
-    plt.clf()
-
-def generatePDF(updateProgress, values_to_print, file_route):
-    pdf = PDF()#pdf object
+def generatePDF(updateProgress, values_to_print, file_route, file_name):
+    pdf = PDF()
     pdf.add_page()
     pdf.titles("ANÁLISIS DE LEGIBILIDAD")
-    pdf.print_resumen(values_to_print, file_route.split('/')[-1])
-    pdf.output(PDF_FILE,'F')
+    pdf.print_resumen(values_to_print, file_name)
+    pdf.output(file_route+'/'+PDF_FILE,'F')
     updateProgress.emit()
 
 def clean_file(file):
@@ -195,43 +195,43 @@ def plot_aggregate_results(paragraphsNumbers, plotData, updateProgress):
 
     plt.clf()
     plt.figure(figsize=[5,5], dpi=100)
-    plt.hist(plotData['SzigrisztPazos'], bins, color = "blue", ec = "black")
-    plt.ylabel('Cantidad de parrafos')
-    plt.xlabel('Valor de perspicuidad');
-    plt.title('Resultados de Szigriszt-Pazos/INFLESZ');
-    plt.savefig(DOCS_ROUTE+'plot-SzigrisztPazos-hist.png')
+    plt.hist(plotData[SIGRISZPAZOS], bins, color = "blue", ec = "black")
+    plt.ylabel(LABEL_CANT_PARRAFOS)
+    plt.xlabel(LABEL_VALOR_PERSPICUIDAD);
+    plt.title('Resultados de '+SIGRISZPAZOS_TEXT+'/'+INFLESZ_TEXT);
+    plt.savefig(DOCS_ROUTE+PLOT_SIGRISZPAZOS)
     updateProgress.emit()
 
     plt.clf()
     plt.figure(figsize=[5,5], dpi=100)
-    plt.hist(plotData['FernandezHuerta'], bins, color = "red", ec = "black")
-    plt.ylabel('Cantidad de parrafos')
-    plt.xlabel('Valor de perspicuidad');
-    plt.title('Resultados de Fernandez-Huerta');
-    plt.savefig(DOCS_ROUTE+'plot-FernandezHuerta-hist.png')
+    plt.hist(plotData[FERNANDEZHUERTA], bins, color = "red", ec = "black")
+    plt.ylabel(LABEL_CANT_PARRAFOS)
+    plt.xlabel(LABEL_VALOR_PERSPICUIDAD);
+    plt.title('Resultados de '+FERNANDEZHUERTA_TEXT);
+    plt.savefig(DOCS_ROUTE+PLOT_FERNANDEZHUERTA)
     updateProgress.emit()
 
     plt.clf()
     plt.figure(figsize=[5,5], dpi=100)
-    plt.hist(plotData['MuLegibility'], bins, color = "green", ec = "black")
-    plt.ylabel('Cantidad de parrafos')
-    plt.xlabel('Valor de perspicuidad');
-    plt.title('Resultados de Legibilidad μ');
-    plt.savefig(DOCS_ROUTE+'plot-MuLegibility-hist.png')
+    plt.hist(plotData[MULEGIBILITY], bins, color = "green", ec = "black")
+    plt.ylabel(LABEL_CANT_PARRAFOS)
+    plt.xlabel(LABEL_VALOR_PERSPICUIDAD);
+    plt.title('Resultados de '+MULEGIBILITY_TEXT);
+    plt.savefig(DOCS_ROUTE+PLOT_MULEGIBILITY)
     updateProgress.emit()
 
     plt.clf()
     plt.figure(figsize=[10,6], dpi=250)
-    plt.xlabel('# de parrafo')
-    plt.ylabel('Valor de perspicuidad')
+    plt.xlabel(LABEL_NUM_PARRAFO)
+    plt.ylabel(LABEL_VALOR_PERSPICUIDAD)
     plt.title('');
     plt.grid(True)
-    plt.plot(paragraphsNumbers, plotData['SzigrisztPazos'], color='blue', marker='.', label="Szigriszt-Pazos/INFLESZ")
-    plt.plot(paragraphsNumbers, plotData['FernandezHuerta'], color='red', marker='.', label="Fernandez-Huerta")
-    plt.plot(paragraphsNumbers, plotData['MuLegibility'], color='green', marker='.', label="Legibilidad μ")
+    plt.plot(paragraphsNumbers, plotData[SIGRISZPAZOS], color='blue', marker='.', label=(SIGRISZPAZOS_TEXT+'/'+INFLESZ_TEXT))
+    plt.plot(paragraphsNumbers, plotData[FERNANDEZHUERTA], color='red', marker='.', label=FERNANDEZHUERTA_TEXT)
+    plt.plot(paragraphsNumbers, plotData[MULEGIBILITY], color='green', marker='.', label=MULEGIBILITY_TEXT)
     plt.legend(bbox_to_anchor=(0,1.02,1,0.2), loc="lower left",mode="expand", borderaxespad=0, ncol=3)
     plt.ylim(ymin=0)
-    plt.savefig(DOCS_ROUTE+'plot-resByParagraph.png')
+    plt.savefig(DOCS_ROUTE+PLOT_PARAGRAPHS)
     updateProgress.emit()
     plt.clf()
 
@@ -239,6 +239,10 @@ def process_file(process_configs, updateProgress):
 
     clean_file(OUTPUT_TEXT)
     clean_file(OUTPUT_FILE)
+
+    route = process_configs['file'].split('/')
+    file_name = route.pop()
+    save_route = process_configs['save_folder']
 
     pdf_configs = {'dpi':900, 'file_path': process_configs['file'], 'first_page': process_configs['first_page'], 'last_page': process_configs['last_page']}
     updateProgress.emit()
@@ -269,17 +273,17 @@ def process_file(process_configs, updateProgress):
         csv = None
         csvSeparator = ";"
         if process_configs['gen_csv']:
-            open(CSV_FILE, "w").close()
-            csv = open(CSV_FILE, "a")
+            open(save_route+'/'+CSV_FILE, "w").close()
+            csv = open(save_route+'/'+CSV_FILE, "a")
             if process_configs['csvCommas']:
                 csvSeparator = ","
-            csv.write('Parrafo'+csvSeparator+'Szigriszt-Pazos/INFLESZ'+csvSeparator+'Fernandez-Huerta'+csvSeparator+'Legibilidad Mu\n')
+            csv.write('Parrafo'+csvSeparator+SIGRISZPAZOS_TEXT+'/'+INFLESZ_TEXT+csvSeparator+FERNANDEZHUERTA_TEXT+csvSeparator+MULEGIBILITY_VAR_TEXT+'\n')
             updateProgress.emit()
 
         plotData = {
-            'SzigrisztPazos': [],
-            'FernandezHuerta': [],
-            'MuLegibility': []
+            SIGRISZPAZOS: [],
+            FERNANDEZHUERTA: [],
+            MULEGIBILITY: []
         }
         paragraphsNumbers = []
         for index, pharagraph in enumerate(pharagraphs):
@@ -295,14 +299,14 @@ def process_file(process_configs, updateProgress):
             result = calculate_perspicuity(perspicuity_values)
 
             paragraphsNumbers.append(index+1)
-            plotData['SzigrisztPazos'].append(result['SzigrisztPazos'])
-            plotData['FernandezHuerta'].append(result['FernandezHuerta'])
-            plotData['MuLegibility'].append(result['MuLegibility'])
+            plotData[SIGRISZPAZOS].append(result[SIGRISZPAZOS])
+            plotData[FERNANDEZHUERTA].append(result[FERNANDEZHUERTA])
+            plotData[MULEGIBILITY].append(result[MULEGIBILITY])
 
             #Armando objetos para obtener las tablas de mejores y peores
-            sigrizt_result = {"parrafo": str(index), "indice_perspicuidad": str(result["SzigrisztPazos"])}
-            fernandez_result = {"parrafo": str(index), "indice_perspicuidad": str(result["FernandezHuerta"])} 
-            mu_result = {"parrafo": str(index), "indice_perspicuidad": str(result["MuLegibility"])} 
+            sigrizt_result = {"parrafo": str(index), "indice_perspicuidad": str(result[SIGRISZPAZOS])}
+            fernandez_result = {"parrafo": str(index), "indice_perspicuidad": str(result[FERNANDEZHUERTA])} 
+            mu_result = {"parrafo": str(index), "indice_perspicuidad": str(result[MULEGIBILITY])} 
             #Agregando cada objeto en arreglo de cada tipo
             szigriszt_values.append(sigrizt_result)
             fernandez_huerta_values.append(fernandez_result)
@@ -310,7 +314,7 @@ def process_file(process_configs, updateProgress):
 
             #Validar si la propiedad gen_csv viene true para generar en el archivo csv los indices que necesitamos
             if process_configs['gen_csv']:
-                csv.write(str(index) + csvSeparator + str(result["SzigrisztPazos"])  + csvSeparator + str(result["FernandezHuerta"])+ csvSeparator + str(result["MuLegibility"])+"\n")
+                csv.write(str(index) + csvSeparator + str(result[SIGRISZPAZOS])  + csvSeparator + str(result[FERNANDEZHUERTA])+ csvSeparator + str(result[MULEGIBILITY])+"\n")
 
 
             #plot_perspicuity_values(result, index+1)
@@ -342,8 +346,8 @@ def process_file(process_configs, updateProgress):
             print(result, file=text_file)
 
         updateProgress.emit()
-        values_to_print = {"SzigrisztPazos": {"value": szigriszt_average, "name": "Szigriszt-Pazos"}, "FernandezHuerta": {"value": fernandez_huerta_average, "name": "Fernandez-Huerta"}, "LegibilidadMu": {"value": mu_average,"name": "Legibilidad Mu"}, "Inflesz": {"value": szigriszt_average, "name": "INFLESZ"}} #falta agregar inflesz al pdf y a este objeto
-        generatePDF(updateProgress, values_to_print, process_configs['file'])
+        values_to_print = {SIGRISZPAZOS: {"value": szigriszt_average, "name": SIGRISZPAZOS_TEXT}, FERNANDEZHUERTA: {"value": fernandez_huerta_average, "name": FERNANDEZHUERTA_TEXT}, "LegibilidadMu": {"value": mu_average,"name": MULEGIBILITY_VAR_TEXT}, "Inflesz": {"value": szigriszt_average, "name": INFLESZ_TEXT}} #falta agregar inflesz al pdf y a este objeto
+        generatePDF(updateProgress, values_to_print, save_route, file_name)
 
 def sort_formulas_results(formulas):
     sorted_formulas = []

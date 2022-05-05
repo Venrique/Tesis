@@ -9,6 +9,13 @@ class Perspicuity:
 
     def calculate(self):
         return 0
+    
+    def limitResult(self,value):
+        if value>100.0:
+            return 100.0
+        if value<0.0:
+            return 0.0
+        return value
 
 class SzigrisztPazos(Perspicuity):
     def calculate(self):
@@ -21,11 +28,8 @@ class SzigrisztPazos(Perspicuity):
 
         if(not(has_words) or not(has_phrases)):
             return 0
-        calc = (207 - (62.3*((self.syllables*1.0)/(self.words*1.0))) - ((self.words*1.0)/(self.phrases*1.0)))
-
-        if calc>100.0:
-            calc = 100.0
-        return calc
+        
+        return self.limitResult((207 - (62.3*((self.syllables*1.0)/(self.words*1.0))) - ((self.words*1.0)/(self.phrases*1.0))))
 
 '''     
 class SzigrisztPazosShort(Perspicuity):
@@ -43,11 +47,8 @@ class FernandezHuerta(Perspicuity):
             return 0
 
         P, F = self.__calculateFernandezHuertaValues()
-
-        calc = (206.84 - (60*P) - (1.02*F))
-        if calc>100.0:
-            calc=100.0
-        return calc
+        
+        return self.limitResult((206.84 - (60*P) - (1.02*F)))
     
     def __calculateFernandezHuertaValues(self):
         P = (self.syllables*1.0)/(self.words*1.0)
@@ -59,9 +60,7 @@ class MuLegibility(Perspicuity):
         try:
             mean = statistics.mean(self.letters)
             variance = statistics.variance(self.letters)
-            calc = ((self.words) / ((self.words) - 1.0)) * (mean / variance) * 100
-            if calc>100:
-                calc=100.0
-            return calc
+            
+            return self.limitResult(((self.words) / ((self.words) - 1.0)) * (mean / variance) * 100)
         except:
             return 0

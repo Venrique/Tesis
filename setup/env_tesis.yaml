@@ -89,12 +89,9 @@ dependencies:
   - partd=1.2.0=pyhd8ed1ab_0
   - pcre=8.45=h0e60522_0
   - pdf2image=1.16.0=pyhd8ed1ab_0
-  - pdftotext=2.2.2=py39h8cb023a_1
   - pillow=9.0.1=py39ha53f419_2
   - pip=21.2.4=py39haa95532_0
   - pixman=0.40.0=h8ffe710_0
-  - poppler=22.01.0=h24fffdf_0
-  - poppler-data=0.4.11=hd8ed1ab_0
   - pthread-stubs=0.4=hcd874cb_1001
   - pyparsing=3.0.7=pyhd8ed1ab_0
   - pyqt=5.12.3=py39hcbf5309_8
@@ -142,3 +139,4 @@ dependencies:
     - pytesseract==0.3.8
     - regex==2022.1.18
     - tqdm==4.62.3
+

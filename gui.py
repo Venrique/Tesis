@@ -12,6 +12,8 @@ from PyQt6.QtWidgets import (
     QHBoxLayout,
     QWidget,
     QMessageBox)
+
+import time
     
 from pathlib import Path
 from PyQt6.QtGui import QFont
@@ -32,9 +34,10 @@ class MainWindow(QMainWindow):
 
     def initUI(self):
         self.currentProgress = 0
-        self.programSettings = {"file": "", "full_report": True, "gen_csv": False, "csvCommas": False, "first_page": 1, "last_page": 999, "page_total": 999}
+        self.programSettings = {"file": "", "save_folder": "", "full_report": True, "gen_csv": False, "csvCommas": False, "first_page": 1, "last_page": 999, "page_total": 999}
         mainLayout = QVBoxLayout()
         fileSelectLayout = QHBoxLayout()
+        folderSelectLayout = QHBoxLayout()
         reportOptionsLayout = QHBoxLayout()
         limitsLayout = QHBoxLayout()
         mainLayout.setAlignment(Qt.AlignmentFlag.AlignTop)
@@ -53,6 +56,22 @@ class MainWindow(QMainWindow):
         self.lblFileName.setFont(QFont('Calibri', 12))
         fileSelectLayout.addWidget(self.lblFileName)
         mainLayout.addLayout(fileSelectLayout)
+
+        lblFolderSelect = QLabel("Seleccionar carpeta de destino")
+        lblFolderSelect.setFont(QFont('Calibri', 14))
+        lblFolderSelect.setStyleSheet("font-weight: bold; margin-bottom: 0.5em")
+        mainLayout.addWidget(lblFolderSelect)
+
+        self.btnSelectFolder = QPushButton("Seleccionar carpeta...")
+        self.btnSelectFolder.clicked.connect(self.showDialogFolder)
+        self.btnSelectFolder.setFont(QFont('Calibri', 12))
+        self.btnSelectFolder.setStyleSheet("padding: 0.2em")
+        self.btnSelectFolder.setDisabled(True)
+        folderSelectLayout.addWidget(self.btnSelectFolder)
+        self.lblFolderName = QLabel("Ninguna carpeta seleccionada.")
+        self.lblFolderName.setFont(QFont('Calibri', 12))
+        folderSelectLayout.addWidget(self.lblFolderName)
+        mainLayout.addLayout(folderSelectLayout)
 
         lblOptions = QLabel("Opciones de procesado")
         lblOptions.setFont(QFont('Calibri', 14))
@@ -151,9 +170,9 @@ class MainWindow(QMainWindow):
         fname = QFileDialog.getOpenFileName(self, 'Seleccionar PDF', home_dir, "PDF (*.pdf)")
 
         if fname[0]:
+            self.btnSelectFolder.setDisabled(False)
             self.lblFileName.setText(fname[0])
             self.programSettings['file'] = fname[0]
-            self.btnRunProgram.setDisabled(False)
             file = open(fname[0], 'rb')
             readpdf = PyPDF2.PdfFileReader(file)
             totalpages = readpdf.numPages
@@ -163,9 +182,18 @@ class MainWindow(QMainWindow):
             self.programSettings['last_page'] = totalpages
             self.programSettings['page_total'] = totalpages
             self.ckbUseLimits.setDisabled(False)
+    
+    def showDialogFolder(self):
+        fname = QFileDialog.getExistingDirectory(self, 'Seleccionar Carpeta')
+
+        if fname:
+            self.lblFolderName.setText(fname)
+            self.programSettings['save_folder'] = fname
+            self.btnRunProgram.setDisabled(False)
 
     def runProgram(self):
         self.currentProgress = 0
+        self.progressIncrease = 0
         self.programSettings['first_page'] = self.txtPaginaInicio.value() if self.ckbUseLimits.isChecked() else 1
         self.programSettings['last_page'] = self.txtPaginaFin.value() if self.ckbUseLimits.isChecked() else self.programSettings['page_total']
         
@@ -206,8 +234,9 @@ class MainWindow(QMainWindow):
         self.txtPaginaFin.setMinimum(self.txtPaginaInicio.value())
 
     def resetForm(self):
-        self.programSettings = {"file": "", "full_report": True, "gen_csv": False, "csvCommas": False, "first_page": 1, "last_page": 999, "page_total": 999}
+        self.programSettings = {"file": "", "save_folder": "", "full_report": True, "gen_csv": False, "csvCommas": False, "first_page": 1, "last_page": 999, "page_total": 999}
         self.lblFileName.setText("Ningún archivo seleccionado.")
+        self.lblFolderName.setText("Ninguna carpeta seleccionada.")
         self.txtPaginaFin.setValue(1)
         self.txtPaginaInicio.setValue(1)
         self.progressBar.setValue(0)
@@ -219,7 +248,13 @@ class MainWindow(QMainWindow):
         self.rbCompleteReport.setChecked(True)
     
     def updateProgressBar(self):
-        self.currentProgress += self.progressIncrease
+        progressiveIncrease = self.progressIncrease
+        while progressiveIncrease > 0.5:
+            self.currentProgress += 0.5
+            self.progressBar.setValue(self.currentProgress)
+            time.sleep(0.01)
+            progressiveIncrease -= 0.5
+        self.currentProgress += progressiveIncrease
         self.progressBar.setValue(self.currentProgress)
         if round(self.currentProgress,1) == 100.0:
             self.resetForm()

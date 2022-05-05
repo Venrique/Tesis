@@ -120,13 +120,13 @@ class PDF(FPDF):
             return "Muy Fácil"
     
     def get_ValorTabla(self,formula,result):
-        if formula == "SzigrisztPazos":
+        if formula == SIGRISZPAZOS:
             return self.get_ValorTablaSzigrizs(result)
-        elif formula == "FernandezHuerta":
+        elif formula == FERNANDEZHUERTA:
             return self.get_ValorTablaFernandez(result)
-        elif formula == "LegibilidadMu":
+        elif formula == MULEGIBILITY:
             return self.get_ValorTablaMu(result)
-        elif formula == "Inflesz":
+        elif formula == INFLESZ:
             return self.get_ValorTablaInflesz(result)
 
 
@@ -164,15 +164,15 @@ class PDF(FPDF):
 
     def graficos(self):
         self.set_y(self.aumentarValorY(8.0))
-        self.image(DOCS_ROUTE + 'plot-SzigrisztPazos-hist.png',10, self.pdf_y, 90)
-        self.image(DOCS_ROUTE + 'plot-FernandezHuerta-hist.png',110, self.pdf_y, 90)
+        self.image(DOCS_ROUTE + PLOT_SIGRISZPAZOS,10, self.pdf_y, 90)
+        self.image(DOCS_ROUTE + PLOT_FERNANDEZHUERTA,110, self.pdf_y, 90)
         self.set_y(self.aumentarValorY(90.0))
-        self.image(DOCS_ROUTE + 'plot-MuLegibility-hist.png',55, self.pdf_y, 100)
+        self.image(DOCS_ROUTE + PLOT_MULEGIBILITY,55, self.pdf_y, 100)
         self.set_y(self.aumentarValorY(90.0))
         self.add_page("L")
         self.pdf_y = 0
         self.set_xy(10,self.aumentarValorY(20.0))
-        self.image(DOCS_ROUTE + 'plot-resByParagraph.png',10, self.pdf_y, 300)
+        self.image(DOCS_ROUTE + PLOT_PARAGRAPHS,10, self.pdf_y, 300)
 
 
     def resultados_generales(self,result):
