@@ -34,7 +34,7 @@ class MainWindow(QMainWindow):
 
     def initUI(self):
         self.currentProgress = 0
-        self.programSettings = {"file": "", "save_folder": "", "full_report": True, "gen_csv": False, "csvCommas": False, "first_page": 1, "last_page": 999, "page_total": 999}
+        self.programSettings = {"file": "", "save_folder": "", "full_report": True, "gen_csv": False, "csv_commas": False, "first_page": 1, "last_page": 999, "page_total": 999}
         mainLayout = QVBoxLayout()
         fileSelectLayout = QHBoxLayout()
         folderSelectLayout = QHBoxLayout()
@@ -57,7 +57,7 @@ class MainWindow(QMainWindow):
         fileSelectLayout.addWidget(self.lblFileName)
         mainLayout.addLayout(fileSelectLayout)
 
-        lblFolderSelect = QLabel("Seleccionar carpeta de destino")
+        lblFolderSelect = QLabel("Guardado de resultados")
         lblFolderSelect.setFont(QFont('Calibri', 14))
         lblFolderSelect.setStyleSheet("font-weight: bold; margin-bottom: 0.5em")
         mainLayout.addWidget(lblFolderSelect)
@@ -161,7 +161,7 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(widget)
 
         self.setFixedSize(mainLayout.sizeHint())
-        self.setWindowTitle('Analizador de Legibilidad')
+        self.setWindowTitle('Lecto: Analizador de Legibilidad')
         self.setFixedWidth(500)
         self.show()
 
@@ -202,10 +202,12 @@ class MainWindow(QMainWindow):
             number_of_steps += 1
         self.progressIncrease = 100/number_of_steps
 
+        print(str(self.programSettings),self.currentProgress,self.progressIncrease)
+
         self.btnRunProgram.setDisabled(True)
-        worker = Worker(self.process, self.programSettings)
-        worker.signals.progress.connect(self.updateProgressBar)
-        self.threadpool.start(worker)
+        self.worker = Worker(self.process, self.programSettings)
+        self.worker.signals.progress.connect(self.updateProgressBar)
+        self.threadpool.start(self.worker)
     
     def radioHandler(self):
         radioButton = self.sender()
@@ -228,13 +230,13 @@ class MainWindow(QMainWindow):
 
     def checkBoxUseCommas(self):
         checkBox = self.sender()
-        self.programSettings['csvCommas'] = checkBox.isChecked()
+        self.programSettings['csv_commas'] = checkBox.isChecked()
 
     def minimumHandler(self):
         self.txtPaginaFin.setMinimum(self.txtPaginaInicio.value())
 
     def resetForm(self):
-        self.programSettings = {"file": "", "save_folder": "", "full_report": True, "gen_csv": False, "csvCommas": False, "first_page": 1, "last_page": 999, "page_total": 999}
+        self.programSettings = {"file": "", "save_folder": "", "full_report": True, "gen_csv": False, "csv_commas": False, "first_page": 1, "last_page": 999, "page_total": 999}
         self.lblFileName.setText("Ningún archivo seleccionado.")
         self.lblFolderName.setText("Ninguna carpeta seleccionada.")
         self.txtPaginaFin.setValue(1)
@@ -246,6 +248,8 @@ class MainWindow(QMainWindow):
         self.ckbUseCommas.setChecked(False)
         self.ckbCsv.setChecked(False)
         self.rbCompleteReport.setChecked(True)
+        try: self.worker.signals.progress.disconnect()
+        except Exception: pass
     
     def updateProgressBar(self):
         progressiveIncrease = self.progressIncrease
@@ -256,6 +260,7 @@ class MainWindow(QMainWindow):
             progressiveIncrease -= 0.5
         self.currentProgress += progressiveIncrease
         self.progressBar.setValue(self.currentProgress)
+
         if round(self.currentProgress,1) == 100.0:
             self.resetForm()
             msgBox = QMessageBox()

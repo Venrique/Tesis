@@ -7,6 +7,7 @@ import pytesseract
 import skimage.io
 import pandas as pd
 import json
+import ctypes
 
 from constants import *
 from skimage.color import rgb2gray
@@ -19,6 +20,7 @@ from pdf import *
 from posixpath import split
 import sys
 from PyQt6.QtWidgets import (QApplication)
+from PyQt6.QtGui import QIcon
 from gui import MainWindow
 
 number_pages = 0
@@ -240,8 +242,7 @@ def process_file(process_configs, updateProgress):
     clean_file(OUTPUT_TEXT)
     clean_file(OUTPUT_FILE)
 
-    route = process_configs['file'].split('/')
-    file_name = route.pop()
+    file_name = process_configs['file'].split('/')[-1]
     save_route = process_configs['save_folder']
 
     pdf_configs = {'dpi':900, 'file_path': process_configs['file'], 'first_page': process_configs['first_page'], 'last_page': process_configs['last_page']}
@@ -275,7 +276,7 @@ def process_file(process_configs, updateProgress):
         if process_configs['gen_csv']:
             open(save_route+'/'+CSV_FILE, "w").close()
             csv = open(save_route+'/'+CSV_FILE, "a")
-            if process_configs['csvCommas']:
+            if process_configs['csv_commas']:
                 csvSeparator = ","
             csv.write('Parrafo'+csvSeparator+SIGRISZPAZOS_TEXT+'/'+INFLESZ_TEXT+csvSeparator+FERNANDEZHUERTA_TEXT+csvSeparator+MULEGIBILITY_VAR_TEXT+'\n')
             updateProgress.emit()
@@ -337,9 +338,7 @@ def process_file(process_configs, updateProgress):
         fernandez_huerta_average = calculate_average_formulas(fernandez_huerta_values)
         mu_average = calculate_average_formulas(mu_legibility_values)
         
-              
         #Imprimiento valores de tabla mejores y peores 
-        
         updateProgress.emit()
         
         for result in results:
@@ -368,7 +367,11 @@ def calculate_average_formulas(formula):
     average = total_sum/counter
     return round(average, 2)
 
+app_id = 'sultral.lecto.1_0_0'
+ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(app_id)
+
 app = QApplication(sys.argv)
+app.setWindowIcon(QIcon('icon.png'))
 
 window = MainWindow(process_file)
 
