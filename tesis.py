@@ -114,9 +114,9 @@ def substract_from_text(raw_text):
     raw_text = re.sub(r'[0-9]+', '', raw_text)
     raw_text = re.sub(r'@', '', raw_text)
     raw_text = re.sub(r'(  +)', ' ', raw_text)
-    raw_text = re.sub(r'(\.|\!|\?|\:)[\r\n][\r\n]+', '.@', raw_text)
+    raw_text = re.sub(r'(\.|\!|\?|\:)[\r\n\v\f][\r\n\v\f]+', '.@', raw_text)
     raw_text = raw_text.encode("latin-1","ignore").decode("latin-1")
-    refined_text = re.sub(r'[\r\n]+', ' ', raw_text)
+    refined_text = re.sub(r'[\r\n\t\v\f]+', ' ', raw_text)
     return refined_text
     
 def calculate_phrases(phrases): 
@@ -269,6 +269,9 @@ def process_file(process_configs, updateProgress):
         Lines = raw_file.readlines()
         refined_text = refine_text(Lines)
         pharagraphs = refined_text.split('@')
+        #print(pharagraphs)
+        pharagraphs = list(filter(None, pharagraphs))
+        #print(pharagraphs)
         results = []
 
         csv = None

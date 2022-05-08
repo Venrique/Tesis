@@ -182,6 +182,13 @@ class MainWindow(QMainWindow):
             self.programSettings['last_page'] = totalpages
             self.programSettings['page_total'] = totalpages
             self.ckbUseLimits.setDisabled(False)
+
+            folder = fname[0].split('/')
+            folder.pop()
+            folder = '/'.join(folder)
+            self.lblFolderName.setText(folder)
+            self.programSettings['save_folder'] = folder
+            self.btnRunProgram.setDisabled(False)
     
     def showDialogFolder(self):
         fname = QFileDialog.getExistingDirectory(self, 'Seleccionar Carpeta')
@@ -189,7 +196,7 @@ class MainWindow(QMainWindow):
         if fname:
             self.lblFolderName.setText(fname)
             self.programSettings['save_folder'] = fname
-            self.btnRunProgram.setDisabled(False)
+            #self.btnRunProgram.setDisabled(False)
 
     def runProgram(self):
         self.currentProgress = 0
@@ -202,7 +209,7 @@ class MainWindow(QMainWindow):
             number_of_steps += 1
         self.progressIncrease = 100/number_of_steps
 
-        print(str(self.programSettings),self.currentProgress,self.progressIncrease)
+        #print(str(self.programSettings),self.currentProgress,self.progressIncrease)
 
         self.btnRunProgram.setDisabled(True)
         self.worker = Worker(self.process, self.programSettings)
