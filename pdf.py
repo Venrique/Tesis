@@ -21,7 +21,7 @@ class PDF(FPDF):
     def encabezado(self, archivo):
         self.set_font('Times', 'B', 12)
         self.set_xy(10.0,self.aumentarValorY(30.0))
-        self.cell(1, 0, 'Texto analizado: %s' % (archivo), 0, 1, 'L', 1)
+        self.cell(0, 0, 'Texto analizado: %s' % (archivo), 0, 1, 'L', 1)
 
         self.set_font('Times', '', 12)
 
@@ -39,7 +39,7 @@ class PDF(FPDF):
             return "Muy Difícil"
         elif 15 <= result < 35:
             self.set_fill_color(250,148,115)
-            return "Árido"
+            return "Difícil"
         elif 35 <= result < 50:
             self.set_fill_color(252,191,123)
             return "Bastante Difícil"
@@ -174,6 +174,84 @@ class PDF(FPDF):
         self.set_xy(10,self.aumentarValorY(20.0))
         self.image(DOCS_ROUTE + PLOT_PARAGRAPHS,10, self.pdf_y, 300)
 
+    def anexos(self):
+
+        sigrisz = (
+            ("Nivel", "Dificultad", "Contenido"),
+            ("0 - 14", "Muy Difícil", "Científico / Filosófico"),
+            ("15 - 34", "Difícil", "Pedagógico / Especializado"),
+            ("35 - 49", "Bastante Difícil", "Literatura / Divulgación"),
+            ("50 - 64", "Normal", "Informativo"),
+            ("65 - 74", "Bastante Fácil", "Novela / Revista"),
+            ("75 - 84", "Fácil", "Kioskos"),
+            ("85 - 100", "Muy Fácil", "Cuentos / Relatos")
+        )
+
+        huerta = (
+            ("Nivel", "Dificultad", "Grado de Lectura"),
+            ("0 - 29", "Muy Difícil", "Graduado de Universidad"),
+            ("30 - 49", "Difícil", "Universitario"),
+            ("50 - 59", "Algo Difícil", "Bachillerato"),
+            ("60 - 69", "Normal", "Grados 8 a 9"),
+            ("70 - 79", "Algo Fácil", "Grado 7"),
+            ("80 - 89", "Fácil", "Grado 6"),
+            ("90 - 100", "Muy Fácil", "Grado 5")
+        )
+
+        mu = (
+            ("Nivel", "Dificultad"),
+            ("0 - 29", "Muy Difícil"),
+            ("30 - 49", "Difícil"),
+            ("50 - 59", "Algo Difícil"),
+            ("60 - 69", "Normal"),
+            ("70 - 79", "Algo Fácil"),
+            ("80 - 89", "Fácil"),
+            ("90 - 100", "Muy Fácil")
+        )
+
+        inflez = (
+            ("Nivel", "Dificultad"),
+            ("0 - 39", "Muy Difícil"),
+            ("40 - 54", "Algo Difícil"),
+            ("55 - 64", "Normal"),
+            ("65 - 79", "Bastante Fácil"),
+            ("80 - 100", "Muy Fácil")
+        )
+
+        self.set_y(self.aumentarValorY(5.0))
+        line_height = self.font_size * 2.5
+        col_width = self.epw / 3  # distribute content evenly
+        self.set_fill_color(255, 255, 255)
+        self.cell(0, 0, '%s' % ('Escala Sigrisz Pazos '), 0, 1, 'L', 1)
+        self.set_y(self.aumentarValorY(5.0))
+        for row in sigrisz:
+            for datum in row:
+                self.multi_cell(col_width, line_height, datum, border=1,
+                        new_x="RIGHT", new_y="TOP", max_line_height=self.font_size)
+            self.ln(line_height)
+
+        self.set_y(self.aumentarValorY(100.0))
+        for row in huerta:
+            for datum in row:
+                self.multi_cell(col_width, line_height, datum, border=1,
+                        new_x="RIGHT", new_y="TOP", max_line_height=self.font_size)
+            self.ln(line_height)
+
+        self.add_page()
+        col_width = self.epw / 2  # distribute content evenly
+        for row in mu:
+            for datum in row:
+                self.multi_cell(col_width, line_height, datum, border=1,
+                        new_x="RIGHT", new_y="TOP", max_line_height=self.font_size)
+            self.ln(line_height)
+
+        self.set_y(self.aumentarValorY(50.0))
+        for row in inflez:
+            for datum in row:
+                self.multi_cell(col_width, line_height, datum, border=1,
+                        new_x="RIGHT", new_y="TOP", max_line_height=self.font_size)
+            self.ln(line_height)        
+
 
     def resultados_generales(self,result):
         self.set_xy(10.0,self.aumentarValorY(8.0))
@@ -181,6 +259,9 @@ class PDF(FPDF):
         self.resultados(result)
         self.seccion("2. Estadísticas")
         self.graficos()
+        self.add_page()
+        self.seccion("3. Anexos")
+        self.anexos()
         #self.seccion("3. Conclusión")
 
     
