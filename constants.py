@@ -26,3 +26,6 @@ INFLESZ_TEXT = 'INFLESZ'
 LABEL_CANT_PARRAFOS = 'Cantidad de párrafos'
 LABEL_VALOR_PERSPICUIDAD = 'Valor de Perspicuidad'
 LABEL_NUM_PARRAFO = 'Número de Párrafo'
+#Conclusion PDF
+CONCLUSION_GRAL_INICIO = "El texto analizado podría catalogarse dentro de "
+CONCLUSION_GRAL_PUBLICO_RECOMENDADO = ". El público a quien debería dirigirse este texto "

@@ -196,7 +196,7 @@ def plot_aggregate_results(paragraphsNumbers, plotData, updateProgress):
     bins = [0,10,20,30,40,50,60,70,80,90,100]
 
     plt.clf()
-    plt.figure(figsize=[5,5], dpi=100)
+    plt.figure(figsize=[5.5,5], dpi=100)
     plt.hist(plotData[SIGRISZPAZOS], bins, color = "blue", ec = "black")
     plt.ylabel(LABEL_CANT_PARRAFOS)
     plt.xlabel(LABEL_VALOR_PERSPICUIDAD);
@@ -205,7 +205,7 @@ def plot_aggregate_results(paragraphsNumbers, plotData, updateProgress):
     updateProgress.emit()
 
     plt.clf()
-    plt.figure(figsize=[5,5], dpi=100)
+    plt.figure(figsize=[5.5,5], dpi=100)
     plt.hist(plotData[FERNANDEZHUERTA], bins, color = "red", ec = "black")
     plt.ylabel(LABEL_CANT_PARRAFOS)
     plt.xlabel(LABEL_VALOR_PERSPICUIDAD);
@@ -214,7 +214,7 @@ def plot_aggregate_results(paragraphsNumbers, plotData, updateProgress):
     updateProgress.emit()
 
     plt.clf()
-    plt.figure(figsize=[5,5], dpi=100)
+    plt.figure(figsize=[5.5,5], dpi=100)
     plt.hist(plotData[MULEGIBILITY], bins, color = "green", ec = "black")
     plt.ylabel(LABEL_CANT_PARRAFOS)
     plt.xlabel(LABEL_VALOR_PERSPICUIDAD);
