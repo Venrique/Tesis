@@ -73,7 +73,7 @@ class PDF(FPDF):
             return "Lectura Algo Difícil"
         elif 60 <= result < 70:
             self.set_fill_color(255,235,132)
-            return "Lectura Normal (para adulto)"
+            return "Lectura Normal"
         elif 70 <= result < 80:
             self.set_fill_color(204,221,130)
             return "Lectura Algo Fácil"
@@ -96,7 +96,7 @@ class PDF(FPDF):
             return "Lectura Un Poco Difícil"
         elif 60 <= result < 70:
             self.set_fill_color(255,235,132)
-            return "Lectura Adecuado"
+            return "Lectura Adecuada"
         elif 70 <= result < 80:
             self.set_fill_color(204,221,130)
             return "Lectura Un Poco Fácil"
@@ -186,7 +186,6 @@ class PDF(FPDF):
             self.cell(0, 6, self.get_ValorTabla(formula,result[formula]["value"]), 0, 1, 'L', 1)
             self.set_font('Times', '', 12)
             self.set_y(self.aumentarValorY(8.0))
-            print(formula, result[formula])
         
         self.set_xy(10.0,self.aumentarValorY(4.0))
 
@@ -323,14 +322,91 @@ class PDF(FPDF):
         self.seccion("2. Estadísticas")
         self.graficos()
         self.get_conclusion_general(result)
-        self.add_page()
-        self.seccion("Anexos")
-        self.anexos()
-        #self.seccion("3. Conclusión")
 
-    
     def print_resumen(self,result,titulo):
-        self.marca()
         self.encabezado(titulo)
         self.resultados_generales(result)
 
+    def print_complete_report(self, pharagraph_values, sorted_formulas):
+        pdf = self
+        pdf.add_page()
+        
+        top5 = sorted_formulas[:5]
+        bottom5 = sorted_formulas[-5:]
+    
+        pdf.set_font('Times','',10.0) 
+
+        epw = pdf.w - 2*pdf.l_margin
+       
+
+        col_width = epw/3
+        col_width_table2 = epw/4
+        th = pdf.font_size
+
+        #Seteamos primero el tamaño del encabezado
+        pdf.set_font('Arial','B', 16.0) 
+        pdf.cell(epw, 0.0, txt="ANÁLISIS POR PÁRRAFO", align = 'C')
+
+        #Seteamos luego el tamaño de cada parrafo
+        pdf.set_font('Times','', 10.0) 
+
+        #Seteamos un salto de linea luego del encabezado 
+        pdf.ln(6)
+        
+        for index, value in enumerate(pharagraph_values):
+            
+            index = index+1
+            data = [['Cantidad de Frases','Cantidad de Palabras','Cantidad de Sílabas'], [str(value["frasesParrafo"]), str(value["palabrasParrafo"]), str(value["silabasParrafo"])]]
+
+            data2 = [[SIGRISZPAZOS_TEXT,FERNANDEZHUERTA_TEXT,MULEGIBILITY_VAR_TEXT, INFLESZ_TEXT],
+            [str(value["perspicuidad"]['SzigrisztPazos']), str(value["perspicuidad"]['FernandezHuerta']), str(value["perspicuidad"]['LegibilidadMu']),str(value["perspicuidad"]['SzigrisztPazos'])],
+            [self.get_ValorTablaSzigrizs(value["perspicuidad"]['SzigrisztPazos']), self.get_ValorTablaFernandez(value["perspicuidad"]['FernandezHuerta']), self.get_ValorTablaMu(value["perspicuidad"]['LegibilidadMu']),self.get_ValorTablaInflesz(value["perspicuidad"]['SzigrisztPazos'])]]
+            additional_title = ''
+
+            if any(x['parrafo'] == str(index) for x in top5):
+                additional_title = ' (Entre los 5 mejores párrafos)'
+            elif any(x['parrafo'] == str(index) for x in bottom5):
+                additional_title = ' (Entre los 5 peores párrafos)'
+
+            pdf.seccion("Párrafo #"+str(index)+additional_title)
+            #salto de linea luego del numero de parrafo
+            pdf.ln(5)
+            #Celda que contiene todo el parrafo
+            pdf.multi_cell(epw, th*2,txt=value["parrafo"])
+            pdf.ln(6)
+            #----------------------------Printeando tabla------------------------------------ 
+            #Encabezado de la tabla
+            pdf.set_font('Times','B', 10.0) 
+            pdf.cell(epw, 2*th, "Características del párrafo", border=1, align = 'C')
+            pdf.set_font('Times','', 10.0)
+            pdf.ln(2*th)
+            #Tabla 1
+            for row in data:
+                pdf.set_font('Times','', 10.0)
+                for datum in row:
+                    if (str(datum) == 'Cantidad de Frases'):
+                        pdf.set_font('Times','B', 10.0)
+                    pdf.cell(col_width, 2*th, str(datum), border=1, align = 'C')
+                #Seteamos un salto de linea al terminar la fila 
+                pdf.ln(2*th)
+
+            pdf.ln(2*th)
+
+            #Tabla 2
+            pdf.set_font('Times','B', 10.0) 
+            pdf.cell(epw, 2*th, "Indices de perspicuidad", border=1, align = 'C')
+            pdf.set_font('Times','', 10.0)
+            pdf.ln(2*th)
+            for row in data2:
+
+                pdf.set_font('Times','', 10.0) 
+                for datum in row:
+
+                    if(str(datum) == SIGRISZPAZOS_TEXT):
+                        pdf.set_font('Times','B', 10.0) 
+                    pdf.cell(col_width_table2, 2*th, str(datum), border=1, align = 'C')
+                #Seteamos un salto de linea al terminar la fila 
+                pdf.ln(2*th)
+            #----------------------------Fin de tabla------------------------------------ 
+            pdf.ln(4*th)
+        #pdf.output("testing.pdf")

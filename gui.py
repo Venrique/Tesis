@@ -73,11 +73,6 @@ class MainWindow(QMainWindow):
         folderSelectLayout.addWidget(self.lblFolderName)
         mainLayout.addLayout(folderSelectLayout)
 
-        lblOptions = QLabel("Opciones de procesado")
-        lblOptions.setFont(QFont('Calibri', 14))
-        lblOptions.setStyleSheet("font-weight: bold; margin-bottom: 0.5em; margin-top: 0.5em")
-        mainLayout.addWidget(lblOptions)
-
         lblReportType = QLabel("Tipo de reporte")
         lblReportType.setFont(QFont('Calibri', 12))
         reportOptionsLayout.addWidget(lblReportType)
@@ -107,6 +102,11 @@ class MainWindow(QMainWindow):
         self.ckbUseCommas.setDisabled(True)
         self.ckbUseCommas.setStyleSheet("margin-left: 1em")
         mainLayout.addWidget(self.ckbUseCommas)
+
+        lblOptions = QLabel("Opciones de procesado")
+        lblOptions.setFont(QFont('Calibri', 14))
+        lblOptions.setStyleSheet("font-weight: bold; margin-bottom: 0.5em; margin-top: 0.5em")
+        mainLayout.addWidget(lblOptions)
 
         self.ckbUseLimits = QCheckBox("Analizar solo una parte del documento")
         self.ckbUseLimits.setFont(QFont('Calibri', 12))

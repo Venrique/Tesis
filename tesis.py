@@ -181,11 +181,17 @@ def calculate_perspicuity(perspicuity_values):
 #    plt.savefig(DOCS_ROUTE+'plotted-result'+str(paragraph)+'.png')
 #    plt.clf()
 
-def generatePDF(updateProgress, values_to_print, file_route, file_name):
+def generatePDF(updateProgress, values_to_print, file_route, file_name, sorted_formulas, generate_complete_report, pdf_complete_report):
     pdf = PDF()
     pdf.add_page()
     pdf.titles("ANÁLISIS DE LEGIBILIDAD")
     pdf.print_resumen(values_to_print, file_name)
+    if generate_complete_report:
+        pdf.print_complete_report(pdf_complete_report, sorted_formulas)
+    #Agregando anexos supuestamente
+    pdf.add_page()
+    pdf.seccion("Anexos")
+    pdf.anexos()
     pdf.output(file_route+'/'+PDF_FILE,'F')
     updateProgress.emit()
 
@@ -238,7 +244,6 @@ def plot_aggregate_results(paragraphsNumbers, plotData, updateProgress):
     plt.clf()
 
 def process_file(process_configs, updateProgress):
-
     clean_file(OUTPUT_TEXT)
     clean_file(OUTPUT_FILE)
 
@@ -262,7 +267,7 @@ def process_file(process_configs, updateProgress):
     szigriszt_values = []
     fernandez_huerta_values = []
     mu_legibility_values = []
-    
+    general_values = []
 
     with open(OUTPUT_FILE, "a", encoding="utf-8") as text_file:
         raw_file = open(OUTPUT_TEXT, "r", encoding="utf-8")
@@ -273,7 +278,7 @@ def process_file(process_configs, updateProgress):
         pharagraphs = list(filter(None, pharagraphs))
         #print(pharagraphs)
         results = []
-
+        pdf_complete_report = []
         csv = None
         csvSeparator = ";"
         if process_configs['gen_csv']:
@@ -311,31 +316,33 @@ def process_file(process_configs, updateProgress):
             sigrizt_result = {"parrafo": str(index), "indice_perspicuidad": str(result[SIGRISZPAZOS])}
             fernandez_result = {"parrafo": str(index), "indice_perspicuidad": str(result[FERNANDEZHUERTA])} 
             mu_result = {"parrafo": str(index), "indice_perspicuidad": str(result[MULEGIBILITY])} 
+            general_result = {"parrafo": str(index), "indice_perspicuidad": str((result[SIGRISZPAZOS]+result[FERNANDEZHUERTA]+result[MULEGIBILITY])/3.0)} 
             #Agregando cada objeto en arreglo de cada tipo
             szigriszt_values.append(sigrizt_result)
             fernandez_huerta_values.append(fernandez_result)
             mu_legibility_values.append(mu_result)
+            general_values.append(general_result)
 
             #Validar si la propiedad gen_csv viene true para generar en el archivo csv los indices que necesitamos
             if process_configs['gen_csv']:
                 csv.write(str(index) + csvSeparator + str(result[SIGRISZPAZOS])  + csvSeparator + str(result[FERNANDEZHUERTA])+ csvSeparator + str(result[MULEGIBILITY])+"\n")
 
-
             #plot_perspicuity_values(result, index+1)
-            final_analysis = {"palabrasParrafo":word_counter, "frasesParrafo":phrases_counter, "silabasParrafo":syllables_counter, 'perspicuidad':result}
-
+            final_analysis = {"parrafo": pharagraph, "palabrasParrafo":word_counter, "frasesParrafo":phrases_counter, "silabasParrafo":syllables_counter, 'perspicuidad':result}
+            
             #print([pharagraph, final_analysis]) 
             
-            results.append([pharagraph, final_analysis])  
-        
+            results.append([pharagraph, final_analysis])
+            pdf_complete_report.append(final_analysis)  
+        #pdf = PDF()
+        #pdf.print_complete_report(pdf_complete_report)
         plot_aggregate_results(paragraphsNumbers, plotData, updateProgress)
 
         if process_configs['gen_csv']:
             csv.close()
         
         #Reordenando objetos
-        formulas_results_tables = [szigriszt_values, fernandez_huerta_values, mu_legibility_values, szigriszt_values]
-        sorted_formulas = sort_formulas_results(formulas_results_tables)
+        sorted_formulas = sort_formulas_results(general_values)
         
         szigriszt_average = calculate_average_formulas(szigriszt_values)
         fernandez_huerta_average = calculate_average_formulas(fernandez_huerta_values)
@@ -349,13 +356,10 @@ def process_file(process_configs, updateProgress):
 
         updateProgress.emit()
         values_to_print = {SIGRISZPAZOS: {"value": szigriszt_average, "name": SIGRISZPAZOS_TEXT}, FERNANDEZHUERTA: {"value": fernandez_huerta_average, "name": FERNANDEZHUERTA_TEXT}, "LegibilidadMu": {"value": mu_average,"name": MULEGIBILITY_VAR_TEXT}, "Inflesz": {"value": szigriszt_average, "name": INFLESZ_TEXT}} #falta agregar inflesz al pdf y a este objeto
-        generatePDF(updateProgress, values_to_print, save_route, file_name)
+        generatePDF(updateProgress, values_to_print, save_route, file_name, sorted_formulas, process_configs['full_report'], pdf_complete_report)
 
 def sort_formulas_results(formulas):
-    sorted_formulas = []
-    for formula in formulas:
-        sorted_formulas.append(sorted(formula, key=lambda x: x["indice_perspicuidad"], reverse=True))
-    return sorted_formulas
+    return sorted(formulas, key=lambda x: float(x["indice_perspicuidad"]), reverse=True)
 
 def calculate_average_formulas(formula):
     counter = 0
