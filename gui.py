@@ -30,6 +30,7 @@ class MainWindow(QMainWindow):
         self.threadpool = QThreadPool()
         self.currentProgress = 0
         self.progressIncrease = 0
+        self.working = [True]
 
 
     def initUI(self):
@@ -212,7 +213,7 @@ class MainWindow(QMainWindow):
         #print(str(self.programSettings),self.currentProgress,self.progressIncrease)
 
         self.btnRunProgram.setDisabled(True)
-        self.worker = Worker(self.process, self.programSettings)
+        self.worker = Worker(self.process, self.programSettings, self.working)
         self.worker.signals.progress.connect(self.updateProgressBar)
         self.threadpool.start(self.worker)
     
@@ -243,6 +244,7 @@ class MainWindow(QMainWindow):
         self.txtPaginaFin.setMinimum(self.txtPaginaInicio.value())
 
     def resetForm(self):
+        self.btnRunProgram.setText("Analizar documento")
         self.programSettings = {"file": "", "save_folder": "", "full_report": True, "gen_csv": False, "csv_commas": False, "first_page": 1, "last_page": 999, "page_total": 999}
         self.lblFileName.setText("Ningún archivo seleccionado.")
         self.lblFolderName.setText("Ninguna carpeta seleccionada.")
@@ -272,9 +274,29 @@ class MainWindow(QMainWindow):
             self.resetForm()
             msgBox = QMessageBox()
             msgBox.setWindowTitle("Hecho")
-            msgBox.setText("El proceso se ha completado")
-            msgBox.exec()
 
+            text = ""
+            if self.working[0]:
+                text = "El proceso se ha completado"
+            else:
+                text = "Se ha cancelado la operación"
+
+            self.working[0] = True
+            msgBox.setText(text)
+            msgBox.exec()
+    
+    def closeEvent(self, event):
+        if self.currentProgress == 0 or round(self.currentProgress,1) == 100.0:
+            event.accept()
+        elif self.working[0]:
+            close = QMessageBox.question(self, "Cancelar", "¿Cancelar el proceso actual?",QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
+            if close == QMessageBox.StandardButton.Yes:
+                self.working[0] = False
+                self.btnRunProgram.setText("Cancelando proceso...")
+                
+            event.ignore()
+        else:
+            event.ignore()
 ### Thread Classes
 
 class WorkerSignals(QObject):
@@ -283,13 +305,14 @@ class WorkerSignals(QObject):
 class Worker(QRunnable):
     signals = WorkerSignals()
 
-    def __init__(self, fn, args):
+    def __init__(self, fn, args, work):
         super(Worker, self).__init__()
         # https://stackoverflow.com/questions/59309979/pyqt-updating-progress-bar-using-thread
         self.fn = fn
         self.args = args
+        self.work = work
 
     @pyqtSlot()
     def run(self):
-        self.fn(self.args, self.signals.progress)
+        self.fn(self.args, self.signals.progress, self.work)
     
