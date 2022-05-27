@@ -255,7 +255,7 @@ class PDF(FPDF):
         line_height = self.font_size * 1.3
         col_width = self.epw / 3  # distribute content evenly
         self.set_fill_color(255, 255, 255)
-        self.cell(0, 0, '%s' % ('Escala Sigrisz Pazos '), 0, 1, 'L', 1)
+        self.cell(0, 0, '%s' % ('Escala '+SIGRISZPAZOS_TEXT), 0, 1, 'L', 1)
         self.set_y(self.aumentarValorY(5.0))
         for row in sigrisz:
             if aux:
@@ -270,7 +270,7 @@ class PDF(FPDF):
 
         aux = True
         self.set_y(self.aumentarValorY(55.0))
-        self.cell(0, 0, '%s' % ('Escala Fernandez Huerta '), 0, 1, 'L', 1)
+        self.cell(0, 0, '%s' % ('Escala '+FERNANDEZHUERTA_TEXT), 0, 1, 'L', 1)
         self.set_y(self.aumentarValorY(5.0))
         for row in huerta:
             if aux:
@@ -285,7 +285,7 @@ class PDF(FPDF):
 
         aux = True
         self.set_y(self.aumentarValorY(55.0))
-        self.cell(0, 0, '%s' % ('Escala Mu '), 0, 1, 'L', 1)
+        self.cell(0, 0, '%s' % ('Escala '+MULEGIBILITY_VAR_TEXT), 0, 1, 'L', 1)
         self.set_y(self.aumentarValorY(5.0))
         col_width = self.epw / 2  # distribute content evenly
         for row in mu:
@@ -301,7 +301,7 @@ class PDF(FPDF):
 
         aux = True
         self.set_y(self.aumentarValorY(55.0))
-        self.cell(0, 0, '%s' % ('Escala Inflesz '), 0, 1, 'L', 1)
+        self.cell(0, 0, '%s' % ('Escala '+INFLESZ_TEXT), 0, 1, 'L', 1)
         self.set_y(self.aumentarValorY(5.0))
         for row in inflez:
             if aux:
@@ -327,12 +327,13 @@ class PDF(FPDF):
         self.encabezado(titulo)
         self.resultados_generales(result)
 
-    def print_complete_report(self, pharagraph_values, sorted_formulas):
+    def print_complete_report(self, pharagraph_values, sorted_formulas, number_of_pharagraphs):
         pdf = self
         pdf.add_page()
         
-        top5 = sorted_formulas[:5]
-        bottom5 = sorted_formulas[-5:]
+
+        top5 = validate_top_pharagraphs(number_of_pharagraphs, sorted_formulas)
+        bottom5 = validate_lowest_pharagraphs(number_of_pharagraphs, sorted_formulas)
     
         pdf.set_font('Times','',10.0) 
 
@@ -355,20 +356,16 @@ class PDF(FPDF):
         
         for index, value in enumerate(pharagraph_values):
             
-            index = index+1
+            index = index
             data = [['Cantidad de Frases','Cantidad de Palabras','Cantidad de Sílabas'], [str(value["frasesParrafo"]), str(value["palabrasParrafo"]), str(value["silabasParrafo"])]]
 
             data2 = [[SIGRISZPAZOS_TEXT,FERNANDEZHUERTA_TEXT,MULEGIBILITY_VAR_TEXT, INFLESZ_TEXT],
             [str(value["perspicuidad"]['SzigrisztPazos']), str(value["perspicuidad"]['FernandezHuerta']), str(value["perspicuidad"]['LegibilidadMu']),str(value["perspicuidad"]['SzigrisztPazos'])],
             [self.get_ValorTablaSzigrizs(value["perspicuidad"]['SzigrisztPazos']), self.get_ValorTablaFernandez(value["perspicuidad"]['FernandezHuerta']), self.get_ValorTablaMu(value["perspicuidad"]['LegibilidadMu']),self.get_ValorTablaInflesz(value["perspicuidad"]['SzigrisztPazos'])]]
-            additional_title = ''
+            
+            additional_title = set_aditional_title(index, number_of_pharagraphs, top5, bottom5)
 
-            if any(x['parrafo'] == str(index) for x in top5):
-                additional_title = ' (Entre los 5 mejores párrafos)'
-            elif any(x['parrafo'] == str(index) for x in bottom5):
-                additional_title = ' (Entre los 5 peores párrafos)'
-
-            pdf.seccion("Párrafo #"+str(index)+additional_title)
+            pdf.seccion("Párrafo #"+str(index+1)+''+additional_title)
             #salto de linea luego del numero de parrafo
             pdf.ln(5)
             #Celda que contiene todo el parrafo
@@ -410,3 +407,73 @@ class PDF(FPDF):
             #----------------------------Fin de tabla------------------------------------ 
             pdf.ln(4*th)
         #pdf.output("testing.pdf")
+
+def validate_top_pharagraphs(number_of_pharagraphs, top_pharagrahps):
+    highest_pharagrahps = None
+    if number_of_pharagraphs > 9:
+        highest_pharagrahps = top_pharagrahps[:5]
+    if number_of_pharagraphs == 9 or number_of_pharagraphs == 8:
+        highest_pharagrahps = top_pharagrahps[:4]
+    if number_of_pharagraphs == 7 or number_of_pharagraphs == 6:
+        highest_pharagrahps = top_pharagrahps[:3]
+    if number_of_pharagraphs == 5 or number_of_pharagraphs == 4:
+        highest_pharagrahps = top_pharagrahps[:2]
+    if number_of_pharagraphs == 3 or number_of_pharagraphs == 2:
+        highest_pharagrahps = top_pharagrahps[:1]
+    if number_of_pharagraphs == 1 or number_of_pharagraphs == 0:
+        highest_pharagrahps = []
+    return highest_pharagrahps
+
+def validate_lowest_pharagraphs(number_of_pharagraphs, top_pharagrahps):
+    lowest_pharagraps = None
+    if number_of_pharagraphs > 9:
+        lowest_pharagraps = top_pharagrahps[-5:]
+    if number_of_pharagraphs == 9 or number_of_pharagraphs == 8:
+        lowest_pharagraps = top_pharagrahps[-4:]
+    if number_of_pharagraphs == 7 or number_of_pharagraphs == 6:
+        lowest_pharagraps =  top_pharagrahps[-3:]
+    if number_of_pharagraphs == 5 or number_of_pharagraphs == 4:
+        lowest_pharagraps =  top_pharagrahps[-2:]
+    if number_of_pharagraphs == 3 or number_of_pharagraphs == 2:
+        lowest_pharagraps =  top_pharagrahps[-1:]
+    if number_of_pharagraphs == 1 or number_of_pharagraphs == 0:
+        lowest_pharagraps = []
+    return lowest_pharagraps
+
+def set_aditional_title(index, number_of_pharagraphs, top_pharagrahps, lowest_pharagraps):
+    additional_title = ''
+    if any(x['parrafo'] == str(index) for x in top_pharagrahps):
+        
+        if number_of_pharagraphs == 2 or number_of_pharagraphs == 3:
+            additional_title = ' (El mejor párrafo)'
+        elif number_of_pharagraphs <= 1:
+            additional_title = ''
+        else:
+            additional_title = ' (Entre los '+str(len(top_pharagrahps))+' mejores párrafos)'
+
+    elif any(x['parrafo'] == str(index) for x in lowest_pharagraps):
+
+        if number_of_pharagraphs == 2 or number_of_pharagraphs == 3:
+            additional_title = ' (El peor párrafo)'
+        elif number_of_pharagraphs <= 1:
+            additional_title = ''
+        else:
+            additional_title = ' (Entre los '+str(len(lowest_pharagraps))+' peores párrafos)'
+            
+    return additional_title
+
+def validate_highest_aditional_title(number_of_pharagraphs):
+    title = ''
+    if number_of_pharagraphs > 9:
+         title = '(Entre los  mejores párrafos)'
+    if number_of_pharagraphs == 9 or number_of_pharagraphs == 8:
+         title = ''
+    if number_of_pharagraphs == 7 or number_of_pharagraphs == 6:
+         title = ''
+    if number_of_pharagraphs == 5 or number_of_pharagraphs == 4:
+         title = ''
+    if number_of_pharagraphs == 3 or number_of_pharagraphs == 2:
+         title = ''
+    if number_of_pharagraphs == 1 or number_of_pharagraphs == 0:
+        title = ''
+    return title

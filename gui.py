@@ -292,3 +292,4 @@ class Worker(QRunnable):
     @pyqtSlot()
     def run(self):
         self.fn(self.args, self.signals.progress)
+    

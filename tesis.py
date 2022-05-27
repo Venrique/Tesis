@@ -26,6 +26,7 @@ from gui import MainWindow
 number_pages = 0
 first_page = 1
 last_page = 1
+Image.MAX_IMAGE_PIXELS = None
 
 class ObjectTemplate( object ):
     pass
@@ -66,7 +67,7 @@ def refine_image(values, updateProgress): #Falta extraer de esta función
         thresh_otsu = threshold_otsu(image)
         binary_otsu = image > thresh_otsu
 
-        plot_configs = {'width': width, 'height': height, 'dpi': 900, 'file_path': DOCS_ROUTE+'plt-'+file_name}
+        plot_configs = {'width': width, 'height': height, 'dpi': 700, 'file_path': DOCS_ROUTE+'plt-'+file_name}
         plot_image(plot_configs, binary_otsu)
 
         text = str(((pytesseract.image_to_string(Image.open(DOCS_ROUTE+'plt-'+file_name),lang='spa'))))
@@ -82,7 +83,8 @@ def plot_image(plot_configs, binary_otsu):
     plt.imshow(binary_otsu, cmap=plt.cm.gray)
     plt.axis('off')
     plt.savefig(plot_configs['file_path'], bbox_inches='tight')
-    plt.clf()
+    plt.cla()
+    plt.close()
 
 def define_file_name(number): 
     return 'pagina_'+ str(number) + '.jpg'
@@ -114,7 +116,7 @@ def substract_from_text(raw_text):
     raw_text = re.sub(r'[0-9]+', '', raw_text)
     raw_text = re.sub(r'@', '', raw_text)
     raw_text = re.sub(r'(  +)', ' ', raw_text)
-    raw_text = re.sub(r'(\.|\!|\?|\:)[\r\n\v\f][\r\n\v\f]+', '.@', raw_text)
+    raw_text = re.sub(r'(\.|\!|\?|\:)[\r\n\v\f][\r\n\v\f ]+', '.@', raw_text)
     raw_text = raw_text.encode("latin-1","ignore").decode("latin-1")
     refined_text = re.sub(r'[\r\n\t\v\f]+', ' ', raw_text)
     return refined_text
@@ -181,13 +183,13 @@ def calculate_perspicuity(perspicuity_values):
 #    plt.savefig(DOCS_ROUTE+'plotted-result'+str(paragraph)+'.png')
 #    plt.clf()
 
-def generatePDF(updateProgress, values_to_print, file_route, file_name, sorted_formulas, generate_complete_report, pdf_complete_report):
+def generatePDF(updateProgress, values_to_print, file_route, file_name, sorted_formulas, generate_complete_report, pdf_complete_report, number_of_pharagraphs):
     pdf = PDF()
     pdf.add_page()
     pdf.titles("ANÁLISIS DE LEGIBILIDAD")
     pdf.print_resumen(values_to_print, file_name)
     if generate_complete_report:
-        pdf.print_complete_report(pdf_complete_report, sorted_formulas)
+        pdf.print_complete_report(pdf_complete_report, sorted_formulas, number_of_pharagraphs)
     #Agregando anexos supuestamente
     pdf.add_page()
     pdf.seccion("Anexos")
@@ -295,6 +297,7 @@ def process_file(process_configs, updateProgress):
             MULEGIBILITY: []
         }
         paragraphsNumbers = []
+
         for index, pharagraph in enumerate(pharagraphs):
             tokenized_pharagraph = nlp(pharagraph)
 
@@ -330,8 +333,8 @@ def process_file(process_configs, updateProgress):
             #plot_perspicuity_values(result, index+1)
             final_analysis = {"parrafo": pharagraph, "palabrasParrafo":word_counter, "frasesParrafo":phrases_counter, "silabasParrafo":syllables_counter, 'perspicuidad':result}
             
-            #print([pharagraph, final_analysis]) 
-            
+            #print([pharagraph, final_analysis])
+
             results.append([pharagraph, final_analysis])
             pdf_complete_report.append(final_analysis)  
         #pdf = PDF()
@@ -356,7 +359,8 @@ def process_file(process_configs, updateProgress):
 
         updateProgress.emit()
         values_to_print = {SIGRISZPAZOS: {"value": szigriszt_average, "name": SIGRISZPAZOS_TEXT}, FERNANDEZHUERTA: {"value": fernandez_huerta_average, "name": FERNANDEZHUERTA_TEXT}, "LegibilidadMu": {"value": mu_average,"name": MULEGIBILITY_VAR_TEXT}, "Inflesz": {"value": szigriszt_average, "name": INFLESZ_TEXT}} #falta agregar inflesz al pdf y a este objeto
-        generatePDF(updateProgress, values_to_print, save_route, file_name, sorted_formulas, process_configs['full_report'], pdf_complete_report)
+        print('numero de parrafos', len(pharagraphs))
+        generatePDF(updateProgress, values_to_print, save_route, file_name, sorted_formulas, process_configs['full_report'], pdf_complete_report, len(pharagraphs))
 
 def sort_formulas_results(formulas):
     return sorted(formulas, key=lambda x: float(x["indice_perspicuidad"]), reverse=True)
