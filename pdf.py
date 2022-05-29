@@ -214,7 +214,7 @@ class PDF(FPDF):
             ("35 - 49", "Bastante Difícil", "Literatura / Divulgación"),
             ("50 - 64", "Normal", "Informativo"),
             ("65 - 74", "Bastante Fácil", "Novela / Revista"),
-            ("75 - 84", "Fácil", "Kioskos"),
+            ("75 - 84", "Fácil", "Quioscos"),
             ("85 - 100", "Muy Fácil", "Cuentos / Relatos")
         )
 
@@ -255,7 +255,9 @@ class PDF(FPDF):
         line_height = self.font_size * 1.3
         col_width = self.epw / 3  # distribute content evenly
         self.set_fill_color(255, 255, 255)
+        self.set_font('Times', 'B', 13)
         self.cell(0, 0, '%s' % ('Escala '+SIGRISZPAZOS_TEXT), 0, 1, 'L', 1)
+        self.set_font('Times', '', 12)
         self.set_y(self.aumentarValorY(5.0))
         for row in sigrisz:
             if aux:
@@ -270,7 +272,9 @@ class PDF(FPDF):
 
         aux = True
         self.set_y(self.aumentarValorY(55.0))
+        self.set_font('Times', 'B', 13)
         self.cell(0, 0, '%s' % ('Escala '+FERNANDEZHUERTA_TEXT), 0, 1, 'L', 1)
+        self.set_font('Times', '', 12)
         self.set_y(self.aumentarValorY(5.0))
         for row in huerta:
             if aux:
@@ -285,7 +289,9 @@ class PDF(FPDF):
 
         aux = True
         self.set_y(self.aumentarValorY(55.0))
+        self.set_font('Times', 'B', 13)
         self.cell(0, 0, '%s' % ('Escala '+MULEGIBILITY_VAR_TEXT), 0, 1, 'L', 1)
+        self.set_font('Times', '', 12)
         self.set_y(self.aumentarValorY(5.0))
         col_width = self.epw / 2  # distribute content evenly
         for row in mu:
@@ -301,7 +307,9 @@ class PDF(FPDF):
 
         aux = True
         self.set_y(self.aumentarValorY(55.0))
+        self.set_font('Times', 'B', 13)
         self.cell(0, 0, '%s' % ('Escala '+INFLESZ_TEXT), 0, 1, 'L', 1)
+        self.set_font('Times', '', 12)
         self.set_y(self.aumentarValorY(5.0))
         for row in inflez:
             if aux:

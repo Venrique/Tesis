@@ -48,11 +48,11 @@ class MainWindow(QMainWindow):
         lblFileSelect.setStyleSheet("font-weight: bold; margin-bottom: 0.5em")
         mainLayout.addWidget(lblFileSelect)
 
-        btnSelectFile = QPushButton("Buscar archivos...")
-        btnSelectFile.clicked.connect(self.showDialog)
-        btnSelectFile.setFont(QFont('Calibri', 12))
-        btnSelectFile.setStyleSheet("padding: 0.2em")
-        fileSelectLayout.addWidget(btnSelectFile)
+        self.btnSelectFile = QPushButton("Buscar archivos...")
+        self.btnSelectFile.clicked.connect(self.showDialog)
+        self.btnSelectFile.setFont(QFont('Calibri', 12))
+        self.btnSelectFile.setStyleSheet("padding: 0.2em")
+        fileSelectLayout.addWidget(self.btnSelectFile)
         self.lblFileName = QLabel("Ningún archivo seleccionado.")
         self.lblFileName.setFont(QFont('Calibri', 12))
         fileSelectLayout.addWidget(self.lblFileName)
@@ -85,11 +85,11 @@ class MainWindow(QMainWindow):
         self.rbCompleteReport.toggled.connect(self.radioHandler)
         reportOptionsLayout.addWidget(self.rbCompleteReport)
 
-        rbPartialReport = QRadioButton("Reporte resumido")
-        rbPartialReport.setFont(QFont('Calibri', 12))
-        rbPartialReport.fullReport = False
-        rbPartialReport.toggled.connect(self.radioHandler)
-        reportOptionsLayout.addWidget(rbPartialReport)
+        self.rbPartialReport = QRadioButton("Reporte resumido")
+        self.rbPartialReport.setFont(QFont('Calibri', 12))
+        self.rbPartialReport.fullReport = False
+        self.rbPartialReport.toggled.connect(self.radioHandler)
+        reportOptionsLayout.addWidget(self.rbPartialReport)
         mainLayout.addLayout(reportOptionsLayout)
 
         self.ckbCsv = QCheckBox("Generar archivo .csv con los resultados")
@@ -156,6 +156,10 @@ class MainWindow(QMainWindow):
 
         mainLayout.addWidget(self.progressBar)
 
+        self.lblStatusMsg = QLabel("Esperando a tu señal...")
+        self.lblStatusMsg.setFont(QFont('Calibri', 12))
+        mainLayout.addWidget(self.lblStatusMsg)
+
         widget = QWidget()
         widget.setLayout(mainLayout)
 
@@ -198,14 +202,26 @@ class MainWindow(QMainWindow):
             self.lblFolderName.setText(fname)
             self.programSettings['save_folder'] = fname
             #self.btnRunProgram.setDisabled(False)
+    
+    def disableForm(self):
+        self.btnSelectFile.setDisabled(True)
+        self.btnSelectFolder.setDisabled(True)
+        self.rbCompleteReport.setDisabled(True)
+        self.rbPartialReport.setDisabled(True)
+        self.ckbCsv.setDisabled(True)
+        self.ckbUseCommas.setDisabled(True)
+        self.ckbUseLimits.setDisabled(True)
+        self.txtPaginaFin.setDisabled(True)
+        self.txtPaginaInicio.setDisabled(True)
 
     def runProgram(self):
+        self.disableForm()
         self.currentProgress = 0
         self.progressIncrease = 0
         self.programSettings['first_page'] = self.txtPaginaInicio.value() if self.ckbUseLimits.isChecked() else 1
         self.programSettings['last_page'] = self.txtPaginaFin.value() if self.ckbUseLimits.isChecked() else self.programSettings['page_total']
-        
-        number_of_steps = (self.programSettings['last_page'] - self.programSettings['first_page'] + 1)*2 + 9
+        page_range = self.programSettings['last_page'] - self.programSettings['first_page']
+        number_of_steps = (page_range + 1)*2 + 10 + len(range(self.programSettings['first_page'], self.programSettings['last_page']+1, 10))
         if self.programSettings['gen_csv']:
             number_of_steps += 1
         self.progressIncrease = 100/number_of_steps
@@ -248,19 +264,23 @@ class MainWindow(QMainWindow):
         self.programSettings = {"file": "", "save_folder": "", "full_report": True, "gen_csv": False, "csv_commas": False, "first_page": 1, "last_page": 999, "page_total": 999}
         self.lblFileName.setText("Ningún archivo seleccionado.")
         self.lblFolderName.setText("Ninguna carpeta seleccionada.")
-        self.txtPaginaFin.setValue(1)
         self.txtPaginaInicio.setValue(1)
+        self.txtPaginaFin.setValue(1)
         self.progressBar.setValue(0)
+        self.btnSelectFile.setDisabled(False)
+        self.rbCompleteReport.setDisabled(False)
+        self.rbCompleteReport.setChecked(True)
+        self.rbPartialReport.setDisabled(False)
+        self.ckbCsv.setChecked(False)
+        self.ckbCsv.setDisabled(False)
+        self.ckbUseCommas.setChecked(False)
         self.ckbUseLimits.setDisabled(True)
         self.ckbUseLimits.setChecked(False)
-        self.ckbUseCommas.setDisabled(True)
-        self.ckbUseCommas.setChecked(False)
-        self.ckbCsv.setChecked(False)
-        self.rbCompleteReport.setChecked(True)
         try: self.worker.signals.progress.disconnect()
         except Exception: pass
     
-    def updateProgressBar(self):
+    def updateProgressBar(self,message):
+        self.lblStatusMsg.setText(message)
         progressiveIncrease = self.progressIncrease
         while progressiveIncrease > 0.5:
             self.currentProgress += 0.5
@@ -289,10 +309,11 @@ class MainWindow(QMainWindow):
         if self.currentProgress == 0 or round(self.currentProgress,1) == 100.0:
             event.accept()
         elif self.working[0]:
-            close = QMessageBox.question(self, "Cancelar", "¿Cancelar el proceso actual?",QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
+
+            close = QMessageBox.question(self, "Cancelar", "¿Cancelar el proceso actual?",QMessageBox.StandardButton.Yes| QMessageBox.StandardButton.No)
             if close == QMessageBox.StandardButton.Yes:
                 self.working[0] = False
-                self.btnRunProgram.setText("Cancelando proceso...")
+                self.btnRunProgram.setText("Cancelando proceso (esto puede tardar un poco)...")
                 
             event.ignore()
         else:
@@ -300,7 +321,7 @@ class MainWindow(QMainWindow):
 ### Thread Classes
 
 class WorkerSignals(QObject):
-    progress = pyqtSignal()
+    progress = pyqtSignal(str)
 
 class Worker(QRunnable):
     signals = WorkerSignals()

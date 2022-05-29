@@ -5,19 +5,17 @@ import matplotlib
 import matplotlib.pyplot as plt
 import pytesseract
 import skimage.io
-import pandas as pd
-import json
 import ctypes
 
 from constants import *
 from skimage.color import rgb2gray
-from skimage.filters import (threshold_otsu, threshold_niblack, threshold_sauvola)
+from skimage.filters import (threshold_otsu, threshold_niblack, threshold_sauvola, thresholding)
+
 from syltippy import syllabize
 from PIL import Image
 from pdf2image import convert_from_path
 from perspicuity.perspicuity import *
 from pdf import *
-from posixpath import split
 import sys
 from PyQt6.QtWidgets import (QApplication)
 from PyQt6.QtGui import QIcon
@@ -27,30 +25,45 @@ number_pages = 0
 first_page = 1
 last_page = 1
 Image.MAX_IMAGE_PIXELS = None
+basedir = os.path.dirname(__file__)
 
 class ObjectTemplate( object ):
     pass
 
 def create_images_from_file(values, updateProgress, end_page, work):
-    file_pil_images = convert_from_path(values['file_path'], values['dpi'])
-    create_images(file_pil_images, values['first_page'], values['last_page'], end_page, updateProgress, work)
+    #------------------------------------------------------------------------------------
+    file_pil_images = []
+    blocks = range(values['first_page'], values['last_page']+1, 10)
+    index = 1
+    steps = len(blocks)
+    for page in blocks:
+        updateProgress.emit("Leyendo PDF (bloque "+str(index)+" de "+str(steps)+")" if work[0] else "Cancelando...")
+        index += 1
+        if work[0]:
+            file_pil_images.extend(convert_from_path(values['file_path'], dpi=values['dpi'], first_page=page, last_page = min(page+10-1,values['last_page'])))
+        else:
+            file_pil_images.extend([""]*min(page+10-1,values['last_page']))
+    #------------------------------------------------------------------------------------
+    updateProgress.emit("Creando imagen de página "+str(values['first_page'])+"..." if work[0] else "Cancelando...")
+    create_images(file_pil_images, values['first_page'], values['last_page'], updateProgress, work)
 
-def create_images(pil_images, first_page, last_page, end_page, updateProgress, work):
-    page_number = 1
-    
+def create_images(pil_images, first_page, end_page, updateProgress, work):
+    page_number = first_page
     for image in pil_images:
-        if page_number>=first_page and page_number <=last_page:
-            if work[0]:
-                file_name = define_file_name(page_number)
-                file_path = define_file_path(file_name)
-                image.save(file_path, 'JPEG')
-            updateProgress.emit()
+        if work[0]:
+            file_name = define_file_name(page_number)
+            file_path = define_file_path(file_name)
+            image.save(file_path, 'JPEG')
+        if page_number<end_page:
+            updateProgress.emit("Creando imagen de página "+str(page_number+1)+"..." if work[0] else "Cancelando...")
+        else:
+            updateProgress.emit("Procesando imagen de página "+str(first_page)+"..." if work[0] else "Cancelando...")
         page_number += 1 if page_number<end_page else 0
-        
+    
     global number_pages
     number_pages = page_number
 
-def refine_image(values, updateProgress, work): #Falta extraer de esta función
+def refine_image(values, updateProgress, work):
     first_page= values['first_page']
     last_page=values['last_page']
     for i in range(first_page, last_page+1):
@@ -70,11 +83,13 @@ def refine_image(values, updateProgress, work): #Falta extraer de esta función
 
             plot_configs = {'width': width, 'height': height, 'dpi': 700, 'file_path': DOCS_ROUTE+'plt-'+file_name}
             plot_image(plot_configs, binary_otsu)
-
             text = str(((pytesseract.image_to_string(Image.open(DOCS_ROUTE+'plt-'+file_name),lang='spa'))))
             text = text.replace('-\n', '')
             values['file_to_read'].write(text)
-        updateProgress.emit()
+        if i<last_page:
+            updateProgress.emit("Procesando imagen de página "+str(i+1)+"..." if work[0] else "Cancelando...")
+        else:
+            updateProgress.emit("Limpiando almacenamiento..." if work[0] else "Cancelando...")
     values['file_to_read'].close()
 
 def plot_image(plot_configs, binary_otsu):
@@ -104,7 +119,7 @@ def delete_files(first_page, last_page, updateProgress, work):
             os.remove(DOCS_ROUTE+'plt-'+file_name)
         except Exception as e:
             continue
-    updateProgress.emit()
+    updateProgress.emit("Limpiando texto plano..." if work[0] else "Cancelando...")
 
 def refine_text(Lines):
     raw_text = extract_file_text(Lines)
@@ -167,26 +182,6 @@ def calculate_perspicuity(perspicuity_values):
         MULEGIBILITY: round(MuLegibility(perspicuity_values).calculate(),2),
     }
 
-#def plot_perspicuity_values(perspicuity_values, paragraph):
-#    fig = plt.figure()
-#
-#    pers_formulas = []
-#    pers_values = []
-#    for key, value in perspicuity_values.items():
-#        if value != None:
-#            pers_formulas.append(key)
-#            pers_values.append(value)
-#    
-#    ax = fig.add_subplot(111)
-#    bars = ax.bar(pers_formulas,pers_values, color=['black', 'red', 'green', 'blue', 'cyan'])
-#    ax.bar_label(bars)
-#
-#    plt.xlabel("Formulas")
-#    plt.ylabel("Escala de perspicuidad")
-#    plt.title("Valores de perspicuidad para el parrafo")
-#    plt.savefig(DOCS_ROUTE+'plotted-result'+str(paragraph)+'.png')
-#    plt.clf()
-
 def generatePDF(updateProgress, values_to_print, file_route, file_name, sorted_formulas, generate_complete_report, pdf_complete_report, number_of_pharagraphs, work):
     if work[0]:
         pdf = PDF()
@@ -200,7 +195,7 @@ def generatePDF(updateProgress, values_to_print, file_route, file_name, sorted_f
         pdf.seccion("Anexos")
         pdf.anexos()
         pdf.output(file_route+'/'+PDF_FILE,'F')
-    updateProgress.emit()
+    updateProgress.emit("Proceso finalizado." if work[0] else "Proceso cancelado.")
 
 def clean_file(file):
     open(file, "w", encoding="utf-8").close()
@@ -216,7 +211,7 @@ def plot_aggregate_results(paragraphsNumbers, plotData, updateProgress, work):
         plt.xlabel(LABEL_VALOR_PERSPICUIDAD);
         plt.title('Resultados de '+SIGRISZPAZOS_TEXT+'/'+INFLESZ_TEXT);
         plt.savefig(DOCS_ROUTE+PLOT_SIGRISZPAZOS)
-    updateProgress.emit()
+    updateProgress.emit(SIGRISZPAZOS_TEXT+" completado" if work[0] else "Cancelando...")
 
     if work[0]:
         plt.clf()
@@ -226,7 +221,7 @@ def plot_aggregate_results(paragraphsNumbers, plotData, updateProgress, work):
         plt.xlabel(LABEL_VALOR_PERSPICUIDAD);
         plt.title('Resultados de '+FERNANDEZHUERTA_TEXT);
         plt.savefig(DOCS_ROUTE+PLOT_FERNANDEZHUERTA)
-    updateProgress.emit()
+    updateProgress.emit(FERNANDEZHUERTA_TEXT+" completado" if work[0] else "Cancelando...")
 
     if work[0]:
         plt.clf()
@@ -236,7 +231,7 @@ def plot_aggregate_results(paragraphsNumbers, plotData, updateProgress, work):
         plt.xlabel(LABEL_VALOR_PERSPICUIDAD);
         plt.title('Resultados de '+MULEGIBILITY_TEXT);
         plt.savefig(DOCS_ROUTE+PLOT_MULEGIBILITY)
-    updateProgress.emit()
+    updateProgress.emit(MULEGIBILITY_TEXT+" completado" if work[0] else "Cancelando...")
 
     if work[0]:
         plt.clf()
@@ -251,7 +246,7 @@ def plot_aggregate_results(paragraphsNumbers, plotData, updateProgress, work):
         plt.legend(bbox_to_anchor=(0,1.02,1,0.2), loc="lower left",mode="expand", borderaxespad=0, ncol=3)
         plt.ylim(ymin=0)
         plt.savefig(DOCS_ROUTE+PLOT_PARAGRAPHS)
-    updateProgress.emit()
+    updateProgress.emit("Gráficos completados..." if work[0] else "Cancelando...")
     plt.clf()
 
 def process_file(process_configs, updateProgress, work):
@@ -262,10 +257,8 @@ def process_file(process_configs, updateProgress, work):
     save_route = process_configs['save_folder']
 
     pdf_configs = {'dpi':900, 'file_path': process_configs['file'], 'first_page': process_configs['first_page'], 'last_page': process_configs['last_page']}
-    updateProgress.emit()
-
+    updateProgress.emit("Iniciando proceso de lectura del PDF..." if work[0] else "Cancelando...")
     create_images_from_file(pdf_configs, updateProgress, process_configs['page_total'], work)
-
     file_to_read = open(OUTPUT_TEXT, "a", encoding="utf-8")
     last_page = process_configs['last_page'] if process_configs['last_page']<number_pages else number_pages
     image_cleaner_configs = {'file_to_read': file_to_read, 'first_page': process_configs['first_page'], 'last_page': last_page}
@@ -303,7 +296,7 @@ def process_file(process_configs, updateProgress, work):
                 if process_configs['csv_commas']:
                     csvSeparator = ","
                 csv.write('Parrafo'+csvSeparator+SIGRISZPAZOS_TEXT+'/'+INFLESZ_TEXT+csvSeparator+FERNANDEZHUERTA_TEXT+csvSeparator+MULEGIBILITY_VAR_TEXT+'\n')
-            updateProgress.emit()
+            updateProgress.emit("Calculando de índices de perspicuidad..." if work[0] else "Cancelando...")
 
         plotData = {
             SIGRISZPAZOS: [],
@@ -368,13 +361,13 @@ def process_file(process_configs, updateProgress, work):
             mu_average = calculate_average_formulas(mu_legibility_values)
         
         #Imprimiento valores de tabla mejores y peores 
-        updateProgress.emit()
+        updateProgress.emit("Almacenando resultados..." if work[0] else "Cancelando...")
         
         if work[0]:
             for result in results:
                 print(result, file=text_file)
 
-        updateProgress.emit()
+        updateProgress.emit("Generando PDF..." if work[0] else "Cancelando...")
 
         values_to_print = {}
         if work[0]:
@@ -402,7 +395,7 @@ app_id = 'sultral.lecto.1_0_0'
 ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(app_id)
 
 app = QApplication(sys.argv)
-app.setWindowIcon(QIcon('icon.png'))
+app.setWindowIcon(QIcon(os.path.join(basedir,'app.ico')))
 
 window = MainWindow(process_file)
 

@@ -1,28 +1,1033 @@
-La amistad que lo unía a Nichard Enfield, el conocido hombre de
-mundo, era sin duda de este tipo, ya que Enfield era pariente lejano suyo; resultaba para muchos un misterio saber qué veían aquellos dos uno
-en el otro o qué intereses podían tener en común. Según decían los que
-los encontraban en sus paseos dominicales, no intercambiaban ni una palabra, aparecían particularmente deprimidos y saludaban con visible alivio la llegada de un amigo. A pesar de todo, ambos apreciaban muchísimo estas salidas, las consideraban el mejor regalo de la semana, y, para
-no renunciar a las mismas, no sólo dejaban cualquier otro motivo de distracción, sino que incluso los compromisos más serios.
+Introducción
 
-Sucedió que sus pasos los condujeron durante uno de estos vagabundeos, a una calle de un barrio muy poblado de Londres. Fra una calle estrecha y, los domingos, lo que se dice tranquila, pero animada por comercios y tráfico durante la semana. Sus habitantes ganaban bastante,
-por lo que parecía, y, rivalizando con la esperanza de que les fuera mejor, dedicaban sus excedentes al adorno, coqueta muestra de prosperidad: los comercios de las dos aceras tenían aire de invitación, como una
-doble fila de sonrientes vendedores. Por lo que incluso el domingo, cuando velaba sus más floridas gracias, la calle brillaba, en contraste con sus
-adyacentes escuálidas, como un fuego en el bosque; y con sus contraventanas recién pintadas, sus bronces relucientes, su aire alegre y limpio
-atraía y seducía inmediatamente la vista del paseante.
+El presente texto es una herramienta de apoyo docente para el curso de
+Metodología de la Investigación del ciclo inicial de la Facultad de Ciencias Sociales
+de la Universidad de la República. Recorre los conceptos principales del curso y
+los coloca en relación con el módulo central del programa: la lógica del proceso de
+investigación.
 
-A dos puertas de una esquina, viniendo del oeste, la línea de casas se
-interrumpía por la entrada de un amplio patio; y, justo al lado de esta entrada, un pesado, siniestro edificio sobresalía a la calle su frontón triangular. Aunque fuera de dos pisos, este edificio no tenía ventanas: sólo la
-puerta de entrada, algo más abajo del nivel de la calle, y una fachada ciega de revoque descolorido. Todo el edificio, por otra parte, tenía las señales de un prolongado y sórdido abandono. La puerta, sin aldaba ni
-campanilla, estaba rajada y descolorida; vagabundos encontraban cobijo
-en su hueco y raspaban fósforos en las hojas, niños comerciaban en los
-escalones, el escolar probaba su navaja en las molduras, y nadie había
-aparecido, quizás desde hace una generación, a echar a aquellos indeseables visitantes o a arreglar lo estropeado.
+Es resultado de la experiencia de trabajo del equipo docente del curso del ciclo
+inicial (y del ciclo básico en el plan de estudios anterior). En su elaboración participaron la mayoría de las docentes del plantel, a través de la preparación de los contenidos y la discusión de los mismos en talleres internos de trabajo. De esta forma se
+logra consolidar mediante el manual la propuesta de temas, enfoques y conceptos,
+utilizados en los cursos en sus modalidades teórica y práctica.
 
-Enfield y el notario caminaban por el otro lado de la calle, pero, cuando llegaron allí delante, el primero levantó el bastón indicando:
+El texto contiene un conjunto importante de referencias y citas bibliográficas
+de autores que son estudiados durante los cursos, pero a su vez aporta conceptos
+y enfoques distintos que son producto de una construcción colectiva del equipo.
 
--¿Os habéis fijado en esa puerta? -preguntó. Y añadió a la respuesta
-afirmativa del otro-: Está asociada en mi memoria a una historia muy
-extraña.
+El recorrido se inicia con una referencia a la articulación del campo epistemológico y del metodológico como objetivo central de un proyecto de investigación,
+que sirve de introducción para la presentación de los distintos temas que forman
+parte de la lógica del proceso de investigación. La formulación del problema, el
+marco teórico y los objetivos de la investigación social, las hipótesis, las variables,
+indicadores e índices, los diseños de investigación, las unidades de análisis y la población. Los capítulos finales del manual presentan en forma muy breve dos temas
+que complementan el contenido del curso: una descripción de los abordajes cuantitativos y cualitativos de la investigación social y una reseña de las técnicas básicas
+de investigación.
 
--¿Ah, sí? -dijo Utterson con un ligero cambio de voz-. ¿Qué historia?
+ 
+
+Comisión Sectorial de Enseñanza
+La articulación del campo epistemológico
+y el metodológico como objetivo central
+de un proyecto de investigación
+
+Ciencia, metodo, metodología e investigación social son conceptos claves para este
+curso-texto. A lo largo del mismo se presentan elementos que permiten al estudiante aproximarse a sus definiciones con una mirada crítica. Estas reflexiones básicas
+deberán ser profundizadas tanto a lo largo de su etapa estudiantil como en su desarrollo protesional.
+
+La Real Academia Española" define estos conceptos de la siguiente manera:
+
+* Metodo. Procedimiento que se sigue en las ciencias para hallar la verdad y
+ensenarla.
+
+* Metodología. Ciencia del método. Conjunto de métodos que se siguen en una
+investigación científica o en una exposición doctrinal.
+
+* Ciencia. Conjunto de conocimientos obtenidos mediante la observación y el
+razonamiento, sistemáticamente estructurados y de los que se deducen principios y leyes generales.
+
+Sin embargo, como se verá a lo largo del presente texto, estas definiciones se
+complejizan e incluso se modifican cuando se profundiza en discusiones sobre los
+alcances de la ciencia, el conocimiento que genera y las formas de construir este
+conocimiento.
+
+Ander Egg (1993) plantea una definición más completa de ciencia, como un
+conjunto de conocimientos racionales, ciertos o probables, que obtenidos de manera metódica y verificados en su contrastación con la realidad, se sistematizan
+orgánicamente haciendo referencia a objetos de una misma naturaleza y cuyos conocimientos son susceptibles de ser transmitidos.
+
+Esa manera metódica de obtener conocimientos es el «método científico». Los
+métodos constituyen una serie de pasos que el investigador sigue en el proceso
+de producir conocimiento. Se trata de una serie de operaciones, reglas y procedimientos fijados de antemano de manera voluntaria y reflexiva para alcanzar un
+determinado fin, que puede ser material o conceptual. El «método científico» es un
+modo de formular cuestiones y resolver problemas sobre la realidad del mundo y la
+realidad humana, basándose en la observación y en teorías ya existentes, anticipando
+
+I Disponible en <www.rae.es>, consulta setiembre 2010.
+
+ 
+
+Comisión Sectorial de Enseñanza
+ 
+
+! Universidad de la República
+
+soluciones a esos problemas y contrastándolos con la misma realidad mediante la
+observación de los hechos, las clasificaciones y su análisis.
+
+Se caracteriza por ser teórico, hipotético, empírico, inductivo y deductivo. A su
+vez es crítico, acumulativo y analítico, y se atiene a reglas metodológicas formales.
+
+Autores como Beltrán cuestionan la posibilidad de hablar del método científico
+como una forma única de proceder para generar conocimiento en las ciencias:
+
+En primer lugar, me parece sumamente problemático que exista algo que pueda ser lla
+mado sin equivocidad el método científico: no solo porque la filosofía de la ciencia no
+
+ha alcanzado un suficiente grado de acuerdo al respecto, sino porque la práctica de la
+
+ciencia dista de ser unánime. O al menos, tal método, único y universalmente aceptado,
+
+no existe en forma detallada y canónica; aunque es evidente que bajo la forma de una
+
+serie de principios básicos sí que podría considerarse existente (1985: 7-8).
+
+Beltrán menciona un conjunto de principios básicos que tienen en común distintas formas de hacer ciencia:
+
+* — las actitudes que fundamentan la cultura del discurso crítico;
+
+* — el recurso a la comunidad científica como árbitro y reconocedor de la verdad
+científica;
+
+* la contrastación posible con la evidencia empírica disponible;
+
+* el juego mutuo de teoría y realidad en la construcción de una y otra;
+* la exclusión deliberada de la manipulación o el engaño;
+
+* la renuncia a la justificación absoluta de la verdad encontrada.
+
+El mencionado autor plantea:
+
+Estos y otros muchos principios que podrían recogerse aquí constituyen hoy día
+
+elementos prácticamente indisputados del método científico. Pero solo eso, y nada
+
+menos que eso. De aquí que, sin desconocer realidad tan abrumadora, haya que escuchar con escepticismo las apelaciones, tan enfáticas como ruidosas, a 777 método
+científico riguroso, detallado, universal y «manualizable»: tal cosa, ciertamente, no
+
+existe (1985: 8).
+
+El «método científico» es utilizado en el proceso de la investigación social para
+obtener nuevos conocimientos en el campo de la realidad social, o bien estudiar una
+situación para diagnosticar necesidades y problemas a efectos de aplicar los conocimientos con fines prácticos.
+
+La metodología está conformada por procedimientos o métodos para la construcción de la evidencia empírica. Se apoya en los paradigmas, y su función en
+la investigación es discutir los fundamentos epistemológicos del conocimiento.
+Específicamente, reflexiona acerca de los métodos que son utilizados para generar
+conocimiento científico y las implicancias de usar determinados procedimientos.
+Por ejemplo: el papel de los valores, la idea de causalidad, el papel de la teoría y su
+vinculación con la evidencia empírica, el recorte de la realidad, los factores relacionados con la validez del estudio; el uso y el papel de la deducción y la inducción;
+cuestiones referidas a la verificación y falsación, además de los contenidos y alcances
+de la explicación e interpretación. Dado que los métodos se sustentan sobre principios epistemológicos y metodológicos, es necesario que exista una correspondencia entre los métodos utilizados y los supuestos epistemológicos y metodológicos
+(Sautu eé al., 2005).
+
+La epistemología y la reflexión metodolágica en las Ciencias Sociales
+
+La epistemología constituye un estudio crítico de los principios de las diversas
+ciencias, de su valor y objetividad. Implica una reflexión sobre su origen lógico,
+sobre los procedimientos a través de los cuales se forman las distintas ciencias y
+alcanzan un conocimiento científico. Esto quiere decir que la epistemología incluye
+la metodología. A su vez, la teoría de la ciencia es parte de la epistemología y describe
+la relación cognoscitiva entre el sujeto y los fenómenos, entre procesos y hechos
+sociales.
+
+Los investigadores interrogan la realidad desde teorías y modelos de análisis,
+sugiriendo preguntas e hipótesis acerca de cómo contestarlas. Para responder a los
+objetivos de investigación se construye la evidencia empírica utilizando métodos
+que dependerán del enfoque teórico elegido.
+
+La epistemología pretende responder algunas de estas preguntas ¿influye o no
+el/la investigador/a en el objeto de investigación que, en la mayoría de los casos,
+está constituido por personas? En otras palabras, ¿es posible obtener mediante la
+investigación social un conocimiento que no esté perturbado por los valores del
+investigador/a, por sus creencias, preferencias y prejuicios? ¿Existe una ciencia libre de valores? ¿Es posible la objetividad en las ciencias?
+
+En términos generales, la epistemología se define como el análisis del conocimiento científico. En términos más específicos, esta disciplina analiza los supuestos
+filosóficos de las ciencias, su objeto de estudio, los valores implicados en la creación
+del conocimiento, la estructura lógica de sus teorías, los métodos empleados en la
+investigación y en la explicación o interpretación de sus resultados.
+
+Los epistemólogos de las Ciencias Sociales se han referido a cinco problemas
+principales:
+
+I. los supuestos ontológicos y gnoseológicos de las Ciencias Sociales;
+
+2. el objeto de estudio propio de estas ciencias;
+
+3. la naturaleza de conocimiento que se va a obtener por medio de la investigación científica;
+
+4. la relación entre las características del objeto investigado y los valores del
+investigador;
+
+5. la función final que debe cumplir la investigación científica de acuerdo con el
+modelo elegido para la construcción de las Ciencias Sociales.
+
+Las diversas posiciones filosóficas frente a esos problemas ayudan a comprender
+distintas escuelas que han surgido en la construcción de las Ciencias Sociales. El
+
+ 
+
+Comisión Sectorial de Enseñanza
+ 
+
+l Universidad de la República
+
+capítulo IX presenta una breve introducción a grandes corrientes que han influido
+en las Ciencias Sociales.
+
+El término Ciencias Sociales se utiliza aquí para referirse a ciencias como la sociología, la ciencia política, la psicología social, la antropología social. Otras Ciencias
+Sociales, como la historia, la economía, el derecho, para citar algunas, tienen sus
+
+propios enfoques teóricos y metodolágicos de tal modo que solo algunos temas y
+problemas específicos de esas ciencias caen en los marcos epistemológicos que se
+abordarán en este texto.
+
+ 
+
+Tipos de conocimiento
+
+El proceso de conocer ocurre mediante la relación que se establece entre un
+sujeto que conoce y un objeto conocido. El conocimiento es un modo más o menos
+organizado de concebir el mundo y de dotarlo de características que resultan en
+primera instancia de la experiencia personal del sujeto que conoce. El conocimiento
+que una persona adquiere de la realidad diferirá en función de cómo aborde dicha
+
+realidad.
+
+Es posible distinguir al menos dos tipos de conocimiento: el cotidiano, espontáneo o vulgar, y el científico. El primero de ellos se adquiere sin ningún proceso
+planificado y sin la utilización de medios especialmente diseñados. Por su parte,
+el conocimiento científico exige mayor rigor para encontrar regularidades en los
+fenómenos, para describirlos, comprenderlos, explicarlos y/o predecirlos. Se obtiene mediante procedimientos metódicos con pretensión de validez, utilizando la
+reflexión, los razonamientos lógicos y respondiendo a una búsqueda intencionada,
+para lo cual se delimitan los objetos y se prevén los modelos de investigación.
+Cuadro 1. Comparación entre conocimiento cotidiano y conocimiento científico
+
+Algunas características del
+
+Algunas características del — p
+conocimiento científico:
+
+conocimiento cotidiano:
+
+Crítico (fundamentado)
+Metódico
+Verificable
+Sistemático
+Unificado
+Ordenado
+Universal
+Objetivo
+Comunicable
+Provisorio
+
+Sensitivo
+Superficial
+Subjetivo
+Dogmático
+Particular
+Asistemático
+Inexacto
+No acumulativo
+
+ 
+
+Fuente: Elaboración propia
+
+El conocimiento científico siempre es discutible y provisorio, por lo cual requiere, para su crítica, que se hagan explícitas las teorías y los métodos utilizados.
+
+Conocimiento científico en Ciencias Sociales
+
+Beltrán (198 5) plantea que las Ciencias Sociales tienen formas de construir conocimiento que se diferencian de las propias de las ciencias físico-naturales debido
+a la peculiaridad de su objeto.
+
+Se trata, en efecto, de un objeto en el que está incluido, lo quiera o no, el propio estudioso, con todo lo que ello implica; y de un objeto, podríamos decir, subjetivo, en el
+sentido de que posee subjetividad y reflexividad propias, volición y libertad, por más
+que estas cualidades de los individuos sean relativas al conjunto social del que forman
+parte. Conjunto social que no es natural, en el sentido de que es el producto histórico
+del juego de las partes de que consta y de los individuos que las componen, siendo estos a su vez también producto histórico del conjunto, y ello en una interacción inextricable de lo que el animal humano tiene de herencia genética y de herencia cultural.
+Un objeto de conocimiento, además, reactivo a la observación y al conocimiento, y
+que utiliza a este, o a lo que pasa por tal, de manera apasionada y con arreglo a su
+peculiar concepción ética, limitaciones a las que tampoco escapa el propio estudioso.
+Un objeto, en fin, de una complejidad inimaginable (y para colmo de males compuesto de individuos que hablan de animales ladinos), que impone la penosa obligación
+de examinarlo por arriba y por abajo, por dentro y por fuera, por el antes y por el
+después, desde cerca y desde lejos; pesarlo, contarlo, medirlo, escucharlo, entenderlo,
+comprenderlo, historiarlo, describirlo y explicarlo; sabiendo además que quien mide,
+comprende, describe o explica lo hace, necesariamente, lo sepa o no, le guste o no,
+desde posiciones que no tienen nada de neutras (Beltrán, 1985: 8).
+
+Es decir, existen particularidades y dilemas propios a las Ciencias Sociales vinculados a la objetividad y a la universalidad o generalización de los conocimientos.
+
+Pierre Bourdieu, Jean-Claude Chamboredon y Jean-Claude Passeron inspirados en la conocida obra de Gaston Bachelard, £7 oñcio del sociólogo, plantean que
+
+ 
+
+Comisión Sectorial de Enseñanza
+ 
+
+! Universidad de la República
+
+«la familiaridad con el universo social constituye el obstáculo epistemológico por
+excelencia para el sociólogo» (Bourdieu e7 a., 1975: 26).
+
+Siguiendo a estos autores, puede afirmarse que la objetividad en sí misma no
+existe en las Ciencias Sociales, pero es deseable tratar de alcanzarla y lograr aproximarnos al máximo. La experiencia cultural y personal de quien investiga hace que
+se vea y se valore la realidad de determinado modo, con lo que se corre el riesgo de
+sesgar o limitar la posibilidad de profundizar en los espacios de esta, en los cuales
+se interviene investigando. Proponen la reflexión epistemológica con la finalidad
+de lograr la objetividad en su mayor alcance para poder construir el objeto de estudio. De esto se desprende la importancia de las nociones de vigilancia y ruptura
+epistemológica.
+
+La vigilancia epistemológica
+en el proceso de construcción del conocimiento
+
+La realidad, en definitiva, no habla por sí sola. Necesita ser interrogada, organizada alrededor de los conceptos. Pero los conceptos son elaborados o reelaborados
+por el sujeto a partir de su herencia cultural y de su experiencia. Por eso tienen cierto carácter subjetivo. El ejercicio de la vigilancia epistemológica debe ser constante
+y tendiente a subordinar el uso de técnicas y conceptos a un examen continuo sobre
+las condiciones y los límites de su validez. La ruptura consiste en alejar de la ciencia
+la influencia de las nociones comunes, como manera de lograr la objetivación de las
+técnicas de investigación. Para esto es preciso realizar una crítica lógica y lexicológica del lenguaje común con el objeto de elaborar y reelaborar las nociones científicas.
+
+¿Cómo romper con el empirismo, el teoricismo o el formalismo excesivo de la
+ciencia? La respuesta se focaliza en ejercer la vigilancia epistemológica, como el
+modo general de actuación para la práctica de la investigación y por su riqueza
+para descubrir conocimientos nuevos, así como también para desmontar creencias
+y discursos.
+
+Es necesario someter las operaciones de la práctica sociológica a la polémica de la
+razón epistemológica, para definir y, si es posible, inculcar una actitud de vigilancia
+que encuentre en el completo conocimiento del error y de los mecanismos que lo
+engendran uno de los medios para superarlo (Bourdieu e a/., 1975: 14).
+
+s Z 7 . 5 . . .. ,
+¿Cómo ponerla en práctica: Bourdieu et 4/. proponen dos principios generales.
+I. Reconocer cuáles son los obstáculos al conocimiento de lo social.
+
+2. Aplicar las técnicas de ruptura, frente a la ingenuidad reproductivista de los
+investigadores.
+
+La noción de ruptura epistemológica contiene dos principios generales que contribuyen a su aplicación. Por una parte, el reconocimiento de los obstáculos que genera el conocimiento social, y por otra, la aplicación de las técnicas de ruptura que
+evitan la voluntad reproductivista (es decir, evitan la tendencia a no cuestionarse
+a fondo conceptos a priori dados por obvios en la cotidianidad). Los obstáculos a
+superar en el conocimiento de lo social son las percepciones del sentido común, el
+lenguaje común y las nociones comunes.
+
+Para atravesar el obstáculo del sentido común, los autores proponen tomar una
+distancia necesaria del objeto de estudio, para comprenderlo y mirarlo de una manera crítica. Se trata de romper con la noción del saber inmediato, y de romper también con los presupuestos inconscientes asumidos que constituyen las prenociones.
+Las prenociones son aquellas percepciones de la //oso/a primera de lo social, las
+explicaciones sobre la realidad social que se construyen desde el sentido común para
+poder actuar en esa realidad.
+
+Ejemplo
+
+Existe la noción de que el gusto es una característica personal, idiosincrásica. A
+algunas personas les gusta cierto tipo de música, ciertas comidas, ciertas películas,
+etcétera, que a otras no. Estas diferencias, a su vez, se interpretan como indicio
+
+de cultura. Quienes pueden apreciar una sinfonía serían más cultos que aquellos
+que solo gustan de la música popular. Sin embargo, Pierre Bourdieu, al analizar
+encuestas sobre consumo cultural en Francia en la década de 1960, encontró que
+había una «fuerte relación que une las prácticas culturales [...] con el capital escolar
+(medido por las titulaciones obtenidas) y, secundariamente, con el origen social (estimado por la profesión del padre)» (Bourdieu, 2002: 1 1). Por tanto, los gustos no
+pueden considerarse una característica personal, sino algo vinculado al origen social
+y la escolaridad. Pero además, profundizando en estas evidencias, Bourdieu concluye que «el gusto es una disposición adquirida, |...] para establecer o para marcar
+unas diferencias mediante una operación de distinción |que es uno de los principios
+estructurantes más eficaces de la sociedad, precisamente porque funcionan| más
+allá de la conciencia y del discurso» (Bourdieu, 2002: 477).
+
+ 
+
+La técnica de ruptura propone el principio de la no conciencia, lo cual implica
+ser consciente de lo que parecería obvio, estar atentos y dispuestos a reformular
+continuamente los conceptos, a las nuevas repercusiones o dimensiones que se pueden descubrir en el objeto de estudio.*
+
+Las percepciones del lenguaje coloquial se presentan de manera tan evidente
+que se corre el riesgo de no preguntarse sobre su fundamento teórico. Por tanto
+es necesario construir conceptos propios con base en una elaboración teórica y, en
+consecuencia, romper con el lenguaje común. Se debe trabajar para no caer en la
+orientación del profetismo explicitando la teoría y la interpretación.
+
+2 La explicación de los fenómenos sociales no debe buscarse en lo que aparece como conciente o
+transparente para los individuos sino en el sistema de relaciones objetivas en el que están inmersos.
+«Las relaciones sociales no podrían reducirse a relaciones entre subjetividades animadas de intenciones o “motivaciones” porque ellas se establecen entre posiciones sociales y tienen, al mismo
+tiempo, más realidad que los sujetos que la ligan. [...] El principio de la no-conciencia impone, por
+el contrario, que se construya el sistema de relaciones objetivas en el cual los individuos se hallan
+insertos y que se expresa mucho más adecuadamente en la economía o en la morfología de los
+grupos que en intenciones declaradas de los sujetos» (Bourdieu eí a7., 1975: 33-34).
+
+ 
+
+Comisión Sectorial de Enseñanza
+ 
+
+l Universidad de la República
+
+Bourdieu y sus colegas plantean un tercer obstáculo a superar en la ruptura:
+la percepción de las nociones comunes en la ciencia. Como señala Bachelard, «la
+ciencia no puede progresar si no es cuestionando constantemente los principios
+mismos de sus propias conclusiones» (Bourdieu e7 al., 197 5: 44). Es necesario hacer
+una reflexión sobre las nociones teóricas preexistentes para no ser reproductivista o
+acrítico con las ideas de otros.
+
+¿En qué consiste, entonces, la ruptura epistemológica? Consiste en alejar de la
+ciencia la influencia de las nociones comunes, de manera de lograr la objetivación de
+las técnicas de investigación. Para esto es preciso realizar una crítica lógica y lexicológica del lenguaje común, con el objeto de elaborar y reelaborar controladamente
+las nociones científicas.
+
+La práctica científica supone una ruptura con las prenociones del sentido común por el hecho de que el descubrimiento científico no se reduce nunca a una
+simple lectura de lo real, sino a romper con lo real y con las configuraciones que
+este propone a la percepción.
+
+Algunos conceptos clave
+
+La investigación social es una forma de conocimiento que se caracteriza por:
+* ser una construcción de evidencia empírica;
+
+* ser elaborada a partir de la teoría;
+
+* la aplicación de reglas de procedimiento explícitas.
+
+Proceso de investigación:
+
+La investigación social es un proceso de generación de conocimiento, una actividad que nos permite obtener conocimientos científicos. Se inicia con las primeras
+preguntas que nos hacemos, la búsqueda bibliográfica, el análisis de los marcos
+teóricos y los conceptos, hasta llegar a la formulación del problema de investigación
+y el diseño necesario para indagar ese problema. Son etapas (0 momentos, según el
+diseño) de ruptura y estructuración.
+
+Proyecto de investigación:
+
+La investigación social implica la formulación de un proyecto en el cual se explicitan todos los elementos involucrados en el proceso de investigación, desde la
+formulación del problema a investigar hasta los caminos que recorrerá para estudiar
+ese problema empíricamente (diseño).
+
+ 
+
+«Etapas o momentos» de toda investigación empírica
+
+Las observaciones anteriores permiten introducir la idea de que la investigación empírica implica ciertas etapas o momentos que cumplen funciones diferentes. A grandes rasgos, estos momentos son los de la ruptura, la estructuración y la
+comprobación.
+
+Ruptura: romper con prejuicios y la usión del saber inmediato. Pasar del problema social al problema propio de la disciplina.
+* — Elección del tema y conformación de bibliografía
+* Formulación del problema de interés que sea susceptible de estudio científico
+
+Estructuración: construcción de un marco teórico de referencia, conceptualización del problema basado en ese marco teórico, y elaboración de herramientas
+conceptuales (hipótesis, preguntas guía, etcétera) y operativas.
+
+* Construcción del marco conceptual (marco teórico, hipótesis y preguntas
+conceptuales O sustantivas)
+
+* Construcción del marco operativo (formulación de las hipótesis de trabajo,
+operacionalización de conceptos en variables e indicadores)
+
+* Elección de la estrategia metodológica: técnicas de recolección y análisis de
+datos
+
+Comprobacz'ón: aplicación de las herramientas operativas para contrastar hipóte—
+sis y responder las preguntas de investigación.
+
+* Relevamiento de la información
+* Andálisis
+
+* — Presentación de resultados y conclusiones
+
+ 
+
+Comisión Sectorial de Enseñanza
+El tema y el problema de investigación
+
+El primer proceso indispensable para iniciar una investigación social es traducir
+en un problema de investigación las preguntas y preocupaciones que se tienen acerca
+de la realidad, y sobre las cuales se pretende realizar una indagatoria científica. Este
+proceso comienza por identificar un ema de investigación que se corresponda con
+las preocupaciones mencionadas, delimitarlo sobre preguntas iniciales y finalmente
+formular el problema de investigación.
+
+Tema de investigación
+
+El tema de investigación es el marco general en el cual se ubica el interés científico asociado a las preguntas y preocupaciones planteadas. Para ello debe estar
+delimitado conceptualmente y ser pertinente su estudio desde alguna disciplina
+científica (en particular, desde alguna o varias de las disciplinas que conforman las
+Ciencias Sociales).
+
+Para definir un tema de investigación es necesario un proceso de ruptura con
+el conocimiento 70 cienti/co. Identificar qué aspectos de la realidad son pasibles
+de estudio desde un punto de vista científico y en particular desde qué disciplinas.
+Puede ser un tema que sea concerniente estudiar desde la sociología, la economía, la
+ciencia política, etcétera, o desde varias de ellas en distintas investigaciones, incluso
+en un abordaje interdisciplinario. La mirada teórica se plasmará en el problema de
+investigación y en la estrategia a seguir para resolverlo.
+
+La motivación para investigar puede provenir de preocupaciones personales n0
+cientificas, por ejemplo, como estudiantes, como ciudadanos, como parte de organizaciones o grupos sociales.
+
+ 
+
+Comisión Sectorial de Enseñanza
+ 
+
+D)
+! Universidad de la República
+
+Ejemplo
+
+Preguntarse por qué la mayoría de los estudiantes de la Facultad de Ciencias
+Sociales son mujeres. Una primera exploración muestra que este fenómeno se da en
+otras facultades del área social, pero es menos frecuente en centros educativos de
+otras áreas. Esto puede llevar a plantear como tema la feminización de la matrícula
+universitaria de las carreras del área social. Este es un tema amplio, por lo que
+dentro de este tema el interés estaría centrado en distintos subtemas y problemas.
+Para llegar a plantear este tema se han considerado en forma previa varios elementos. A modo ilustrativo: se parte del supuesto que existen comportamientos que si
+bien son individuales (decidir qué carrera estudiar) siguen ciertos patrones, muestran regularidades en forma agregada (hay un porcentaje de mujeres en el cuerpo
+estudiantil mayor al porcentaje de mujeres entre los jóvenes en general y también
+
+entre los jóvenes que cursan estudios terciarios). Al observar la matriculación de
+
+varias generaciones de estudiantes esta situación se mantiene en forma bastante
+estable. Dentro del proceso de construcción del tema, a este fenómeno se le asigna
+la denominación de «feminización de la matrícula» y constituye un hecho social.
+Pero además, ¿por qué detenerse en observar la composición por sexo? Aquí hay
+implícitamente una conjetura sobre la existencia de características de los individuos
+que hacen que se comporten en forma diferente (por ejemplo, por sexo) y que
+deben existir factores vinculados a la vida en la sociedad que hacen que tengan
+comportamientos diferenciados, es decir que no pueden ser explicados por otras
+disciplinas como la biología o la sicología. Finalmente, el anclaje de este tema en un
+determinado enfoque teórico llevará a postertort a que el interés se centre en distintos subtemas y a problematizar de diferente manera esta feminización, enfatizar en
+distintos factores que permitan explicar el comportamiento diferenciado por sexo
+o comprender cómo mujeres y varones deciden su carrera universitaria, qué papel
+juega en esos comportamientos la construcción cultural del género, los roles asignados en la división sexual del trabajo, lo que la sociedad espera de esos roles, etcétera.
+
+ 
+
+En otros casos, el tema de investigación puede surgir de una demanda por parte
+de actores sociales (un ministerio, un organismo internacional, un sindicato, una
+empresa, etcétera).
+
+Ejemplo
+
+Un municipio de una cierta localidad puede estar interesado en desarrollar acciones
+para que sus habitantes no tengan que movilizarse frecuentemente a otros localidades (sea por estudio, trabajo, trámites, compras, etcétera) y piden a una investigadora un diagnóstico sobre cómo es la situación actual. El diagnóstico puede
+
+ser trabajado desde la temática de construcción de un espacio de vida de estos
+residentes (es decir, considerando el espacio en el cual se movilizan para distintas
+
+actividades cotidianas); pero también puede focalizarse en temas más específicos,
+como los mercados de trabajo localizados, la accesibilidad territorial (a prestacio
+nes, a servicios), el desarrollo territorial del sistema educativo, etcétera.
+
+En cualquiera de estos casos, es necesario traducir la preocupación o la demanda
+concreta en un tema de investigación. Pero muchas veces el tema de investigación
+responderá a un interés académico, posiblemente vinculado a líneas de investigación que ya se han trabajado o por las cuales quien investiga tiene más afinidad. En
+este caso, probablemente, el tema ya esté delimitado en términos científicos.
+
+ 
+Problema de investigación
+
+El problema de investigación es el conjunto de preguntas que deseamos responder a través del proceso de investigación. Es una problematización de algún
+aspecto del tema de investigación. No siempre se expresa como pregunta. Muchos
+se explicitan en los objetivos de la investigación (el objetivo de una investigación es
+dar respuesta a esas preguntas) o en hipótesis (que son respuestas tentativas a las
+preguntas).
+
+Estas preguntas deben contestarse utilizando una estrategia concreta de investigación. Esto implica:
+
+* traducir los conceptos teóricos y sus relaciones (marco conceptual) en concep
+tos operativos que permitan buscar la evidencia empírica (marco operativo).
+
+Ejemplo
+Partir del concepto teórico de desigualdad al interior de una sociedad, y preguntar
+se sobre la presencia de relaciones desiguales entre mujeres y varones. Más allá de
+la definición conceptual de desigualdad y relaciones desiguales, para responder la
+
+pregunta sobre la base de una investigación empírica, es necesario definir en términos operativos en qué casos se está en presencia de estas relaciones y cómo medirlas
+(puede ser desigualdad en el acceso a recursos monetarios y para ello se relevan los
+ingresos de las personas y se comparan los ingresos promedio de varones y mujeres).
+
+ 
+
+* delimitar un espacio y un tiempo para el cual se realiza la búsqueda de evidencia empírica, lo que tiene sentido para responder las preguntas de investigación. Esta delimitación tiene por objetivo identificar dónde se buscarán las
+evidencias empíricas de la investigación, y contextualizar socio-históricamente las conclusiones que se logren con la misma. Es imprescindible acotar el alcance temporal y espacial para que el estudio sea factible de llevarse adelante.
+
+Ejemplo
+
+El estudio sobre distribución del ingreso puede ser en Montevideo en el año 2010,
+
+o bien puede interesar comparar dos períodos de tiempo para ver cuál ha sido la
+evolución de esas relaciones. También puede interesar comparar la situación entre
+distintas localidades del país en un período de tiempo determinado.
+
+ 
+
+* disponer de información e instrumentos de investigación (sea construyendo
+los datos en forma directa, relevando la información o utilizando información
+que ha sido relevada por otros).
+
+Comisión Sectorial de Enseñanza
+
+ 
+ 
+
+o
+l Universidad de la República
+
+Ejemplo
+
+En el ejemplo anterior, sería necesario evaluar si es posible obtener la información
+sobre los ingresos de los hogares (sea a través de un relevamiento propio o basada
+en información ya recogida por terceros). En Uruguay es posible acceder a esta
+información a través de la Encuesta Continua de Hogares (ECH), que elabora el
+
+Instituto Nacional de Estadísticas. Sin embargo, si el problema de investigación requiere comparar el grado de desigualdad en ingresos entre varias localidades de un
+departamento no es factible utilizar la ECH, dado que el tamaño y la forma en que
+se toma la muestra de hogares de la encuesta no lo permite. En ese caso, la investigación podría valerse de una encuesta especialmente diseñada con ese objetivo si se
+contara con los recursos suficientes para llevar adelante un relevamiento i
+
+ 
+
+A su vez, el problema de investigación refleja un vacío de conocimiento cientifico. Por ejemplo, las preguntas planteadas no han sido contestadas por otras investigaciones o los resultados de las mismas no son satisfactorios desde el enfoque
+teórico de quien va a realizar la investigación, etcétera.
+
+Este vacío de conocimiento puede estar referido:
+
+* a un área de interés práctico (una situación social dada que interesa conocer
+para intervenir, monitorear, etcétera, como podrían ser las condiciones de vida
+de hogares pobres, los niños trabajadores, la apatía política de los jóvenes, la
+violencia intrafamiliar, el rendimiento escolar en niños de sectores populares);
+
+* aunárea de interés teórico (la anomia política, la organización burocrática, la
+transición a la adultez, la división sexual del trabajo, etcétera). En estos casos
+la motivación por investigar proviene de preocupaciones teóricas, aunque
+obviamente los resultados pueden aportar conocimientos de interés práctico;
+
+* a los dos ámbitos simultáneamente (teórico y práctico).
+
+Este vacio es lo que justifica que se emprenda un proceso de investigación científica, ya que será un aporte al conocimiento en el plano práctico o teórico.
+
+El proceso de construcción del tema y el problema de investigación
+
+Todo el proceso, que lleva desde las preocupaciones o demandas primeras, hasta
+la elaboración de las preguntas concretas (u objetivos o hipótesis) que guiarán la
+investigación, es fundamentalmente un proceso de ruptura y construcción primaria
+del obyeto de investigación, como ya se ha mencionado. A través de estos dos procesos se delimitan el tema y el problema de investigación.
+
+Este proceso está anclado en tres pilares:
+* experiencia en el tema a investigar (investigaciones anteriores propias);
+
+* lectura de teorías e investigaciones anteriores; intercambio con personas especializadas; otras lecturas que ubiquen el tema socio-históricamente (libros,
+prensa, otros documentos, etcétera);
+
+* reflexión teórica en base a la experiencia, la lectura y el intercambio.
+Estos tres elementos se combinarán de acuerdo no solo a la trayectoria del investigador y sus características personales, sino en función de la problemática que
+se vaya a estudiar. En algunos casos se tendrá una mayor acumulación previa, en
+otros es posible que los temas requieran más reflexión teórica, en otros una mayor
+imaginación para poder convertir el tema en un problema que sea factible estudiar.
+
+Preguntas iniciales FORMULACIÓN DEL
+(secuencia de preguntas PROBLEMA DE
+
+que nos permiten llegar a la INVESTIGACIÓN
+formulación del problema) BAJO UN ENFOQUE
+
+TEÓRICO
+
+RUPTURA CONSTRUCCIÓN DEL OBJETO DE
+Procesos INVESTIGACIÓN
+
+EXPERIENCIA
+
+ 
+
+LECTURA
+
+INTERCAMBIO
+
+REFLEXIÓN TEÓRICA
+
+ 
+
+Figura T. La construcción del tema y el problema de investigación.
+Fuente: elaboración propia.
+
+Las actividades que se realizan para llevar adelante el proceso, desde la identificación de temas hasta llegar a la formulación del problema, dependerán, en definitiva, de las características del investigador. En el caso de un profesional con larga
+trayectoria, es posible que su interés en un tema se vincule a la línea de trabajo sobre
+la que ha acumulado teórica y metodológicamente.
+
+Para el caso de investigadores/as jóvenes o con escasa experiencia en investigación:
+
+Su acercamiento a un tema y a una problemática de investigación requerirá, desde el
+comienzo, una inmersión o búsqueda bibliográfica más detenida y, en muchos casos,
+un trabajo como asistente de un investigador ya formado, además de la consulta con
+otros para lograr una clarificación de sus intentos de configurar una temática y una
+primera formulación de su problema de investigación (Briones, 1996: 18).
+
+Los investigadores que ya tienen una trayectoria trabajan habitualmente con un
+abanico delimitado de temas que son de su interés. En esta delimitación interviene
+en forma importante su adscripción a determinadas comunidades académicas (sea
+por pertenecer a organizaciones o redes de científicos, por compartir enfoques teóricos o temáticas específicas).
+
+El investigador, que trabaja en un marco institucional, tiene a su disposición paquetes, conjuntos de temas, que su propia comunidad de referencia define como
+relevantes y válidos. Es la propia comunidad académica la que define los contenidos
+temáticos y el menú de teorías y metodologías apropiadas a esos contenidos disciplinarios. Los investigadores se reconocen entre sí y establecen vínculos con otras
+instituciones y centros, se citan y critican, e inclusive, cuentan con sus propios órganos de difusión y encuentro. En el seno de estos conjuntos humanos, existe, por
+
+ 
+
+Comisión Sectorial de Enseñanza
+ 
+
+o
+! Universidad de la República
+
+lo general coincidencia paradigmática, preferencias por ciertos temas y teorías, por
+
+ende, metodologías (Sautu, 2005: 45-46).
+
+La revisión bibliográfica general implica una búsqueda de información que permita ubicar tanto en términos teóricos como de contexto socio-histórico a las preguntas y temáticas sobre las que se quiere investigar. La lectura de bibliografía
+teórica sobre los distintos aspectos con los que se vinculan estas preguntas permite
+comenzar a delimitar y definir conceptos que se muestran adecuados para el enfoque con el que se quiere responder a las preguntas de interés. Más importante
+aún, las teorías ponen en relación esos conceptos y utilizándolos proveen marcos
+explicativos sobre la realidad. Por tanto estas lecturas aportan un apoyo teórico
+para construir el problema de investigación. Las decisiones sobre qué teorías son
+adecuadas y cuáles se dejan de lado, incluso aquellas que se ponen en tela de juicio,
+constituyen un paso muy importante en el proceso de ruptura (ya no con el conocimiento cotidiano, sino con otras propuestas científicas) y en la construcción del
+objeto de investigación.
+
+A su vez, es necesario un relevamiento y análisis de otras investigaciones que
+hayan incursionado en la misma área temática, con fichado de los artículos (sistematización de las lecturas) y un intercambio con personas especializadas. Estas
+lecturas e intercambios permiten además aproximarse a distintas teorías generales
+y marcos teóricos específicos que han sido utilizados para trabajar el área temática
+de interés. En estos marcos es fundamental identificar conceptos, enunciados, comparar diferentes planteos.
+
+Para ubicar socio-históricamente la problemática a trabajar, es posible utilizar
+muy diversos tipos de documentos (prensa, documentos de organizaciones, material audiovisual, etcétera), además de entablar una comunicación con observadores,
+protagonistas, etcétera (que pueden ser considerados como informantes calificados).
+
+La mirada crítica y las preguntas que se realicen sobre este conjunto de informaciones y antecedentes permitirá tomar decisiones sobre los aspectos que tienen
+vactos de conocimiento (sea por falta de investigaciones anteriores o por inadecuación de las mismas para contestar nuestras preguntas, etcétera). Es un proceso de
+reflexión en el cual se delimita el marco teórico a la vez que se fija con precisión qué
+es lo que interesa estudiar empíricamente.
+Ejemplo
+Toda investigación o proyecto se inicia con un conjunto de consideraciones acerca de aquella
+parte del mundo social que se desea estudiar. En algunos casos se trata de cuestiones muy cercanas a nuestra experiencia, como por ejemplo las razones que explican por qué algunos niños
+no alcanzan a cumplir con los estándares impuestos por la escuela. Otros casos, en cambio, son
+más difusos, más generales, tal como sería comprender por qué hay tan marcadas diferencias
+entre Estados (o provincias) en el número y proporción de niños que repiten el año que cursan
+(una o más veces) debido a que no han alcanzado los estándares escolares para pasar de nivel.
+[Con este tema] podremos ejemplificar el trabajo de reflexión que debe hacer un investigador
+en la etapa inicial de su proyecto de investigación.
+Al plantearse este tema, el investigador se pregunta:
+I. ¿A qué clase de personas afecta el tema que deseo estudiar? A niños que concurren al
+ciclo escolar seleccionado para estudiar.
+2. ¿A todos los niños? No, solo a algunos.
+3. ¿Quiénes y cómo son esos niños que no alcanzan los estándares? y ¿quiénes son aquellos
+que sí lo alcanzan?
+Continuando con preguntas de este tipo la primera conclusión es que se trata de un tema que
+teóricamente podría ser ubicado en el nivel del comportamiento, que tiene un gran componente
+psicosocial (están involucrados el aprendizaje y la adaptación al sistema escolar). También, y
+siguiendo nuestros interrogantes basados en continuas lecturas, encontramos que los comportamientos de los niños (cómo les va en la escuela) están afectados por la interacción con docentes y compañeros dentro de la propia escuela; y más aún, que sus hogares también influyen.
+Aunque familias y escuelas aparecen involucradas en nuestra reflexión, e/ núcleo del tema es el
+rendimiento escolar de los niños. Hemos estado pensando en un estudio de los denominados
+microsociales en el cual las Z/erencias en los rendimientos escolares no son Vistas como resultado de aptitudes individuales, sino como producto de un conjunto de procesos que explican
+esos rendimientos diferenciales. Aunque el comportamiento escolar está localizado en el nivel
+de los niños, /as explicaciones son societales, como por ejemplo: pertenecer a un hogar donde
+se come todos los días, estar abrigado, tener libros, tiempo y espacio para leerlos, concurrir
+a una escuela bien equipada, con docentes que hacen el máximo esfuerzo para que el niño/a
+aprenda, entre otras cuestiones.
+La segunda pregunta, más alejada de nuestra experiencia cotidiana, es: ¿por qué en ciertos
+Estados/ provincias es mayor la proporción de niños que repiten el año escolar ya que no
+alcanzaron los estándares esperados?
+Esa proporción (atributos de los Estados/ provincias) es el núcleo de nuestra preocupación.
+Nos interesa el colectivo formado por los repitientes. Este es parte de la estructura social de
+los Estados; para investigarlo necesitamos preguntarnos acerca de los recursos escolares disponibles (cantidad y calidad) y las condiciones socio-económicas de los hogares del estado.
+Mientras para el primer tema necesito recurrir a eorías microsociales que den cuenta de los
+procesos de aprendizaje, de la influencia de la inzeracción escolar y de la presencia del hogar,
+en el segundo estudio debo recurrir a teorías macrosociales de la desigualdad estructural
+socioeconómica y de las oportumidades educativas que es posible encontrar en diversos
+Estados/ provincias. Estas son teorías que tratan del desarrollo económico y social desigual.
+A mbos temas son dos caras de una misma realidad, pero la investigación de uno o de otros
+requiere que se especifiquen en el marco teórico, de lo contrario llegaríamos a conclusiones
+triviales, como puede ser explicar las dificultades de aprendizaje de los niños por la macroestructura o las diferencias regionales por las conductas de los maestros.
+Por otra parte, una teoría que integre los niveles macro y microsociales debería especificar los procesos sociales complejos que operan como intermediarios entre ambos niveles.
+Intuitivamente sabemos que en los Estados/ provincias donde predominan hogares pobres la
+infraestructura escolar es de peor calidad. También sabemos que la familia es el motor de las
+motivaciones de los niños, y que hay escuelas que no suplen, con sus estilos de enseñanza,
+esas carencias. Todas estas cuestiones requieren de investigaciones acotadas y sustentadas en
+teorías específicas (Sautu e7 al., 2005: 30-32).
+
+Comisión Sectorial de Enseñanza
+
+ 
+ 
+
+o
+! Universidad de la República
+
+Ejercicios y preguntas
+
+I. Busque en la prensa actual opiniones sobre algún problema social (por ejemplo: deserción en la enseñanza media, niños en situación de pobreza, seguridad ciudadana, participación política de los jóvenes, etcétera). Traduzca
+estos problemas en temas pasibles de ser investigados desde alguna disciplina
+de las Ciencias Sociales. Busque investigaciones realizadas sobre ese tema.
+¿Encuentra diferencias entre la imagen de la realidad que dan las opiniones y
+la que se extrae de las investigaciones?
+
+2. Considere una de esas investigaciones e identifique el problema de investigación del cual parte.
+3. Elija un tema de su interés y formule una lista de preguntas que le parez
+can pertinentes para generar problemas de investigación. ¿Qué dificultades
+encuentra?
+El marco teórico en la investigación social
+
+La teoría en el proceso de investigación
+
+Como ya se ha mencionado, toda investigación científica se inicia con la teoría.
+Utilizándola, quien va a investigar construye su objeto de estudio de modo de despojarse del conocimiento común y del saber inmediato acerca del tema a investigar.
+La investigación se organiza, como dice Bourdieu, «en torno de objetos construidos
+que no tienen nada en común con aquellas unidades delimitadas por la percepción
+ingenua» (Bourdieu e7 a/., 1975: 52), y esto se logra con la teoría.
+
+La teoría permite procesar la ruptura epistemológica y estructurar el problema
+de investigación, de allí en más estará presente en todas las etapas del trabajo, tanto
+en la selección de las técnicas, en la contrastación empírica como en el análisis de
+los resultados.
+
+En términos restrictivos puede definirse la teoría como «el conjunto de proposiciones lógicamente interrelacionadas del cual se derivan implicaciones que se usan
+para explicar algunos fenómenos» (Johnson, 1997, en Sautu, 2005).
+
+Teoría (en términos restrictivos) es un «grupo de proposiciones lógicamente interconectadas de las que pueden deducirse uniformidades empíricas, siendo sus componentes básicos los conceptos, las proposiciones y los axiomas o leyes» (Merton,
+1993, en Perelló Salvador, 2009: 68).
+
+Merton distinguía entre las teorías generales (de mayor nivel de abstracción, poco
+contrastadas empíricamente, pero que sirven de guía para el proceso de investigación y proporcionan explicación a los hallazgos), y teorías de alcance medio
+(limitadas a aspectos concretos de la realidad social, posibles de ser contrastados
+empíricamente) (Perelló Salvador, 2009: 68).
+
+ 
+
+Desde una concepción más amplia y pragmática que prioriza los requerimientos
+del diseño de investigación (Sautu, 2005), la teoría no se limita exclusivamente a lo
+que habitualmente se denomina de ese modo (en este caso teoría social), sino que
+incluye supuestos paradigmáticos, teorías generales de la sociedad y el cambio histórico, teorías sustantivas vinculadas a la temática que se investiga y teorías referidas
+a la observación, medición y construcción de evidencia empírica. De modo que la
+teoría está imbricada en todo el proceso de la investigación.
+
+La idea de teoría o de qué es la teoría cuando se la define en el contexto de una investigación, impregna la totalidad del diseño, incluyendo obviamente la construcción
+del marco y los supuestos teóricos que sostienen la utilización de modelos estadísticos o una estrategia cualitativa de análisis (Sautu, 2005: 42).
+
+ 
+
+Comisión Sectorial de Enseñanza
+ 
+
+N
+! Universidad de la República
+
+Ejemplo
+El problema de investigación será: Los significados atribuidos al trabajo por los
+
+jóvenes uruguayos.
+Tal formulación del problema implica el supuesto epistemológico que la realidad
+
+es construida por los sujetos y que en el proceso de conocimiento el investigador
+participa de la construcción de dicha realidad junto con los sujetos de conocimiento, en este caso los jóvenes. En relación directa a esta concepción hay también una
+definición de sociedad y del cambio social.
+
+ 
+
+Por otra parte, tal problema requiere de una teoría sustantiva vinculada a la
+temática, es decir, al lugar del trabajo en la sociedad, en especial a la relación que
+los jóvenes tienen con este. Por último, implica supuestos teórico-metodológicos
+en este caso vinculados a la producción de discurso por parte de los sujetos y a las
+condiciones que se requieren para generarlo.
+
+Marco teórico: aproximación a una definición
+y a su función en el proceso de investigación
+
+Teoría no es sinónimo de marco teórico. Este es una elaboración propia que
+toma como insumos la teoría y la lectura de otro tipo de documentos, así como la
+propia reflexión. Elaborar el marco teórico implica «analizar y exponer las teorías,
+los enfoques teóricos, las investigaciones y los antecedentes en general, que se consideren válidos para el correcto encuadre del estudio» (Rojas, 2001, en Hernández
+Sampieri, 2003).
+
+El marco teórico constituye un corpus de conceptos de diferentes niveles de abstrac
+ción, articulados entre sí, que orientan la forma de aprehender la realidad. Contiene
+
+supuestos acerca del funcionamiento de la sociedad y conceptos que se desprenden
+
+de la teoría sustantiva adoptada sobre el fenómeno que se va a investigar (Sautu er
+
+al., 2005: 34).
+
+En palabras de los mismos autores:
+
+[El] marco teórico de una investigación es en realidad un argumento en el que se
+
+entretejen paradigmas (ideas acerca del conocimiento mismo y cómo producirlo vá
+lidamente), teorías generales (concepciones generales de la sociedad), y teorías sus
+tantivas (conceptos e ideas del tema específico a investigar (Sautu e7 al., 2005: 45).
+
+Este planteo no implica dar cuenta de todo el conocimiento existente en la
+temática, tarea que, por otra parte, sería imposible. Es decir, no se trata del estado
+de arte del problema. No es la justificación de la investigación, si bien esta forma
+parte de todo proyecto de investigación, ni un recorrido histórico del fenómeno.
+Tampoco son valoraciones del investigador o reflexiones filosóficas.
+
+El marco teórico de elaboración propia, cuyo contenido como señala Sautu es
+ese corpus de conceptos de diferentes niveles de abstracción, cumple varias funciones en el proceso de investigación (Hernández Sampieri, 200 3) entre las que vale
+mencionar:
+*  Conduce a la formulación de hipótesis que serán contrastadas empíricamente.
+
+* Proporciona los principales conceptos que luego serán operacionalizados, de
+modo que cada uno de ellos cuente con un referente empírico.
+
+* Orienta sobre cómo se realizará la investigación, es decir, sobre la estrategia
+de la investigación.
+
+* Provee de un marco interpretativo a los resultados de la investigaeión.
+
+Marco teórico, marco conceptual y antecedentes
+
+En el marco teórico el investigador desarrolla los principales conceptos que definen el objeto de investigación. Para llegar a los conceptos adecuados, así como a
+la mejor forma de formular el problema, el investigador recurre a los principales
+antecedentes en la temática. Indaga, mediante revisión bibliográfica, en informes
+de investigaciones ya existentes y, frecuentemente, da cuenta de ellas en su marco
+teórico.
+
+Revisión de literatura o revisión bibliográfica
+
+Consiste en detectar, obtener y consultar la bibliografía y otros materiales que
+sean útiles para los propósitos [de la investigación|, de donde se tiene que extraer y
+
+recopilar la información relevante y necesaria que atañe a nuestro problema de in
+vestigación. La revisión debe ser selectiva priorizando lo más importante, reciente,
+y los contenidos más importantes para nuestro problema de investigación (Hernández Sampieri, 2003: 66-67).
+
+ 
+
+Para evitar confusiones frecuentes entre marco teórico y antecedentes, algunos
+autores, como Briones, prefieren distinguir las expresiones marco teórico, marco de
+antecedentes y marco conceptual.
+
+[ Así, entiende que el marco de antecedentes] está formado por el conjunto de conocimientos que otros estudios ya han logrado sobre el tema o el problema de investigación propuesto por el investigador. Son referencias directas a resultados obtenidos
+dentro de una misma área de indagación.
+
+[Mientras que el marco teórico] es el uso de una o más teorías en las cuales se fundamenta directamente el problema de investigación. Esas teorías pueden haber sido
+propuestas por otros investigadores, como también, sin perjuicio de su aceptación,
+pueden contener modificaciones a tales teorías hechas por el investigador o bien
+contener una teoría elaborada por el propio investigador.
+
+[Finalmente, marco conceptual| es una elaboración que el investigador hace a un
+nivel más general que el formado por el marco de antecedentes, si bien habitualmente aquel queda comprendido en este otro marco. En la elaboración conceptual el
+investigador propone definiciones de algunos de los conceptos que utiliza, supuestos,
+hipótesis, etcétera. Se podría decir que el marco conceptual es una especie de teorización o de problematización hecha por el investigador sin grandes pretensiones de
+consistencia lógica entre las proposiciones que utiliza, aun cuando se haga referencia
+a una o más teorías (Briones, 1996: 2 1).
+
+ 
+
+Comisión Sectorial de Enseñanza
+ 
+
+! Universidad de la República
+
+Es habitual que los investigadores no distingan entre marco teórico y marco
+conceptual, y utilicen el concepto marco teórico en alusión a una combinación
+de ambos. Otros investigadores incluyen bajo el mismo término los antecedentes.
+Briones (1996) reconoce que es frecuente que el marco teórico contenga los otros
+dos componentes.
+
+En este manual, se considera importante distinguir entre marco teórico y de
+antecedentes, si bien luego en la experiencia profesional, según los requerimientos
+de cada proyecto de investigación puedan asimilarse ambos contenidos.
+
+Elaboración de un marco teórico
+
+La elaboración del marco teórico en general requiere de dos etapas: revisión
+bibliográfica y adopción de teorías de referencia. Siguiendo a Hernández Sampieri,
+los criterios más comunes para evaluar una teoría, particularmente desde el enfoque
+cuantitativo son:
+
+* La capacidad de descripción, explicación y predicción de los fenómenos a los
+que refiere.
+
+* La consistencia lógica. Las proposiciones que la integran deben estar relacionadas, no deben ser contradictorias.
+
+* La perspectiva. Refiere a la capacidad de abarcar fenómenos a explicar y las
+posibilidades de aplicación. Cuanto más fenómenos explique y mayor aplicabilidad, mayor perspectiva tiene la teoría.
+
+* La /rucnficación (heurística). Denota la capacidad de la teoría de generar
+nuevas ínterrogantes y por lo tanto de avanzar en el conocimiento científico.
+
+* La parsimoma. Refiere al equilibrio entre la capacidad explicativa y la simplicidad. Maximizando la primera, y procurando la simplicidad a través de
+un número reducido de proposiciones (Hernández Sampieri, 2003: 90-91).
+
+Una vez seleccionada y revisada la bibliografía de referencia y extraída de ella
+las teorías que van tomarse en la construcción del marco teórico, un camino conveniente para proceder a la redacción del marco teórico puede ser el que propone
+Sautu (2005: 27):
+
+* “Transformar los contenidos sustantivos de cada texto en oraciones en las cuales se postulan: descripciones de sucesos o procesos, relaciones entre conceptos, condiciones bajo las cuales los sucesos o procesos tienen lugar o son
+modificados.
+
+*  Identificar las poblaciones y subpoblaciones acerca de las cuales se hace referencia, así como su ubicación espacio-temporal.
+
+* Desarrollar un esquema unificador argumentativo.
+
+* Ubicar en el esquema los conceptos y señalar el papel que juegan en el
+argumento.
+. Completar con nueva bibliografía los conceptos y proposiciones que no pudieron ser vinculados entre sí en el esquema argumentativo.
+
+* Acondicionar el esquema todas las veces que sea necesario.
+
+Como resultado, un buen marco teórico no lo es por su extensión, sino porque
+aborda en profundidad «únicamente los aspectos relacionados con el problema, y
+vincula lógica y coherentemente los conceptos y las proposiciones |...]. Construir el
+marco teórico no significa solo reunir información, sino también |vincularla adecuadamente|» (Hernández Sampieri, 2003: TO2).
+
+Conceptos
+
+Los conceptos provienen y forman parte de la teoría por lo tanto son abstracciones. En el marco de la elaboración de un proyecto de investigación hay una apropiación de determinados conceptos a partir de los cuales se construye el objeto de
+investigación (como por ejemplo: aprendizaje, identidad colectiva, conflicto, ciudadanía, organización, pobreza) y será en torno a ellos que se centrarán las siguientes
+etapas de la investigación.
+
+Se piensa con conceptos. Ellos están presentes en todo y en cada uno de los momentos
+
+de un proceso de investigación y es necesaria una vigilancia constante para trabajar
+
+siempre con conceptos tan precisos como sea posible. Precisión en relación con su uni
+vocidad y con su enunciación o definición, pero también en su relación con la teoría del
+conocimiento, con las corrientes disciplinarias por las que se ha optado, con el objeto
+
+de estudio y con la situación problemática que originó la investigación |...]. Cualquiera
+
+sea el objetivo de un proceso de producción de conocimiento, se enfrenta con el pro
+blema de la construcción de conceptos univocos (Borsotti, 2006: 136).
+
+Estos conceptos estarán presentes en los objetivos de investigación (tema que
+será presentado en el capítulo V), así como también y especialmente en la etapa de
+contrastación empírica.
+
+Siguiendo a Sautu (2005: 71-72) los conceptos:
+
+* Seutilizan con referencia a procesos, cosas, propiedades. Por ejemplo: socialización, elementos de contort, inteligencia.
+
+* Hay conceptos formales que se refieren a causalidad, estructura. Por ejemplo:
+Estratificación social, sistema espacio-temporal | Globalización|.
+
+* — |[...] son formas de juntar y categorizar datos; el diálogo con los datos permite
+definir y delimitar conceptos. Una forma de este diálogo es usar conceptos
+por asociación. El concepto engloba situaciones, circunstancias, consecuencias, atributos de X [Por ejemplo: este caso es una instancia de maltrato infantil, violencia familiar|.
+
+* Son generalizaciones y, por lo tanto, no son lo mismo que el caso o no se
+ajustan a un caso real |Por ejemplo: países pobres o los 1pos de dominación de Weber: dominación racional, dominación carismática y dominación
+tradicional|.
+
+ 
+
+Comisión Sectorial de Enseñanza
 

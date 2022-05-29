@@ -1,4 +1,4 @@
-DOCS_ROUTE = "docs/"
+DOCS_ROUTE = "./"
 OUTPUT_TEXT = "out_text.txt"
 OUTPUT_FILE = "Output.txt"
 OCR_MODEL = "es_core_news_sm"
