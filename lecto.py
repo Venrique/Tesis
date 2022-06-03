@@ -27,11 +27,8 @@ last_page = 1
 Image.MAX_IMAGE_PIXELS = None
 basedir = os.path.dirname(__file__)
 
-class ObjectTemplate( object ):
-    pass
-
-def create_images_from_file(values, updateProgress, end_page, work):
-    #------------------------------------------------------------------------------------
+#Convierte las páginas de un archivo PDF a imágenes y las guarda en un arreglo
+def create_images_from_file(values, updateProgress, work):
     file_pil_images = []
     blocks = range(values['first_page'], values['last_page']+1, 10)
     index = 1
@@ -43,10 +40,11 @@ def create_images_from_file(values, updateProgress, end_page, work):
             file_pil_images.extend(convert_from_path(values['file_path'], dpi=values['dpi'], first_page=page, last_page = min(page+10-1,values['last_page'])))
         else:
             file_pil_images.extend([""]*min(page+10-1,values['last_page']))
-    #------------------------------------------------------------------------------------
+
     updateProgress.emit("Creando imagen de página "+str(values['first_page'])+"..." if work[0] else "Cancelando...")
     create_images(file_pil_images, values['first_page'], values['last_page'], updateProgress, work)
 
+#Guarda las imágenes creadas en la ruta especificada
 def create_images(pil_images, first_page, end_page, updateProgress, work):
     page_number = first_page
     for image in pil_images:
@@ -63,6 +61,7 @@ def create_images(pil_images, first_page, end_page, updateProgress, work):
     global number_pages
     number_pages = page_number
 
+#La imagen se convierte primero a escala de grises y luego se binariza para obtener mejores resultados
 def refine_image(values, updateProgress, work):
     first_page= values['first_page']
     last_page=values['last_page']
@@ -92,6 +91,7 @@ def refine_image(values, updateProgress, work):
             updateProgress.emit("Limpiando almacenamiento..." if work[0] else "Cancelando...")
     values['file_to_read'].close()
 
+#Se crea la imagen binarizada y se guarda. La imagen en escala de grises se desecha 
 def plot_image(plot_configs, binary_otsu):
     matplotlib.rcParams['font.size'] = 12
     mult=5
@@ -108,6 +108,7 @@ def define_file_name(number):
 def define_file_path(file_name):
     return DOCS_ROUTE+file_name
 
+#Elimina las imagenes originales, a las que no se les ha aplicado ningún algoritmo de procesamiento de imágenes
 def delete_files(first_page, last_page, updateProgress, work):
     global number_pages
     number_pages = number_pages
@@ -121,16 +122,19 @@ def delete_files(first_page, last_page, updateProgress, work):
             continue
     updateProgress.emit("Limpiando texto plano..." if work[0] else "Cancelando...")
 
+#Devuelve el texto depurado 
 def refine_text(Lines):
     raw_text = extract_file_text(Lines)
     return substract_from_text(raw_text)
 
+#Junta todas las líneas de un texto en una sola variable
 def extract_file_text(Lines):
     text_raw = ''
     for line in Lines:
         text_raw += line
     return text_raw
 
+#Limpia el texto usando expresiones regulares
 def substract_from_text(raw_text):
     raw_text = re.sub(r'[0-9]+', '', raw_text)
     raw_text = re.sub(r'@', '', raw_text)
@@ -139,7 +143,8 @@ def substract_from_text(raw_text):
     raw_text = raw_text.encode("latin-1","ignore").decode("latin-1")
     refined_text = re.sub(r'[\r\n\t\v\f]+', ' ', raw_text)
     return refined_text
-    
+
+#Cuenta la cantidad de frases en un párrafo  
 def calculate_phrases(phrases): 
     counter = 0
     
@@ -147,6 +152,7 @@ def calculate_phrases(phrases):
         counter += 1
     return counter
 
+#Cuenta la cantidad de palabras en un párrafo
 def calculate_words(words):
     counter = 0
     
@@ -155,6 +161,7 @@ def calculate_words(words):
             counter += 1
     return counter
 
+#Cuenta la cantidad de sílabas en un párrafo
 def calculate_syllables(words):
     syllables_counter = 0
     for word in words:
@@ -162,11 +169,12 @@ def calculate_syllables(words):
             syllables_counter += get_word_syllables(word)
     return syllables_counter
 
+#Extrae las sílabas de cada palabra
 def get_word_syllables(word):
     syllables, stress = syllabize(u'{}'.format(word.text))
     return len(syllables)
 
-
+#Cuenta las letras en una palabra
 def get_letters_per_word(words):
     letters_counter = []
     for word in words:
@@ -175,6 +183,7 @@ def get_letters_per_word(words):
     
     return letters_counter
 
+#Evalúa las fórmulas de perspicuidad con los datos obtenidos y obtiene los resultados
 def calculate_perspicuity(perspicuity_values):
     return {
         SIGRISZPAZOS: round(SzigrisztPazos(perspicuity_values).calculate(),2),    
@@ -182,6 +191,7 @@ def calculate_perspicuity(perspicuity_values):
         MULEGIBILITY: round(MuLegibility(perspicuity_values).calculate(),2),
     }
 
+#Crea el archivo PDF que muestra los resultados obtenidos y los gráficos
 def generatePDF(updateProgress, values_to_print, file_route, file_name, sorted_formulas, generate_complete_report, pdf_complete_report, number_of_pharagraphs, work):
     if work[0]:
         pdf = PDF()
@@ -190,7 +200,6 @@ def generatePDF(updateProgress, values_to_print, file_route, file_name, sorted_f
         pdf.print_resumen(values_to_print, file_name)
         if generate_complete_report:
             pdf.print_complete_report(pdf_complete_report, sorted_formulas, number_of_pharagraphs)
-        #Agregando anexos supuestamente
         pdf.add_page()
         pdf.seccion("Anexos")
         pdf.anexos()
@@ -200,6 +209,7 @@ def generatePDF(updateProgress, values_to_print, file_route, file_name, sorted_f
 def clean_file(file):
     open(file, "w", encoding="utf-8").close()
 
+#Crea todos los gráficos que se agregan al PDF de resultados
 def plot_aggregate_results(paragraphsNumbers, plotData, updateProgress, work):
     bins = [0,10,20,30,40,50,60,70,80,90,100]
 
@@ -249,6 +259,7 @@ def plot_aggregate_results(paragraphsNumbers, plotData, updateProgress, work):
     updateProgress.emit("Gráficos completados..." if work[0] else "Cancelando...")
     plt.clf()
 
+#Función principal que maneja todo el flujo del programa
 def process_file(process_configs, updateProgress, work):
     clean_file(OUTPUT_TEXT)
     clean_file(OUTPUT_FILE)
@@ -258,7 +269,7 @@ def process_file(process_configs, updateProgress, work):
 
     pdf_configs = {'dpi':900, 'file_path': process_configs['file'], 'first_page': process_configs['first_page'], 'last_page': process_configs['last_page']}
     updateProgress.emit("Iniciando proceso de lectura del PDF..." if work[0] else "Cancelando...")
-    create_images_from_file(pdf_configs, updateProgress, process_configs['page_total'], work)
+    create_images_from_file(pdf_configs, updateProgress, work)
     file_to_read = open(OUTPUT_TEXT, "a", encoding="utf-8")
     last_page = process_configs['last_page'] if process_configs['last_page']<number_pages else number_pages
     image_cleaner_configs = {'file_to_read': file_to_read, 'first_page': process_configs['first_page'], 'last_page': last_page}
@@ -280,9 +291,7 @@ def process_file(process_configs, updateProgress, work):
             Lines = raw_file.readlines()
             refined_text = refine_text(Lines)
             pharagraphs = refined_text.split('@')
-            #print(pharagraphs)
             pharagraphs = list(filter(None, pharagraphs))
-            #print(pharagraphs)
 
         results = []
         pdf_complete_report = []
@@ -337,15 +346,10 @@ def process_file(process_configs, updateProgress, work):
             if process_configs['gen_csv']:
                 csv.write(str(index) + csvSeparator + str(result[SIGRISZPAZOS])  + csvSeparator + str(result[FERNANDEZHUERTA])+ csvSeparator + str(result[MULEGIBILITY])+"\n")
 
-            #plot_perspicuity_values(result, index+1)
             final_analysis = {"parrafo": pharagraph, "palabrasParrafo":word_counter, "frasesParrafo":phrases_counter, "silabasParrafo":syllables_counter, 'perspicuidad':result}
-            
-            #print([pharagraph, final_analysis])
 
             results.append([pharagraph, final_analysis])
             pdf_complete_report.append(final_analysis)  
-        #pdf = PDF()
-        #pdf.print_complete_report(pdf_complete_report)
         plot_aggregate_results(paragraphsNumbers, plotData, updateProgress, work)
 
         if process_configs['gen_csv'] and work[0]:
@@ -375,9 +379,11 @@ def process_file(process_configs, updateProgress, work):
 
         generatePDF(updateProgress, values_to_print, save_route, file_name, sorted_formulas, process_configs['full_report'], pdf_complete_report, len(pharagraphs), work)
 
+#Ordena los párrafos dependiendo del índice de perspicuidad promedio obtenido
 def sort_formulas_results(formulas):
     return sorted(formulas, key=lambda x: float(x["indice_perspicuidad"]), reverse=True)
 
+#Obtiene el índice de perspicuidad promedio de todos los párrafos por cada fórmula 
 def calculate_average_formulas(formula):
     counter = 0
     total_sum = 0

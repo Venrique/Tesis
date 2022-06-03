@@ -9,19 +9,18 @@ class PDF(FPDF):
 
     pdf_y=0
 
+    #Aumenta el valor de la variable "y" global que se usa para colocar elementos en el PDF
     def aumentarValorY(self, aumento):
         self.pdf_y += aumento
         return self.pdf_y
 
-    def marca(self):
-        self.image('Logo-watermark.png',30, 73.5, 150)
-
+    #Escribe títulos 
     def titles(self, text):
         self.set_xy(0.0,self.pdf_y)
         self.set_font('Arial', 'B', 16)
         self.cell(w=210.0, h=30.0, align='C', txt=text, border=0)
 
-    
+    #Escribe el header del documento
     def encabezado(self, archivo):
         self.set_font('Times', 'B', 12)
         self.set_xy(10.0,self.aumentarValorY(30.0))
@@ -31,6 +30,7 @@ class PDF(FPDF):
 
         self.cell(0, 0, 'Fecha: %s' % (date.today().strftime("%d/%m/%Y")), 0, 1, 'R', 0)
 
+    #Escribe los separadores de cada sección
     def seccion(self, title):
         self.set_font('Times', 'B', 12)
         self.set_fill_color(200, 220, 255)
@@ -38,6 +38,7 @@ class PDF(FPDF):
         self.cell(0, 6, '%s' % (title), 0, 1, 'L', 1)
         self.set_font('Times', '', 12)
 
+    #Índice de perspicuidad de Szigrizs Pazos
     def get_ValorTablaSzigrizs(self,result):
         if 0 <= result < 15:
             self.set_fill_color(248,105,107)
@@ -61,6 +62,7 @@ class PDF(FPDF):
             self.set_fill_color(99,190,123)
             return "Lectura Muy Fácil"
     
+    #Índice de perspicuidad de Fernandez Huerta
     def get_ValorTablaFernandez(self,result):
         if 0 <= result < 30:
             self.set_fill_color(248,105,107)
@@ -84,6 +86,7 @@ class PDF(FPDF):
             self.set_fill_color(99,190,123)
             return "Lectura Muy Fácil"
 
+    #Índice de perspicuidad Mu
     def get_ValorTablaMu(self,result):
         if 0 <= result < 30:
             self.set_fill_color(248,105,107)
@@ -106,7 +109,8 @@ class PDF(FPDF):
         elif 90 <= result <= 100:
             self.set_fill_color(99,190,123)
             return "Lectura Muy Fácil"
-        
+    
+    #Índice de perspicuidad de Inflesz
     def get_ValorTablaInflesz(self,result):
         if 0 <= result < 40:
             self.set_fill_color(248,105,107)
@@ -124,6 +128,7 @@ class PDF(FPDF):
             self.set_fill_color(99,190,123)
             return "Lectura Muy Fácil"
     
+    #Obtiene el valor del índice de perspicuidad 
     def get_ValorTabla(self,formula,result):
         if formula == SIGRISZPAZOS:
             return self.get_ValorTablaSzigrizs(result)
@@ -134,6 +139,7 @@ class PDF(FPDF):
         elif formula == INFLESZ:
             return self.get_ValorTablaInflesz(result)
 
+    #Conclusiones
     def get_ValorTablaGeneral(self,result):
         if 0 <= result < 15:
             return {"textos":"textos de contenido científico o filosófico, que tienen una naturaleza muy profunda", "publico_recomendado": "son las personas con grado universitario o a punto de culminar su educación superior."}
@@ -150,6 +156,7 @@ class PDF(FPDF):
         elif 85 <= result < 100:
             return {"textos":"textos como cuentos, relatos o tebeos (historietas cortas dirigidas a niños, también llamados viñetas), cuya naturaleza es superficial o coloquial", "publico_recomendado": "son los niños entre 6 y 10 años."}
 
+    #Obtiene la conclusión en base al promedio de todos los valores de perspicuidad 
     def get_conclusion_general(self, result):
         avg_result = (result[SIGRISZPAZOS]['value']+result[FERNANDEZHUERTA]['value']+result[MULEGIBILITY]['value'])/3
         resultados = self.get_ValorTablaGeneral(avg_result)
@@ -161,7 +168,7 @@ class PDF(FPDF):
         self.set_y(self.aumentarValorY(6.5))
         self.multi_cell(0, self.font_size * 1.25, conclusion)
 
-
+    #Escribe los resultados de las fórmulas en el PDF
     def print_formulas(self, result):
         
         self.set_y(self.aumentarValorY(12.0))
@@ -193,6 +200,7 @@ class PDF(FPDF):
         self.set_font('Times', '', 12)
         self.print_formulas(result)
 
+    #Agrega las imágenes de los gráficos al PDF
     def graficos(self):
         self.set_y(self.aumentarValorY(8.0))
         self.image(DOCS_ROUTE + PLOT_SIGRISZPAZOS,10, self.pdf_y, 90)
@@ -205,6 +213,7 @@ class PDF(FPDF):
         self.set_xy(10,self.aumentarValorY(10.0))
         self.image(DOCS_ROUTE + PLOT_PARAGRAPHS,23.5, self.pdf_y, 250)
 
+    #Índices de perspicuidad en los anexos del PDF
     def anexos(self):
         self.pdf_y = 0
         sigrisz = (
@@ -322,7 +331,7 @@ class PDF(FPDF):
                         new_x="RIGHT", new_y="TOP", max_line_height=self.font_size)
             self.ln(line_height)        
 
-
+    #Ejecuta los procesos del cuerpo del PDF resúmen
     def resultados_generales(self,result):
         self.set_xy(10.0,self.aumentarValorY(8.0))
         self.seccion("1. Resultados")
@@ -331,10 +340,12 @@ class PDF(FPDF):
         self.graficos()
         self.get_conclusion_general(result)
 
+    #Crea el header y el cuerpo del PDF
     def print_resumen(self,result,titulo):
         self.encabezado(titulo)
         self.resultados_generales(result)
 
+    #Crea el PDF completo con el detalle por párrafo
     def print_complete_report(self, pharagraph_values, sorted_formulas, number_of_pharagraphs):
         pdf = self
         pdf.add_page()
@@ -416,6 +427,7 @@ class PDF(FPDF):
             pdf.ln(4*th)
         #pdf.output("testing.pdf")
 
+#Ajusta los 5 mejores párrafos para cuando el total de párrafos es menor a 10
 def validate_top_pharagraphs(number_of_pharagraphs, top_pharagrahps):
     highest_pharagrahps = None
     if number_of_pharagraphs > 9:
@@ -432,6 +444,7 @@ def validate_top_pharagraphs(number_of_pharagraphs, top_pharagrahps):
         highest_pharagrahps = []
     return highest_pharagrahps
 
+#Ajusta los 5 peores párrafos para cuando el total de párrafos es menor a 10
 def validate_lowest_pharagraphs(number_of_pharagraphs, top_pharagrahps):
     lowest_pharagraps = None
     if number_of_pharagraphs > 9:
@@ -448,6 +461,7 @@ def validate_lowest_pharagraphs(number_of_pharagraphs, top_pharagrahps):
         lowest_pharagraps = []
     return lowest_pharagraps
 
+#Agrega al título del párrafo un texto si se encuentra en los 5 mejores o peores párrafos
 def set_aditional_title(index, number_of_pharagraphs, top_pharagrahps, lowest_pharagraps):
     additional_title = ''
     if any(x['parrafo'] == str(index) for x in top_pharagrahps):
