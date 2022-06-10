@@ -1,6 +1,6 @@
 import os
 import re
-import spacy
+from spacy import load
 import matplotlib
 import matplotlib.pyplot as plt
 import pytesseract
@@ -9,7 +9,7 @@ import ctypes
 
 from constants import *
 from skimage.color import rgb2gray
-from skimage.filters import (threshold_otsu, threshold_niblack, threshold_sauvola, thresholding)
+from skimage.filters import (threshold_otsu, thresholding)
 
 from syltippy import syllabize
 from PIL import Image
@@ -277,7 +277,7 @@ def process_file(process_configs, updateProgress, work):
 
     delete_files(process_configs['first_page'], last_page, updateProgress, work)
 
-    nlp = spacy.load(OCR_MODEL)
+    nlp = load(OCR_MODEL)
 
     szigriszt_values = []
     fernandez_huerta_values = []
