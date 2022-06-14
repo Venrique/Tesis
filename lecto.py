@@ -1,11 +1,13 @@
 import os
 import re
-from spacy import load
+from spacy import load, parts_of_speech, lexeme, tokens
+
 import matplotlib
 import matplotlib.pyplot as plt
 import pytesseract
 import skimage.io
 import ctypes
+import es_core_news_sm
 
 from constants import *
 from skimage.color import rgb2gray
@@ -136,10 +138,10 @@ def extract_file_text(Lines):
 
 #Limpia el texto usando expresiones regulares
 def substract_from_text(raw_text):
-    raw_text = re.sub(r'[0-9]+', '', raw_text)
+    raw_text = re.sub(r'[0-9](\.[0-9]+)*', '', raw_text)
     raw_text = re.sub(r'@', '', raw_text)
     raw_text = re.sub(r'(  +)', ' ', raw_text)
-    raw_text = re.sub(r'(\.|\!|\?|\:)[\r\n\v\f][\r\n\v\f ]+', '.@', raw_text)
+    raw_text = re.sub(r'(\.|\!|\?|\:)[\r\n\v\f][\r\n\v\f ]+', r'\1@', raw_text)
     raw_text = raw_text.encode("latin-1","ignore").decode("latin-1")
     refined_text = re.sub(r'[\r\n\t\v\f]+', ' ', raw_text)
     return refined_text
@@ -277,7 +279,7 @@ def process_file(process_configs, updateProgress, work):
 
     delete_files(process_configs['first_page'], last_page, updateProgress, work)
 
-    nlp = load(OCR_MODEL)
+    nlp = es_core_news_sm.load()
 
     szigriszt_values = []
     fernandez_huerta_values = []
