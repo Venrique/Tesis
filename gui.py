@@ -21,7 +21,10 @@ import PyPDF2
 from PyQt6.QtCore import (Qt, QRunnable, pyqtSlot, QThreadPool, pyqtSignal, QObject)
 
 
+#Clase que contiene todas las rutinas de la interfaz gráfica
 class MainWindow(QMainWindow):
+
+    #Constructor de la clase inicializando variables
     def __init__(self, process):
         super().__init__()
 
@@ -33,6 +36,7 @@ class MainWindow(QMainWindow):
         self.working = [True]
 
 
+    #Construcción de la interfaz de usuario.
     def initUI(self):
         self.currentProgress = 0
         self.programSettings = {"file": "", "save_folder": "", "full_report": True, "gen_csv": False, "csv_commas": False, "first_page": 1, "last_page": 999, "page_total": 999}
@@ -170,6 +174,7 @@ class MainWindow(QMainWindow):
         self.setFixedWidth(500)
         self.show()
 
+    #Función para seleccionar el documento PDF a analizar.
     def showDialog(self):
         home_dir = str(Path.home())
         fname = QFileDialog.getOpenFileName(self, 'Seleccionar PDF', home_dir, "PDF (*.pdf)")
@@ -195,6 +200,7 @@ class MainWindow(QMainWindow):
             self.programSettings['save_folder'] = folder
             self.btnRunProgram.setDisabled(False)
     
+    #Función para seleccionar el directorio donde se guardarán los resultados.
     def showDialogFolder(self):
         fname = QFileDialog.getExistingDirectory(self, 'Seleccionar Carpeta')
 
@@ -203,6 +209,7 @@ class MainWindow(QMainWindow):
             self.programSettings['save_folder'] = fname
             #self.btnRunProgram.setDisabled(False)
     
+    #Función para deshabilitar todos los campos del formulario.
     def disableForm(self):
         self.btnSelectFile.setDisabled(True)
         self.btnSelectFolder.setDisabled(True)
@@ -214,6 +221,7 @@ class MainWindow(QMainWindow):
         self.txtPaginaFin.setDisabled(True)
         self.txtPaginaInicio.setDisabled(True)
 
+    #Función que inicializa el proceso de análisis del documento y crea una instancia del hilo secundario.
     def runProgram(self):
         self.disableForm()
         self.currentProgress = 0
@@ -226,18 +234,18 @@ class MainWindow(QMainWindow):
             number_of_steps += 1
         self.progressIncrease = 100/number_of_steps
 
-        #print(str(self.programSettings),self.currentProgress,self.progressIncrease)
-
         self.btnRunProgram.setDisabled(True)
         self.worker = Worker(self.process, self.programSettings, self.working)
         self.worker.signals.progress.connect(self.updateProgressBar)
         self.threadpool.start(self.worker)
     
+    #Controlador de los radio buttons de generar reporte completo/resumido
     def radioHandler(self):
         radioButton = self.sender()
         if radioButton.isChecked():
             self.programSettings['full_report'] = radioButton.fullReport
 
+    #Controlador de la checkbox para definir un rango de páginas.
     def checkBoxHandler(self):
         checkBox = self.sender()
         if checkBox.isChecked():
@@ -247,18 +255,22 @@ class MainWindow(QMainWindow):
             self.txtPaginaInicio.setDisabled(True)
             self.txtPaginaFin.setDisabled(True)
 
+    #Controlador de la checkbox para generar CSV de los resultados.
     def csvHandler(self):
         checkBox = self.sender()
         self.programSettings['gen_csv'] = checkBox.isChecked()
         self.ckbUseCommas.setDisabled(not(checkBox.isChecked()))
 
+    #Controlador de la checkbox utilizar comas en el CSV.
     def checkBoxUseCommas(self):
         checkBox = self.sender()
         self.programSettings['csv_commas'] = checkBox.isChecked()
 
+    #Función para evitra que la página final sea menor que la página inicial.
     def minimumHandler(self):
         self.txtPaginaFin.setMinimum(self.txtPaginaInicio.value())
 
+    #Función para reiniciar el formulario y las configuraciones del análisis.
     def resetForm(self):
         self.btnRunProgram.setText("Analizar documento")
         self.programSettings = {"file": "", "save_folder": "", "full_report": True, "gen_csv": False, "csv_commas": False, "first_page": 1, "last_page": 999, "page_total": 999}
@@ -279,6 +291,7 @@ class MainWindow(QMainWindow):
         try: self.worker.signals.progress.disconnect()
         except Exception: pass
     
+    #Función para actualizar la barra de progreso y notificar cuando se haya completado.
     def updateProgressBar(self,message):
         self.lblStatusMsg.setText(message)
         progressiveIncrease = self.progressIncrease
@@ -305,6 +318,8 @@ class MainWindow(QMainWindow):
             msgBox.setText(text)
             msgBox.exec()
     
+    #Función que controla el evento de cerrar la ventana.
+    #Su acción es cancelar un análisis si hay uno en curso o cerrar la ventana si no hay un análisis en curso.
     def closeEvent(self, event):
         if self.currentProgress == 0 or round(self.currentProgress,1) == 100.0:
             event.accept()
@@ -318,21 +333,23 @@ class MainWindow(QMainWindow):
             event.ignore()
         else:
             event.ignore()
-### Thread Classes
 
+#Clase que permite la comunicación entre los hilos.
 class WorkerSignals(QObject):
     progress = pyqtSignal(str)
 
+#Clase con la que se genera una instancia del hilo secundario.
 class Worker(QRunnable):
     signals = WorkerSignals()
 
+    #Constructor del hilo secundario.
     def __init__(self, fn, args, work):
         super(Worker, self).__init__()
-        # https://stackoverflow.com/questions/59309979/pyqt-updating-progress-bar-using-thread
         self.fn = fn
         self.args = args
         self.work = work
 
+    #Ejecución de una función en el hilo secundario (la función main del proceso de análisis).
     @pyqtSlot()
     def run(self):
         self.fn(self.args, self.signals.progress, self.work)
