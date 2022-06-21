@@ -58,7 +58,7 @@ class PDF(FPDF):
         elif 75 <= result < 85:
             self.set_fill_color(152,206,127)
             return "Lectura Fácil"
-        elif 85 <= result < 100:
+        elif 85 <= result <= 100:
             self.set_fill_color(99,190,123)
             return "Lectura Muy Fácil"
     
@@ -153,7 +153,7 @@ class PDF(FPDF):
             return {"textos":"textos como novelas populares, revistas femeninas y textos educativos; que suelen ser interesantes o dirigidos al entretenimiento", "publico_recomendado": "son las personas mayores de 12 años."}
         elif 75 <= result < 85:
             return {"textos":"textos que pueden encontrarse en quioscos como revistas e historietas, cuyo contenido es considerablemente simple", "publico_recomendado": "son las personas mayores de 10 años."}
-        elif 85 <= result < 100:
+        elif 85 <= result <= 100:
             return {"textos":"textos como cuentos, relatos o tebeos (historietas cortas dirigidas a niños, también llamados viñetas), cuya naturaleza es superficial o coloquial", "publico_recomendado": "son los niños entre 6 y 10 años."}
 
     #Obtiene la conclusión en base al promedio de todos los valores de perspicuidad 
