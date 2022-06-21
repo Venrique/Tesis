@@ -84,7 +84,7 @@ def refine_image(values, updateProgress, work):
 
             plot_configs = {'width': width, 'height': height, 'dpi': 700, 'file_path': DOCS_ROUTE+'plt-'+file_name}
             plot_image(plot_configs, binary_otsu)
-            text = str(((pytesseract.image_to_string(Image.open(DOCS_ROUTE+'plt-'+file_name),lang='spa'))))
+            text = str(((pytesseract.image_to_string(Image.open(DOCS_ROUTE+'plt-'+file_name),lang='spa',config='-c page_separator='' '))))
             text = text.replace('-\n', '')
             values['file_to_read'].write(text)
         if i<last_page:
@@ -138,10 +138,11 @@ def extract_file_text(Lines):
 
 #Limpia el texto usando expresiones regulares
 def substract_from_text(raw_text):
-    raw_text = re.sub(r'[0-9]+(\.[0-9]+)*', '', raw_text)
+    raw_text = re.sub(r'[0-9]+([\.\,\+\-\*\/][0-9]+)*(%*)', '', raw_text)
     raw_text = re.sub(r'@', '', raw_text)
-    raw_text = re.sub(r'(  +)', ' ', raw_text)
     raw_text = re.sub(r'(\.|\!|\?|\:)[\r\n\v\f][\r\n\v\f ]+', r'\1@', raw_text)
+    raw_text = re.sub(r'(\[[ \t]*\])*(\([ \t]*\))*(\{[ \t]*\})*', '', raw_text)
+    raw_text = re.sub(r'([ \t][ \t]+)', ' ', raw_text)
     raw_text = raw_text.encode("latin-1","ignore").decode("latin-1")
     refined_text = re.sub(r'[\r\n\t\v\f]+', ' ', raw_text)
     return refined_text
