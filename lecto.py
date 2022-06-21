@@ -138,7 +138,7 @@ def extract_file_text(Lines):
 
 #Limpia el texto usando expresiones regulares
 def substract_from_text(raw_text):
-    raw_text = re.sub(r'[0-9](\.[0-9]+)*', '', raw_text)
+    raw_text = re.sub(r'[0-9]+(\.[0-9]+)*', '', raw_text)
     raw_text = re.sub(r'@', '', raw_text)
     raw_text = re.sub(r'(  +)', ' ', raw_text)
     raw_text = re.sub(r'(\.|\!|\?|\:)[\r\n\v\f][\r\n\v\f ]+', r'\1@', raw_text)
