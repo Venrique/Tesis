@@ -11,7 +11,8 @@ from PyQt6.QtWidgets import (
     QVBoxLayout,
     QHBoxLayout,
     QWidget,
-    QMessageBox)
+    QMessageBox,
+    QButtonGroup)
 
 import time
     
@@ -44,8 +45,10 @@ class MainWindow(QMainWindow):
         fileSelectLayout = QHBoxLayout()
         folderSelectLayout = QHBoxLayout()
         reportOptionsLayout = QHBoxLayout()
+        csvOptionsLayout = QHBoxLayout()
         limitsLayout = QHBoxLayout()
         mainLayout.setAlignment(Qt.AlignmentFlag.AlignTop)
+        widget = QWidget()
 
         lblFileSelect = QLabel("Seleccionar un archivo")
         lblFileSelect.setFont(QFont('Calibri', 14))
@@ -82,12 +85,14 @@ class MainWindow(QMainWindow):
         lblReportType.setFont(QFont('Calibri', 12))
         reportOptionsLayout.addWidget(lblReportType)
 
+        reportTypeGroup = QButtonGroup(widget)
         self.rbCompleteReport = QRadioButton("Reporte completo")
         self.rbCompleteReport.setFont(QFont('Calibri', 12))
         self.rbCompleteReport.setChecked(True)
         self.rbCompleteReport.fullReport = True
         self.rbCompleteReport.toggled.connect(self.radioHandler)
         reportOptionsLayout.addWidget(self.rbCompleteReport)
+        reportTypeGroup.addButton(self.rbCompleteReport)
 
         self.rbPartialReport = QRadioButton("Reporte resumido")
         self.rbPartialReport.setFont(QFont('Calibri', 12))
@@ -95,18 +100,38 @@ class MainWindow(QMainWindow):
         self.rbPartialReport.toggled.connect(self.radioHandler)
         reportOptionsLayout.addWidget(self.rbPartialReport)
         mainLayout.addLayout(reportOptionsLayout)
+        reportTypeGroup.addButton(self.rbPartialReport)
 
         self.ckbCsv = QCheckBox("Generar archivo .csv con los resultados")
         self.ckbCsv.setFont(QFont('Calibri', 12))
         self.ckbCsv.toggled.connect(self.csvHandler)
         mainLayout.addWidget(self.ckbCsv)
 
-        self.ckbUseCommas = QCheckBox("Separar con coma (,) en lugar de punto y coma (;)")
+        '''self.ckbUseCommas = QCheckBox("Separar con coma (,) en lugar de punto y coma (;)")
         self.ckbUseCommas.setFont(QFont('Calibri', 12))
         self.ckbUseCommas.toggled.connect(self.checkBoxUseCommas)
         self.ckbUseCommas.setDisabled(True)
-        self.ckbUseCommas.setStyleSheet("margin-left: 1em")
-        mainLayout.addWidget(self.ckbUseCommas)
+        self.ckbUseCommas.setStyleSheet("margin-left: 1em")'''
+
+        separatorGroup = QButtonGroup(widget)
+        self.rbSemicolon = QRadioButton("Separar con punto y coma (;)")
+        self.rbSemicolon.setFont(QFont('Calibri', 12))
+        self.rbSemicolon.setChecked(True)
+        self.rbSemicolon.setDisabled(True)
+        self.rbSemicolon.useCommas = False
+        self.rbSemicolon.toggled.connect(self.radioSeparatorHandler)
+        self.rbSemicolon.setStyleSheet("margin-left: 1em")
+        csvOptionsLayout.addWidget(self.rbSemicolon)
+        separatorGroup.addButton(self.rbSemicolon)
+
+        self.rbCommas = QRadioButton("Separar con coma (,)")
+        self.rbCommas.setFont(QFont('Calibri', 12))
+        self.rbCommas.setDisabled(True)
+        self.rbCommas.useCommas = True
+        self.rbCommas.toggled.connect(self.radioSeparatorHandler)
+        csvOptionsLayout.addWidget(self.rbCommas)
+        mainLayout.addLayout(csvOptionsLayout)
+        separatorGroup.addButton(self.rbCommas)
 
         lblOptions = QLabel("Opciones de procesado")
         lblOptions.setFont(QFont('Calibri', 14))
@@ -164,7 +189,6 @@ class MainWindow(QMainWindow):
         self.lblStatusMsg.setFont(QFont('Calibri', 12))
         mainLayout.addWidget(self.lblStatusMsg)
 
-        widget = QWidget()
         widget.setLayout(mainLayout)
 
         self.setCentralWidget(widget)
@@ -216,13 +240,16 @@ class MainWindow(QMainWindow):
         self.rbCompleteReport.setDisabled(True)
         self.rbPartialReport.setDisabled(True)
         self.ckbCsv.setDisabled(True)
-        self.ckbUseCommas.setDisabled(True)
+        #self.ckbUseCommas.setDisabled(True)
+        self.rbSemicolon.setDisabled(True)
+        self.rbCommas.setDisabled(True)
         self.ckbUseLimits.setDisabled(True)
         self.txtPaginaFin.setDisabled(True)
         self.txtPaginaInicio.setDisabled(True)
 
     #Función que inicializa el proceso de análisis del documento y crea una instancia del hilo secundario.
     def runProgram(self):
+        self.working[0] = True
         self.disableForm()
         self.currentProgress = 0
         self.progressIncrease = 0
@@ -259,12 +286,20 @@ class MainWindow(QMainWindow):
     def csvHandler(self):
         checkBox = self.sender()
         self.programSettings['gen_csv'] = checkBox.isChecked()
-        self.ckbUseCommas.setDisabled(not(checkBox.isChecked()))
+        #self.ckbUseCommas.setDisabled(not(checkBox.isChecked()))
+        self.rbSemicolon.setDisabled(not(checkBox.isChecked()))
+        self.rbCommas.setDisabled(not(checkBox.isChecked()))
+
+    #Controlador de los radio buttons para utilizar comas en el CSV.
+    def radioSeparatorHandler(self):
+        radioButton = self.sender()
+        if radioButton.isChecked():
+            self.programSettings['csv_commas'] = radioButton.useCommas
 
     #Controlador de la checkbox utilizar comas en el CSV.
-    def checkBoxUseCommas(self):
+    '''def checkBoxUseCommas(self):
         checkBox = self.sender()
-        self.programSettings['csv_commas'] = checkBox.isChecked()
+        self.programSettings['csv_commas'] = checkBox.isChecked()'''
 
     #Función para evitra que la página final sea menor que la página inicial.
     def minimumHandler(self):
@@ -285,7 +320,8 @@ class MainWindow(QMainWindow):
         self.rbPartialReport.setDisabled(False)
         self.ckbCsv.setChecked(False)
         self.ckbCsv.setDisabled(False)
-        self.ckbUseCommas.setChecked(False)
+        #self.ckbUseCommas.setChecked(False)
+        self.rbSemicolon.setChecked(True)
         self.ckbUseLimits.setDisabled(True)
         self.ckbUseLimits.setChecked(False)
         try: self.worker.signals.progress.disconnect()
@@ -326,7 +362,7 @@ class MainWindow(QMainWindow):
         elif self.working[0]:
 
             close = QMessageBox.question(self, "Cancelar", "¿Cancelar el proceso actual?",QMessageBox.StandardButton.Yes| QMessageBox.StandardButton.No)
-            if close == QMessageBox.StandardButton.Yes:
+            if close == QMessageBox.StandardButton.Yes and round(self.currentProgress,1) < 100.0:
                 self.working[0] = False
                 self.btnRunProgram.setText("Cancelando proceso (esto puede tardar un poco)...")
                 

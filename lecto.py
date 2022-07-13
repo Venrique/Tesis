@@ -22,12 +22,14 @@ import sys
 from PyQt6.QtWidgets import (QApplication)
 from PyQt6.QtGui import QIcon
 from gui import MainWindow
+from datetime import datetime
 
 number_pages = 0
 first_page = 1
 last_page = 1
 Image.MAX_IMAGE_PIXELS = None
 basedir = os.path.dirname(__file__)
+current_date = ''
 
 #Convierte las páginas de un archivo PDF a imágenes y las guarda en un arreglo
 def create_images_from_file(values, updateProgress, work):
@@ -196,6 +198,7 @@ def calculate_perspicuity(perspicuity_values):
 
 #Crea el archivo PDF que muestra los resultados obtenidos y los gráficos
 def generatePDF(updateProgress, values_to_print, file_route, file_name, sorted_formulas, generate_complete_report, pdf_complete_report, number_of_pharagraphs, work):
+    global current_date
     if work[0]:
         pdf = PDF()
         pdf.add_page()
@@ -206,7 +209,7 @@ def generatePDF(updateProgress, values_to_print, file_route, file_name, sorted_f
         pdf.add_page()
         pdf.seccion("Anexos")
         pdf.anexos()
-        pdf.output(file_route+'/'+PDF_FILE,'F')
+        pdf.output(file_route+'/Resultados de análisis ('+current_date+').pdf','F')
     updateProgress.emit("Proceso finalizado." if work[0] else "Proceso cancelado.")
 
 def clean_file(file):
@@ -264,6 +267,8 @@ def plot_aggregate_results(paragraphsNumbers, plotData, updateProgress, work):
 
 #Función principal que maneja todo el flujo del programa
 def process_file(process_configs, updateProgress, work):
+    global current_date
+    current_date = datetime.now().strftime("%d-%m-%Y %H_%M_%S")
     clean_file(OUTPUT_TEXT)
     clean_file(OUTPUT_FILE)
 
@@ -303,8 +308,8 @@ def process_file(process_configs, updateProgress, work):
 
         if process_configs['gen_csv']:
             if work[0]: 
-                open(save_route+'/'+CSV_FILE, "w").close()
-                csv = open(save_route+'/'+CSV_FILE, "a")
+                #open(save_route+'/'+CSV_FILE, "w").close()
+                csv = open(save_route+'/Resultados de análisis ('+current_date+').csv', "a")
                 if process_configs['csv_commas']:
                     csvSeparator = ","
                 csv.write('Parrafo'+csvSeparator+SIGRISZPAZOS_TEXT+'/'+INFLESZ_TEXT+csvSeparator+FERNANDEZHUERTA_TEXT+csvSeparator+MULEGIBILITY_VAR_TEXT+'\n')
